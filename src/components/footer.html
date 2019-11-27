@@ -1,0 +1,19 @@
+<template>
+    <div>页脚{name} === {props.title}</div>
+</template>
+<script>
+    import Header from '@/components/header.html';
+
+    export default {
+        name: 'footer',
+        data() {
+            return {
+                name: 'footer'
+            }
+        },
+        created() {
+            // this.render();
+            console.log(this.props)
+        }
+    }
+</script>

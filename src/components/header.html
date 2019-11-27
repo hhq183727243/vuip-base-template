@@ -1,0 +1,52 @@
+<template>
+    <div>
+        <slot></slot>
+        <div>props : {props.title}</div>
+        <Footer :title="title"></Footer>
+        <!-- <v-if test="isReal > 2">
+            <div>你好，我是真的</div>
+        </v-if>
+        <v-if test="header.number > 5">
+            <div>你好，我的假的</div>
+        </v-if> -->
+    </div>
+</template>
+<script>
+    /* const html = <div>
+        <solt></solt>
+        <div>{header.name}啊啊{title}we</div>
+        <v-if test={isReal}>
+            <div>你好，我是真的</div>
+        </v-if>
+        <v-if test={isReal}>
+            <div>你好，我的假的</div>
+        </v-if>
+    </div> */
+
+    import Footer from '@/components/footer.html';
+
+    export default {
+        name: 'header',
+        data() {
+            return {
+                isReal: 5,
+                title: '头部导航'
+            }
+        },
+        component: {
+            Footer
+        },
+        created() {
+            console.log(this.props);
+
+            // setTimeout(() => {
+            //     this.setData({
+            //         isReal: 0
+            //     });
+            // }, 2000);
+        },
+        updated() {
+            console.log(this.props);
+        }
+    }
+</script>

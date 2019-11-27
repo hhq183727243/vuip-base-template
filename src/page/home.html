@@ -1,0 +1,53 @@
+<template>
+    <div>
+        <!-- 
+        <v-for data="list">
+            <div>
+                <v-if test="title">
+                    <div>列表{title}</div>
+                    <div>你好，我是真的</div>
+                </v-if>
+            </div>
+        </v-for>
+        <div></div> -->
+
+        <Header :title="1 + title">
+            <div><a href="/list">列表{title}</a></div>
+        </Header>
+
+        <v-for data="list" item="item" index="i">
+            <v-if test="item.id > 100">
+                <div>你好，我是真的</div>
+            </v-if>
+            <Footer :title="item.id"></Footer>
+            <div>{item.id}流量{title}{i}</div>
+        </v-for>
+    </div>
+</template>
+<script>
+    import Header from '@/components/header.html';
+    import Footer from '@/components/footer.html';
+
+    export default {
+        name: 'home',
+        component: {
+            Header,
+            Footer
+        },
+        data() {
+            return {
+                list: Array.apply(this, { length: 10000 }).map((item, index) => { return { id: index } }),
+                title: '人民日报',
+                item: 123455
+            }
+        },
+        created() {
+            /* setTimeout(() => {
+                this.setData({
+                    title: '人民日报=='
+                });
+            }, 3000); */
+        }
+    }
+
+</script>
