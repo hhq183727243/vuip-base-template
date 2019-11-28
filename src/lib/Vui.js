@@ -35,21 +35,47 @@ function createText(content) {
     const dom = document.createTextNode(content.replace(/\s/g, ''));
     return dom;
 }
-function createComponent(cid, slotNodes) {
-    const $dom = componentCache[cid].$el ? componentCache[cid].$el.cloneNode(true) : componentCache[cid].render();
+function createComponent(componentName, attr, slotNodes) {
+    let componentConfig = this.$vui.config.component[componentName];
+
+    // 父组件传参处理
+    const props = {};
+
+    Object.keys(attr).forEach(key => {
+        if (key.indexOf(':') === 0) {
+            props[key.replace(/^:?/, '')] = attr[key];
+        } else {
+            props[key] = attr[key];
+        }
+    });
+
+    const $component = new VuiComponent({
+        $parent: this.$vui,
+        config: componentConfig,
+        props
+    });
+
+    this.$vui.$children.push($component);
+
+    $component.$attrs = attr;
+
+    // $component.slotCodeReader = createFunction('createFragment([' + childCode.join(',') + '])');
+    const $el = $component.render();
     const fragment = document.createDocumentFragment();
 
     (slotNodes || []).forEach(item => {
         fragment.appendChild(item);
     });
 
-    const $slot = $dom.getElementsByTagName('slot');
+    $component.$slots = slotNodes;
+
+    const $slot = $el.getElementsByTagName('slot');
     // slot 插槽替换
     if ($slot.length > 0) {
-        $dom.replaceChild(fragment, $slot[0]);
+        $el.replaceChild(fragment, $slot[0]);
     }
 
-    return $dom;
+    return $el;
 }
 function getFor(data, callback) {
     const fragment = document.createDocumentFragment();
@@ -84,29 +110,17 @@ function createCode(option) {
         return 'createText(' + textParse(content) + ')';
     } else if (type === 3) {
         // 组件
-        let componentConfig = this.config.component[tagName];
-        // 父组件传参处理
-        const props = {};
-        Object.keys(attr).forEach(key => {
+        let _attrStr = '{';
+        Object.keys(attr).forEach((key, index) => {
             if (key.indexOf(':') === 0) {
-                props[key.replace(/^:?/, '')] = createFunction(attr[key]).call(this.data); // attr[key];
+                _attrStr += `"${key}": ${attr[key]},` // :开头说明是表达式
             } else {
-                props[key] = attr[key];
+                _attrStr += `"${key}": "${attr[key]}",` // 否则是字符串
             }
         });
+        _attrStr += '}';
 
-        const $vuiComponent = new VuiComponent({
-            $parent: this,
-            config: componentConfig,
-            props
-        });
-
-        $vuiComponent.$attrs = attr;
-
-        this.$children.push($vuiComponent);
-        $vuiComponent.slotCodeReader = createFunction('createFragment([' + childCode.join(',') + '])');
-
-        return 'createComponent("' + $vuiComponent.cid + '", [' + childCode.join(',') + '])';
+        return 'createComponent("' + tagName + '", ' + _attrStr + ',[' + childCode.join(',') + '])';
     } else if (type === 4) {
         // 指令
         let code = '';
@@ -165,18 +179,13 @@ class VuiComponent {
     _reRender() {
         const newDom = this.render();
         const fragment = document.createDocumentFragment();
+        const slotFragment = document.createDocumentFragment();
         this.$el.innerHTML = '';
-        let slotFragment = null;
+
         // 当组件内有solt时候需要保留solt内容
-        if (this.slotCodeReader) {
-            slotFragment = this.slotCodeReader.call({
-                createFragment,
-                createElement,
-                createText,
-                createComponent,
-                getFor,
-                getIf,
-                ...this.$parent.data
+        if (this.$slots) {
+            this.$slots.forEach(item => {
+                slotFragment.appendChild(item);
             });
         }
 
@@ -190,16 +199,6 @@ class VuiComponent {
         }
 
         this.$el.appendChild(fragment);
-
-        /* if (this.$slot && this.$slot.length) {
-            const $slot = this.$el.getElementsByTagName('slot');
-            const fragment = document.createDocumentFragment();
-            // this.$el.replaceChild(this.$parent.createChildrenFragment(this.slot), $slot[0]);
-            this.$slot.forEach(_dom => {
-                fragment.appendChild(_dom);
-            });
-            this.$el.replaceChild(fragment, $slot[0]);
-        } */
     }
     // 更新数据
     setData(data) {
@@ -208,17 +207,6 @@ class VuiComponent {
             ...this.data,
             ...data
         };
-
-        // 传给子组件的值也要更新
-        this.$children.forEach(item => {
-            Object.keys(item.$attrs).forEach(key => {
-                if (key.indexOf(':') === 0) {
-                    item.props[key.replace(/^:?/, '')] = createFunction(item.$attrs[key]).call(this.data);
-                } else {
-                    item.props[key] = item.$attrs[key];
-                }
-            });
-        });
 
         // renderEnd 防止在一个事件循环中多次调用setData导致重复渲染
         new Promise((resolve) => {
@@ -260,6 +248,7 @@ class VuiComponent {
             getFor,
             getIf,
             props: this.props,
+            $vui: this,
             ...this.data
         });
 
@@ -281,11 +270,11 @@ class Vui extends VuiComponent {
     }
 
     /* init(config) {
-        const $vuiComponent = new VuiComponent({
+        const $component = new VuiComponent({
             config: config
         });
 
-        this.$app = $vuiComponent;
+        this.$app = $component;
         this.$el.appendChild(this.$app.$el);
     } */
 }

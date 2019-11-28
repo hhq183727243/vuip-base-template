@@ -14,11 +14,10 @@
         <Header :title="1 + title">
             <div><a href="/list">列表{title}</a></div>
         </Header>
-
         <v-for data="list" item="item" index="i">
-            <v-if test="item.id > 100">
+            <!--  <v-if test="item.id > 100">
                 <div>你好，我是真的</div>
-            </v-if>
+            </v-if> -->
             <Footer :title="item.id"></Footer>
             <div>{item.id}流量{title}{i}</div>
         </v-for>
@@ -36,17 +35,18 @@
         },
         data() {
             return {
-                list: Array.apply(this, { length: 10000 }).map((item, index) => { return { id: index } }),
+                list: Array.apply(this, { length: 10 }).map((item, index) => { return { id: index } }),
                 title: '人民日报',
                 item: 123455
             }
         },
         created() {
-            /* setTimeout(() => {
+            setTimeout(() => {
                 this.setData({
                     title: '人民日报=='
                 });
-            }, 3000); */
+            }, 3000);
+            console.log('home');
         }
     }
 
