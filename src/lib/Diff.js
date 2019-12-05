@@ -99,12 +99,21 @@ function walk(oldNode, newNode, index, patches) {
     return patches
 }
 
+function isDef(v) {
+    return v !== undefined && v !== null;
+}
+
 function diffChildren(oldChildren, newChildren, index, patches) {
     let prevNode = null;
     let currentIndex = index;
+    
 
     oldChildren.forEach((child, i) => {
         currentIndex = (prevNode && prevNode.count) ? (prevNode.count + currentIndex + 1) : (currentIndex + 1);
+        //v-for 对比
+        if (isDef(child.key)) {
+
+        }
         walk(child, newChildren[i], currentIndex, patches);
         prevNode = child;
     });
@@ -142,7 +151,9 @@ export function updateDom(patches) {
                 item.oldNode.elm.parentNode.removeChild(item.oldNode.elm);
             } else if (item.type === 'REPLACE') {
                 item.oldNode.elm.parentNode.replaceChild(item.newNode.render(), item.oldNode.elm);
-                //item.oldNode.
+                Object.keys(item.newNode).forEach(key => {
+                    item.oldNode[key] = item.newNode[key];
+                });
             } else if (item.type === 'ADD') {
                 // oldVDomMap[key].elm.parentNode.replaceChild(newVDomMap[key].render(), oldVDomMap[key].elm);
             }

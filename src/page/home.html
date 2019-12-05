@@ -18,19 +18,20 @@
         <v-if test="list.length === 5">
             <div>=======我是分隔线========</div>
         </v-if>
-
         <v-for data="list" item="item" index="i">
-            <div>
+            <div :key="item.id">
                 <v-if test="list.length === 5">
-                    <div>
-                        <p>你好，我是真的</p>
-                        <p>你好，我是真的</p>
-                    </div>
+                    <div>你好，我是真的</div>
                 </v-if>
                 <Footer :title="item.id">{item.name}</Footer>
-                <div>{item.name}流量{title}{i}</div>
+                <v-for data="list" item="item" index="i">
+                    <div>{item.name}流量{title}{i}</div>
+                </v-for>
             </div>
         </v-for>
+        <v-if test="list.length === 5">
+            <div>=======我是分隔线========</div>
+        </v-if>
     </div>
 </template>
 <script>

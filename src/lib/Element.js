@@ -73,6 +73,30 @@ export default class Element {
     }
 }
 
+function normalizeChildren(children) {
+    var arr = [];
+
+    children.forEach(item => {
+        if (Array.isArray(item)) {
+            if (item._isVlist) {
+                item.forEach((vn, i) => {
+                    vn.key = '__vlist_' + item._index + '_' + i
+                });
+            }
+            arr.push.apply(arr, item);
+        } else {
+            arr.push(item);
+        }
+    });
+
+    return arr;
+}
+
 export function createElement(tagName, attr, children) {
+    // 序列号节点，单遇到v-for、slot时需要序列号
+    if (Array.isArray(children)) {
+        children = normalizeChildren(children);
+    }
+
     return new Element(tagName, attr, children, this.$vui);
 };

@@ -72,7 +72,7 @@ function createComponent(componentName, attr, slotNodes) {
     } */
     return createElement.call(this, `component-${$component.componentName}`, null, $component);
 }
-function getFor(data, callback) {
+function getFor(data, callback, nextIndex) {
     // const fragment = document.createDocumentFragment();
     const vNodes = [];
 
@@ -81,6 +81,8 @@ function getFor(data, callback) {
         vNodes.push(callback(item, i));
     });
 
+    vNodes._isVlist = true;
+    vNodes._index = nextIndex;
     // return fragment;
     return vNodes// createElement.call(this, 'fragment', null, vNodes);
 }
@@ -100,7 +102,7 @@ function createCode(option) {
     if (type === 1) {
         // 普通节点
         if (tagName === 'slot') {
-            return '...(createSlots())';
+            return 'createSlots()';
         } else {
             return 'createElement("' + tagName + '", ' + JSON.stringify(attr) + ',[' + childCode.join(',') + '])';
         }
@@ -131,7 +133,7 @@ function createCode(option) {
                 if (!children || children.length === 0) {
                     code = '';
                 } else if (children.length === 1) {
-                    code = '...getFor(' + data + ', function(' + item + ',' + index + '){ return ' + childCode[0] + '; })';
+                    code = 'getFor(' + data + ', function(' + item + ',' + index + '){ return ' + childCode[0] + '; }, nextIndex++)';
                 } else {
                     throw new Error('v-for 标签下只能有一个标签节点');
                 }
@@ -169,7 +171,7 @@ function textParse(text, data) {
 }
 
 function createFunction(code) {
-    return new Function('with(this){return ' + code + '}');
+    return new Function('nextIndex', 'with(this){return ' + code + '}');
 }
 
 
@@ -202,7 +204,7 @@ class VuiComponent {
 
 
         const patches = diff(this.$vNode, $newVNode);
-        console.log(patches);
+        console.log($newVNode);
 
         updateDom(patches);
         /*  const fragment = document.createDocumentFragment();
@@ -277,7 +279,7 @@ class VuiComponent {
             props: this.props,
             $vui: this,
             ...this.data
-        });
+        }, 0);
     }
 }
 
