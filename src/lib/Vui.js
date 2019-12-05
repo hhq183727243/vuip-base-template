@@ -1,19 +1,11 @@
+import { createElement } from './Element.js';
+import diff, { updateDom } from './Diff.js';
+
 const UNCREATED = 'UNCREATED';
 const CREATED = 'CREATED';
-
 const componentCache = {};
 
-// 创建节点函数
-function createFragment(children) {
-    const fragment = document.createDocumentFragment();
-
-    (children || []).forEach(item => {
-        fragment.appendChild(item);
-    });
-
-    return fragment;
-}
-function createElement(tagName, attr, children) {
+/* function createElement(tagName, attr, children) {
     const dom = document.createElement(tagName);
     const fragment = document.createDocumentFragment();
 
@@ -30,10 +22,14 @@ function createElement(tagName, attr, children) {
     dom.appendChild(fragment);
 
     return dom;
-}
+} */
+
 function createText(content) {
-    const dom = document.createTextNode(content.replace(/\s/g, ''));
-    return dom;
+    // const dom = document.createTextNode(content.replace(/\s/g, ''));
+    return content;
+}
+function createSlots(key) {
+    return this.$vui.$slots;
 }
 function createComponent(componentName, attr, slotNodes) {
     let componentConfig = this.$vui.config.component[componentName];
@@ -52,7 +48,8 @@ function createComponent(componentName, attr, slotNodes) {
     const $component = new VuiComponent({
         $parent: this.$vui,
         config: componentConfig,
-        props
+        props,
+        $slots: slotNodes
     });
 
     this.$vui.$children.push($component);
@@ -60,8 +57,7 @@ function createComponent(componentName, attr, slotNodes) {
     $component.$attrs = attr;
 
     // $component.slotCodeReader = createFunction('createFragment([' + childCode.join(',') + '])');
-    const $el = $component.render();
-    const fragment = document.createDocumentFragment();
+    /* const fragment = document.createDocumentFragment();
 
     (slotNodes || []).forEach(item => {
         fragment.appendChild(item);
@@ -73,21 +69,23 @@ function createComponent(componentName, attr, slotNodes) {
     // slot 插槽替换
     if ($slot.length > 0) {
         $el.replaceChild(fragment, $slot[0]);
-    }
-
-    return $el;
+    } */
+    return createElement.call(this, `component-${$component.componentName}`, null, $component);
 }
 function getFor(data, callback) {
-    const fragment = document.createDocumentFragment();
+    // const fragment = document.createDocumentFragment();
+    const vNodes = [];
 
     (data || []).forEach((item, i) => {
-        fragment.appendChild(callback(item, i));
+        // fragment.appendChild(callback(item, i));
+        vNodes.push(callback(item, i));
     });
 
-    return fragment;
+    // return fragment;
+    return vNodes// createElement.call(this, 'fragment', null, vNodes);
 }
-function getIf(condition, fragment) {
-    return !!(condition) ? fragment : document.createDocumentFragment();
+function getIf(condition, vNode) {
+    return !!(condition) ? vNode : createElement.call(this, 'comment', null, condition);
 }
 
 // 构建创建dom代码
@@ -99,15 +97,16 @@ function createCode(option) {
         childCode.push(createCode.call(this, item));
     });
 
-    if (type === -1) {
-        // 节点碎片
-        return 'createFragment([' + childCode.join(',') + '])';
-    } else if (type === 1) {
+    if (type === 1) {
         // 普通节点
-        return 'createElement("' + tagName + '", ' + JSON.stringify(attr) + ',[' + childCode.join(',') + '])';
+        if (tagName === 'slot') {
+            return '...(createSlots())';
+        } else {
+            return 'createElement("' + tagName + '", ' + JSON.stringify(attr) + ',[' + childCode.join(',') + '])';
+        }
     } else if (type === 2) {
         // 文本节点
-        return 'createText(' + textParse(content) + ')';
+        return 'createElement(undefined, null, ' + textParse(content.replace(/\r\n/g, '')) + ')';
     } else if (type === 3) {
         // 组件
         let _attrStr = '{';
@@ -126,12 +125,27 @@ function createCode(option) {
         let code = '';
         switch (tagName) {
             case 'v-for':
+                // v-for 标签下只能有一个标签节点
                 const { data, item, index } = attr;
-                code = 'getFor(' + data + ', function(' + item + ',' + index + '){ return ' + createCode.call(this, { type: -1, children }) + '})'
+                // code = 'getFor(' + data + ', function(' + item + ',' + index + '){ return ' + createCode.call(this, { type: -1, children }) + '})'
+                if (!children || children.length === 0) {
+                    code = '';
+                } else if (children.length === 1) {
+                    code = '...getFor(' + data + ', function(' + item + ',' + index + '){ return ' + childCode[0] + '; })';
+                } else {
+                    throw new Error('v-for 标签下只能有一个标签节点');
+                }
                 break;
             case 'v-if':
+                // v-if 标签下只能有一个标签节点
                 const { test } = attr;
-                code = 'getIf(' + test + ', ' + createCode.call(this, { type: -1, children }) + ')';
+                if (!children || children.length === 0) {
+                    code = '';
+                } else if (children.length === 1) {
+                    code = 'getIf(' + test + ', ' + childCode[0] + ')';
+                } else {
+                    throw new Error('v-if 标签下只能有一个标签节点');
+                }
                 break;
             default: code = ''; break;
         }
@@ -158,12 +172,14 @@ function createFunction(code) {
     return new Function('with(this){return ' + code + '}');
 }
 
+
 class VuiComponent {
-    constructor({ $parent, config, props }) {
+    constructor({ $parent, config, props, $slots }) {
         this.cid = config.name + Math.random();
         this.$el = null;
         this.componentName = config.name;
         this.$parent = $parent;
+        this.$slots = $slots;
         if (typeof config.data === 'function') {
             this.data = config.data();
         } else {
@@ -175,30 +191,41 @@ class VuiComponent {
         this.componentState = UNCREATED; // 组件状态
         this.init(config);
     }
-
     _reRender() {
-        const newDom = this.render();
-        const fragment = document.createDocumentFragment();
-        const slotFragment = document.createDocumentFragment();
-        this.$el.innerHTML = '';
+        const $newVNode = this.renderVnode();
+        // const $newEl = $newVNode.render();
+        // console.log(this.$vNode);
+        // console.log($newVNode);
+        // this.$el.parentNode.replaceChild($newEl, this.$el);
+        // this.$el = $newEl;
+        // this.$vNode = $newVNode;
 
-        // 当组件内有solt时候需要保留solt内容
-        if (this.$slots) {
-            this.$slots.forEach(item => {
-                slotFragment.appendChild(item);
-            });
-        }
 
-        while (newDom.hasChildNodes()) {
-            if (newDom.firstChild.tagName === 'SLOT' && slotFragment) {
-                fragment.appendChild(slotFragment);
-                newDom.removeChild(newDom.firstChild);
-            } else {
-                fragment.appendChild(newDom.firstChild);
-            }
-        }
+        const patches = diff(this.$vNode, $newVNode);
+        console.log(patches);
 
-        this.$el.appendChild(fragment);
+        updateDom(patches);
+        /*  const fragment = document.createDocumentFragment();
+         const slotFragment = document.createDocumentFragment();
+         this.$el.innerHTML = '';
+ 
+         // 当组件内有solt时候需要保留solt内容
+         if (this.$slots) {
+             this.$slots.forEach(item => {
+                 slotFragment.appendChild(item);
+             });
+         }
+ 
+         while (newDom.hasChildNodes()) {
+             if (newDom.firstChild.tagName === 'SLOT' && slotFragment) {
+                 fragment.appendChild(slotFragment);
+                 newDom.removeChild(newDom.firstChild);
+             } else {
+                 fragment.appendChild(newDom.firstChild);
+             }
+         }
+ 
+         this.$el.appendChild(fragment); */
     }
     // 更新数据
     setData(data) {
@@ -233,16 +260,16 @@ class VuiComponent {
 
         const code = createCode.call(this, this.config.ast);
         this.$render = createFunction(code);
-        // this.$el = this.render();
+        this.$vNode = this.renderVnode();
 
         // 将组件dom缓存起来
         componentCache[this.cid] = this;
     }
 
-    render() {
-        const $el = this.$render.call({
-            createFragment,
+    renderVnode() {
+        return this.$render.call({
             createElement,
+            createSlots,
             createText,
             createComponent,
             getFor,
@@ -251,12 +278,6 @@ class VuiComponent {
             $vui: this,
             ...this.data
         });
-
-        if (!this.$el) {
-            this.$el = $el;
-        }
-
-        return $el;
     }
 }
 
@@ -264,19 +285,9 @@ class Vui extends VuiComponent {
     constructor({ id, config }) {
         super({ config });
         this.$app = document.querySelector(id);
-        // this.init(config);
-        const $el = this.render();
-        this.$app.appendChild($el);
+        this.$el = this.$vNode.render();
+        this.$app.appendChild(this.$el);
     }
-
-    /* init(config) {
-        const $component = new VuiComponent({
-            config: config
-        });
-
-        this.$app = $component;
-        this.$el.appendChild(this.$app.$el);
-    } */
 }
 
 export default Vui; 

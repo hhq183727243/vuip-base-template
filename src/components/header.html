@@ -2,7 +2,7 @@
     <div>
         <slot></slot>
         <div>props : {props.title}</div>
-        <Footer :title="title"></Footer>
+        <Footer :title="title">是是是</Footer>
         <!-- <v-if test="isReal > 2">
             <div>你好，我是真的</div>
         </v-if>
@@ -39,7 +39,7 @@
         created() {
             console.log('header');
 
-            /* setTimeout(() => {
+           /*  setTimeout(() => {
                 this.setData({
                     title: '头部导航我变了'
                 });

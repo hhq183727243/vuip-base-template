@@ -10,16 +10,26 @@
             </div>
         </v-for>
         <div></div> -->
-
         <Header :title="1 + title">
             <div><a href="/list">列表{title}</a></div>
+            <div><a href="/list">列表{title}</a></div>
         </Header>
+
+        <v-if test="list.length === 5">
+            <div>=======我是分隔线========</div>
+        </v-if>
+
         <v-for data="list" item="item" index="i">
-            <!--  <v-if test="item.id > 100">
-                <div>你好，我是真的</div>
-            </v-if> -->
-            <Footer :title="item.id"></Footer>
-            <div>{item.id}流量{title}{i}</div>
+            <div>
+                <v-if test="list.length === 5">
+                    <div>
+                        <p>你好，我是真的</p>
+                        <p>你好，我是真的</p>
+                    </div>
+                </v-if>
+                <Footer :title="item.id">{item.name}</Footer>
+                <div>{item.name}流量{title}{i}</div>
+            </div>
         </v-for>
     </div>
 </template>
@@ -35,7 +45,7 @@
         },
         data() {
             return {
-                list: Array.apply(this, { length: 10 }).map((item, index) => { return { id: index } }),
+                list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '中国' } }),
                 title: '人民日报',
                 item: 123455
             }
@@ -43,9 +53,14 @@
         created() {
             setTimeout(() => {
                 this.setData({
-                    title: '人民日报=='
+                    list: Array.apply(this, { length: 4 }).map((item, index) => { return { id: index, name: '日本' } })
                 });
             }, 3000);
+            setTimeout(() => {
+                this.setData({
+                    list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '中国' } })
+                });
+            }, 4000);
             console.log('home');
         }
     }

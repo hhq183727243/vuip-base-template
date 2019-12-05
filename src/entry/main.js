@@ -1,11 +1,11 @@
 // 通过 CommonJS 规范导入 show 函数
 // const show = require('./show.js');
 //import show from '../show.js'
+import Vui from '@/lib/Vui.js';
 import home from '@/page/home.html';
 import list from '@/page/list.html';
 import noFind from '@/page/404.html';
-import Vui from '@/lib/Vui';
-import { VuiRouter } from '@/lib/VuiRouter';
+// import { VuiRouter } from '@/lib/VuiRouter';
 
 import '@/main.css'
 // 通过new DefinePlugin设置process.env.NODE_ENV 值，见webpack.config.plugins.js配置
