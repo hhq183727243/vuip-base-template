@@ -1,68 +1,32 @@
 <template>
     <div>
-        <!-- 
-        <v-for data="list">
-            <div>
-                <v-if test="title">
-                    <div>列表{title}</div>
-                    <div>你好，我是真的</div>
-                </v-if>
-            </div>
-        </v-for>
-        <div></div> -->
-        <Header :title="1 + title">
-            <div><a href="/list">列表{title}</a></div>
-            <div><a href="/list">列表{title}</a></div>
-        </Header>
+        <div><img width="100%" src="http://www.cnr.cn/rdzx/cxxhl/zxxx/20191108/W020191108673382281115.jpg" /></div>
 
-        <v-if test="list.length === 5">
-            <div>=======我是分隔线========</div>
-        </v-if>
         <v-for data="list" item="item" index="i">
-            <div :key="item.id">
-                <v-if test="list.length === 5">
-                    <div>你好，我是真的</div>
-                </v-if>
-                <Footer :title="item.id">{item.name}</Footer>
-                <v-for data="list" item="item" index="i">
-                    <div>{item.name}流量{title}{i}</div>
-                </v-for>
-            </div>
+            <MediaItem :item="item" :key="i"></MediaItem>
         </v-for>
-        <v-if test="list.length === 5">
-            <div>=======我是分隔线========</div>
-        </v-if>
+
+        <Nav :active="0"></Nav>
     </div>
 </template>
 <script>
-    import Header from '@/components/header.html';
-    import Footer from '@/components/footer.html';
+    import MediaItem from '@/components/MediaItem.html';
+    import Nav from '@/components/Nav.html';
 
     export default {
         name: 'home',
         component: {
-            Header,
-            Footer
+            MediaItem,
+            Nav
         },
         data() {
             return {
-                list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '中国' } }),
-                title: '人民日报',
-                item: 123455
+                list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '篱笆墙的影子', author: '邓紫棋' } }),
+                title: 1,
             }
         },
-        created() {
-            setTimeout(() => {
-                this.setData({
-                    list: Array.apply(this, { length: 4 }).map((item, index) => { return { id: index, name: '日本' } })
-                });
-            }, 3000);
-            setTimeout(() => {
-                this.setData({
-                    list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '中国' } })
-                });
-            }, 4000);
-            console.log('home');
+        mounted() {
+            
         }
     }
 

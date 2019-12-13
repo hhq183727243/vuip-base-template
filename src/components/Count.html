@@ -1,0 +1,31 @@
+<template>
+    <div class="count">
+        <button onclick="disCount">-</button>
+        <input type="number" :value="props.value" onchange="handleChange" />
+        <button onclick="addCount">+</button>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'count',
+        data() {
+            return {
+                num: 0
+            }
+        },
+        methods: {
+            disCount() {
+                const { change } = this.props;
+                change(1);
+            },
+            addCount() {
+                const { change } = this.props;
+                change(1);
+            },
+            handleChange(e) {
+                const { change, value } = this.props;
+                change(e.target.value - value);
+            }
+        }
+    }
+</script>

@@ -13,9 +13,14 @@
                 name: 'footer'
             }
         },
-        created() {
+        mounted() {
             // this.render();
             // console.log(this.props)
+            setTimeout(() => {
+                this.setData({
+                    name: 'footer我变了'
+                });
+            }, 2000);
         }
     }
 </script>

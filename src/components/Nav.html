@@ -1,0 +1,31 @@
+<template>
+    <div style="position: relative; z-index: 99;">
+        <div style="height: 50px;"></div>
+        <div class="nav">
+            <v-for data="list" item="item" index="i">
+                <a class="nav-item" :href="item.href">
+                    <img :src="props.active === i ? item.activeIcon : item.icon" />
+                    <div>{item.name}</div>
+                </a>
+            </v-for>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'nav',
+        data() {
+            return {
+                list: [
+                    { name: '首页', href: '/', icon: require('../assets/icons/index.png'), activeIcon: require('../assets/icons/index-active.png') },
+                    { name: '菜单', href: '/shop', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
+                    { name: '订单', href: '/order', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
+                    { name: '我的', href: '/mine', icon: require('../assets/icons/my.png'), activeIcon: require('../assets/icons/my-active.png') }
+                ]
+            }
+        },
+        mounted() {
+            console.log(this.props)
+        }
+    }
+</script>

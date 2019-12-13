@@ -2,12 +2,11 @@
 // const show = require('./show.js');
 //import show from '../show.js'
 import Vui from '@/lib/Vui.js';
-import home from '@/page/home.html';
-import list from '@/page/list.html';
-import noFind from '@/page/404.html';
+import { getRouter } from '@/router';
+
 // import { VuiRouter } from '@/lib/VuiRouter';
 
-import '@/main.css'
+import '@/main.less'
 // 通过new DefinePlugin设置process.env.NODE_ENV 值，见webpack.config.plugins.js配置
 
 /* //异步加载
@@ -21,15 +20,9 @@ import('../show.js').then(({show}) => {
 }); */
 const startTime = new Date().getTime();
 
-const router = {
-    '/list': list,
-    '/': home,
-    '/home': home,
-};
-
 const vui = new Vui({
     id: '#app',
-    config: router[location.pathname] || noFind
+    config: getRouter(location.pathname)
 });
 
 console.log(vui);
@@ -38,3 +31,7 @@ console.log(new Date().getTime() - startTime);
 // window.document.getElementById('app').appendChild(render(home));
 
 console.log(process.env.NODE_ENV);
+
+// 00011001100110011001100110011001100110011001100110011001
+// 00011001100110011001100110011001100110011001100110011001
+//0.00110011001100110011001100110011001100110011001100110011

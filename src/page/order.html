@@ -1,0 +1,80 @@
+<template>
+    <div>
+        <div class="tab">
+            <div :class="'tab-item ' + (tabCurrentIndex === 0 ? 'active' : '')" onclick="handleChangeTab(0)">全部</div>
+            <div :class="'tab-item ' + (tabCurrentIndex === 2 ? 'active' : '')" onclick="handleChangeTab(2)">未付款</div>
+            <div :class="'tab-item ' + (tabCurrentIndex === 1 ? 'active' : '')" onclick="handleChangeTab(1)">已完成</div>
+        </div>
+        <v-for data="list">
+            <v-if test="tabCurrentIndex === 0 || item.status === tabCurrentIndex">
+                <div class="order">
+                    <div class="order-head">
+                        <div class="order-head-text">{item.store}</div>
+                        <v-if test="item.status === 1">
+                            <div class="order-head-ext">已完成</div>
+                        </v-if>
+                        <v-if test="item.status === 2">
+                            <div class="order-head-ext">未付款</div>
+                        </v-if>
+                    </div>
+                    <div class="order-body">
+                        <div>{item.goods}</div>
+                        <!-- <Count :value="item.count" v-on:change="handleChangeCount(item)">
+                        </Count> -->
+                    </div>
+                    <div class="order-footer">
+                        <time>{item.time}</time>
+                        <a class="order-footer-btn" onclick="handleDelete(index)">删除</a>
+                    </div>
+                </div>
+            </v-if>
+        </v-for>
+        <div class="none-more">———— 已经见底啦 ————</div>
+        <Nav :active="1"></Nav>
+    </div>
+</template>
+<script>
+    import Nav from '@/components/Nav.html';
+    import Count from '@/components/Count.html';
+
+    export default {
+        name: 'list',
+        component: {
+            Nav,
+            Count
+        },
+        data() {
+            return {
+                tabCurrentIndex: 0,
+                list: Array.apply(this, { length: 10 }).map((item, index) => {
+                    return { store: '特房波特财富中心店', count: 2, goods: `香草拿铁等 共 ${index + 1} 件商品`, time: '2019-12-11 09:51', status: index % 2 + 1 };
+                })
+            }
+        },
+        mounted() {
+            console.log('list created');
+        },
+        methods: {
+            handleChangeTab(index) {
+                const status = [0, 2, 1]
+                this.setData({
+                    tabCurrentIndex: index,
+                });
+            },
+            handleDelete(index) {
+                this.data.list.splice(index, 1);
+
+                this.setData({
+                    list: this.data.list
+                });
+            },
+            handleChangeCount(item, num) {
+                item.count = item.count + num;
+
+                this.setData({
+                    list: this.data.list
+                });
+            }
+        }
+    }
+</script>

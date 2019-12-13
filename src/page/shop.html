@@ -1,0 +1,73 @@
+<template>
+    <div>
+        <div class="shop">
+            <div class="category">
+                <v-for data="categoryList">
+                    <div :class="'category-item ' + (currentCategory === item.id ? 'active' : '')"
+                        onclick="handleChangeTab(item)">
+                        {item.name}
+                    </div>
+                </v-for>
+            </div>
+            <div class="goods">
+                <div class="category-title">{currentCategoryName}</div>
+
+                <div class="goods-list" onscroll="handleScroll">
+                    <v-for data="list">
+                        <MediaItem :item="item" :key="index"></MediaItem>
+                    </v-for>
+                    <div class="none-more">———— 已经见底啦 ————</div>
+                </div>
+            </div>
+        </div>
+        <Nav :active="1"></Nav>
+    </div>
+</template>
+<script>
+    import Nav from '@/components/Nav.html';
+    import MediaItem from '@/components/MediaItem.html';
+
+    export default {
+        name: 'shop',
+        component: {
+            Nav,
+            MediaItem
+        },
+        data() {
+            return {
+                currentCategoryName: '',
+                currentCategory: '',
+                categoryList: [
+                    { id: 1, name: '小鹿茶' },
+                    { id: 2, name: '大师咖啡' },
+                    { id: 3, name: '经典甜品' },
+                    { id: 4, name: '波波奶茶' }
+                ],
+                list: Array.apply(this, { length: 20 }).map((item, index) => {
+                    return { name: '香草咖啡', count: 2, time: '2019-12-11 09:51', status: index % 3 };
+                })
+            }
+        },
+        mounted() {
+            this.handleChangeTab(this.data.categoryList[0]);
+        },
+        methods: {
+            handleChangeTab(item) {
+                this.setData({
+                    currentCategory: item.id,
+                    currentCategoryName: item.name
+                });
+            },
+            handleScroll(e) {
+                console.log(e.target.scrollTop);
+            },
+            handleChangeCount(item, num) {
+                item.count = item.count + num;
+
+                this.setData({
+                    list: this.data.list
+                });
+            }
+        }
+    }
+</script>

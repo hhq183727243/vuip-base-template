@@ -21,7 +21,7 @@ module.exports = function (env = {}, argv) {
 
         entry: {
             main: path.resolve(__dirname, './src/entry/main.js'),
-            app: path.resolve(__dirname, './src/entry/app.js'),
+            // app: path.resolve(__dirname, './src/entry/app.js'),
         },
         mode: 'development',
         output: {
@@ -36,7 +36,7 @@ module.exports = function (env = {}, argv) {
             rules: [
                 {
                     // 用正则去匹配要用该 loader 转换的 CSS 文件
-                    test: /\.css$/,
+                    test: /\.less$/,
                     use: [
                         //'style-loader',
                         {
@@ -47,6 +47,8 @@ module.exports = function (env = {}, argv) {
                             }
                         }, {
                             loader: 'css-loader',
+                        }, {
+                            loader: 'less-loader',
                         }
                     ],
                 }, {
@@ -61,6 +63,11 @@ module.exports = function (env = {}, argv) {
                     options: {
                         name: '啊啊啊'
                     }
+                }, {
+                    test: /\.(png|jpg)$/,
+                    use: [
+                        { loader: 'url-loader?limit=8192' }
+                    ]
                 }
             ]
         },
