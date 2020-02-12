@@ -19,19 +19,59 @@ import('../show.js').then(({show}) => {
     }
 }); */
 const startTime = new Date().getTime();
+const axios = window['axios'];
+
+Vui.prototype.request = {
+    'post': function (url, data, option) {
+        return axios.post(url, data).then(res => {
+            return res.data;
+        })
+    },
+    'get': function (url, option) {
+        return axios.get(url).then(res => {
+            return res.data;
+        });
+    }
+};
 
 const vui = new Vui({
     id: '#app',
     config: getRouter(location.pathname)
 });
 
+function onUpdateSize() {
+    const _screenX = document.documentElement.offsetWidth;
+    const fontSize = 20 / 375 * _screenX + 'px';
+
+    document.documentElement.style.fontSize = fontSize;
+    document.documentElement.setAttribute('data-scale', '');
+}
+
+window.onresize = () => {
+    onUpdateSize();
+};
+
+onUpdateSize();
+
 console.log(vui);
 console.log(new Date().getTime() - startTime);
-
-// window.document.getElementById('app').appendChild(render(home));
-
 console.log(process.env.NODE_ENV);
 
-// 00011001100110011001100110011001100110011001100110011001
-// 00011001100110011001100110011001100110011001100110011001
-//0.00110011001100110011001100110011001100110011001100110011
+// function Enums(option) {
+//     this.list = option;
+// }
+
+// Enums.prototype.get = function (val) {
+//     let temp = null;
+
+//     this.list.forEach(item => {
+//         // 如果值都不相同的话就这样搞啊
+//         const values = Object.values(item);
+
+//         if (values.includes(val)) {
+//             temp = item;
+//         }
+//     });
+
+//     return temp;
+// }

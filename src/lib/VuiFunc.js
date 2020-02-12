@@ -50,7 +50,8 @@ function createComponent(componentName, attr = {}, slotNodes, __option__) {
 
 function getFor(data, callback, __option__) {
     const vNodes = [];
-
+    vNodes.push(createElement.call(this, 'comment', null, 'v-for'));
+    
     (data || []).forEach((item, i) => {
         vNodes.push(callback(item, i));
     });

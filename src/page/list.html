@@ -1,12 +1,49 @@
 <template>
-    <div>列表</div>
+    <div class="card" style="display:flex;background-color: #fff;flex-wrap: wrap;justify-content: space-around;">
+        <v-for data="allCard">
+            <v-if test="item.value > 0">
+                <div style="width: 12%;box-sizing: border-box; border: 1px solid #ccc; margin-top: 10px;" onclick="handleOutCard(item)">
+                    <div style="height: 20px;">{item.name}</div>
+                    <div style="margin-top: 50px"><b>{item.value}</b></div>
+                </div>
+            </v-if>
+        </v-for>
+        <div style="width: 12%;box-sizing: border-box; border: 1px solid #ccc;margin-top: 10px;">
+
+        </div>
+    </div>
 </template>
 <script>
     export default {
         name: 'list',
         data() {
             return {
-                list: []
+                allCard: [
+                    { name: '大鬼', value: 1 },
+                    { name: '小鬼', value: 1 },
+                    { name: '2', value: 4 },
+                    { name: 'A', value: 4 },
+                    { name: 'K', value: 4 },
+                    { name: 'Q', value: 4 },
+                    { name: 'J', value: 4 },
+                    { name: '10', value: 4 },
+                    { name: '9', value: 4 },
+                    { name: '8', value: 4 },
+                    { name: '7', value: 4 },
+                    { name: '6', value: 4 },
+                    { name: '5', value: 4 },
+                    { name: '4', value: 4 },
+                    { name: '3', value: 4 }
+                ]
+            }
+        },
+        methods: {
+            handleOutCard(item) {
+                item.value = item.value - 1;
+
+                this.setData({
+                    allCard: this.data.allCard
+                });
             }
         },
         created() {

@@ -1,0 +1,194 @@
+<template>
+    <form class="order order-db">
+        <div class="header">
+            <div>可提现金额</div>
+            <div class="flex balance">
+                <div class="item"><input type="number" name="balance" :value="statistical.balance" /> 元</div>
+                <div class="tx">提现</div>
+            </div>
+        </div>
+        <div class="flex income">
+            <div class="item">收入明细</div>
+            <Divider height="25" />
+            <div class="item">退税报备</div>
+        </div>
+
+        <div class="flex statistical">
+            <div class="item">
+                <div class="g9 f12">上月预估收入（元）</div>
+                <div class="f16" style="margin-top: 0.4rem"><input type="number" name="preMonthIncome" :value="statistical.preMonthIncome" /></div>
+            </div>
+            <Divider height="44" />
+            <div class="item">
+                <div class="g9 f12">本月预估收入（元）</div>
+                <div class="f16" style="margin-top: 0.4rem"><input type="number" name="currMonthIncome" :value="statistical.currMonthIncome" /></div>
+            </div>
+        </div>
+        <div class="explain">每月20号结算上月预估收入，建议21号再进行提现</div>
+
+        <div class="item-list">
+            <div class="head-title">GPS报表</div>
+            <div class="body">
+                <div class="title flex">
+                    <div class="icon"></div>
+                    <div class="item">全部订单明细</div>
+                    <div style="margin-right: 0.5rem;"><img width="16" :src="iconRight" /></div>
+                </div>
+                <div class="inner">
+                    <div class="btn-group">
+                        <div :class="'btn-item ' + (range === 1 ? 'active' : '')" onclick="handleChangeRange(1)">今日</div>
+                        <div :class="'btn-item ' + (range === 2 ? 'active' : '')" onclick="handleChangeRange(2)">昨日</div>
+                        <div :class="'btn-item ' + (range === 3 ? 'active' : '')" onclick="handleChangeRange(3)">近7日</div>
+                        <div :class="'btn-item ' + (range === 4 ? 'active' : '')" onclick="handleChangeRange(4)">近30日</div>
+                    </div>
+                    <div :class="'total ' + (range === 1 ? 'show' : '')">
+                        <div class="item">
+                            <div class="g9 f12">点击数</div>
+                            <div class="count"><input type="number" name="todayClickNum" :value="statistical.todayClickNum" /></div>
+                        </div>
+                        <div class="item">
+                            <div class="g9 f12">付款订单(笔)</div>
+                            <div class="count"><input type="number" name="todayOrderNum" :value="statistical.todayOrderNum" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">付款预估收入(元)</div>
+                            <div class="count"><input type="number" name="todayIncome" :value="statistical.todayIncome" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">结算预估收入(元)</div>
+                            <div class="count"><input type="number" name="todaySettlement" :value="statistical.todaySettlement" /></div>
+                        </div>
+                    </div>
+                    <div :class="'total ' + (range === 2 ? 'show' : '')">
+                        <div class="item">
+                            <div class="g9 f12">点击数</div>
+                            <div class="count"><input type="number" name="yesterdayClickNum" :value="statistical.yesterdayClickNum" /></div>
+                        </div>
+                        <div class="item">
+                            <div class="g9 f12">付款订单(笔)</div>
+                            <div class="count"><input type="number" name="yesterdayOrderNum" :value="statistical.yesterdayOrderNum" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">付款预估收入(元)</div>
+                            <div class="count"><input type="number" name="yesterdayIncome" :value="statistical.yesterdayIncome" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">结算预估收入(元)</div>
+                            <div class="count"><input type="number" name="yesterdaySettlement" :value="statistical.yesterdaySettlement" /></div>
+                        </div>
+                    </div>
+                    <div :class="'total ' + (range === 3 ? 'show' : '')">
+                        <div class="item">
+                            <div class="g9 f12">点击数</div>
+                            <div class="count"><input type="number" name="recent7daysClickNum" :value="statistical.recent7daysClickNum" /></div>
+                        </div>
+                        <div class="item">
+                            <div class="g9 f12">付款订单(笔)</div>
+                            <div class="count"><input type="number" name="recent7daysOrderNum" :value="statistical.recent7daysOrderNum" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">付款预估收入(元)</div>
+                            <div class="count"><input type="number" name="recent7daysIncome" :value="statistical.recent7daysIncome" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">结算预估收入(元)</div>
+                            <div class="count"><input type="number" name="recent7daysSettlement" :value="statistical.recent7daysSettlement" /></div>
+                        </div>
+                    </div>
+                    <div :class="'total ' + (range === 4 ? 'show' : '')">
+                        <div class="item">
+                            <div class="g9 f12">点击数</div>
+                            <div class="count"><input type="number" name="recent30daysClickNum" :value="statistical.recent30daysClickNum" /></div>
+                        </div>
+                        <div class="item">
+                            <div class="g9 f12">付款订单(笔)</div>
+                            <div class="count"><input type="number" name="recent30daysOrderNum" :value="statistical.recent30daysOrderNum" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">付款预估收入(元)</div>
+                            <div class="count"><input type="number" name="recent30daysIncome" :value="statistical.recent30daysIncome" /></div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">结算预估收入(元)</div>
+                            <div class="count"><input type="number" name="recent30daysSettlement" :value="statistical.recent30daysSettlement" /></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feeter">
+                    <span>查看更多数据</span>
+                    <img width="16" :src="iconRightTheme" />
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <input type="hidden" name="id" :value="statistical.id" />
+            <button type="button" onclick="handleUpdate">更新保存</button>
+        </div>
+
+        <div class="item-list">
+            <div class="head-title">CPA报表</div>
+            <div class="body">
+                <div class="title flex">
+                    <div class="icon"></div>
+                    <div class="item">分月结算明细</div>
+                    <div style="margin-right: 0.5rem;"><img width="16" :src="iconRight" /></div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 3.5rem;"></div>
+        <Nav :active="2"></Nav>
+    </form>
+</template>
+<script>
+    import Nav from '@/components/Nav.html';
+    import Divider from '@/components/Divider.html';
+    import $ from '@/assets/jquery-3.4.1.min';
+    import './order.less';
+
+    export default {
+        name: 'list',
+        component: {
+            Nav,
+            Divider
+        },
+        data() {
+            return {
+                range: 1,
+                iconRight: require('../assets/icons/icon-right-black.png'),
+                iconRightTheme: require('../assets/icons/icon-right-theme.png'),
+                tabCurrentIndex: 0,
+                statistical: {
+
+                }
+            }
+        },
+        methods: {
+            handleChangeRange(range) {
+                this.setData({
+                    range
+                })
+            },
+            handleUpdate(e) {
+                const serializeArray = $(e.target).parents('form:first').serializeArray();
+                const data = {};
+                serializeArray.forEach(item => {
+                    data[item.name] = item.value;
+                });
+
+                this.request.post('/api/update_statistical', data).then(res => {
+                    alert('更新成功');
+                    location.reload();
+                });
+            }
+        },
+        mounted() {
+            this.request.get('/api/get_statistical')
+                .then((res) => {
+                    this.setData({
+                        statistical: res.data.entity
+                    });
+                });
+        },
+    }
+</script>

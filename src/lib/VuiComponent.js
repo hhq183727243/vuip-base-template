@@ -185,7 +185,7 @@ export default class VuiComponent {
         }
     }
     // 更新数据
-    setData(data) {
+    setData(data, callback) {
         this.renderEnd = false;
         this.data = {
             ...this.data,
@@ -199,6 +199,7 @@ export default class VuiComponent {
             if (!this.renderEnd) {
                 this._reRender();
                 this.renderEnd = true;
+                callback && callback();
             }
         });
     }

@@ -136,7 +136,7 @@ export default class Element {
                 if (this.tagName === 'input' && key === 'value') {
                     this.elm.value = this.attrs[key];
                     return;
-                } else if (this.tagName === 'img' && key === 'src' && typeof this.attrs[key] === 'object') {
+                } else if (this.tagName === 'img' && key === 'src' && this.attrs[key] && typeof this.attrs[key] === 'object') {
                     val = this.attrs[key].default;
                 } else {
                     val = this.attrs[key];

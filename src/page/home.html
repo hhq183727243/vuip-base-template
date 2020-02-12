@@ -1,17 +1,148 @@
 <template>
-    <div>
-        <div><img width="100%" src="http://www.cnr.cn/rdzx/cxxhl/zxxx/20191108/W020191108673382281115.jpg" /></div>
+    <div class="home">
+        <div class="header">
+            <div class="search">
+                <div class="search-inner">
+                    <input type="text" placeholder="大额券" />
+                </div>
+            </div>
+            <div class="category">
+                <div class="item active">发现</div>
+                <div class="item">好券直播</div>
+                <div class="item">食品</div>
+                <div class="item">美妆</div>
+                <div class="item">母婴</div>
+            </div>
+        </div>
+        <div style="height: 4.5rem;"></div>
+        <div class="main">
+            <div class="banner">
+                <div class="swiper-container" id="banner">
+                    <div class="swiper-wrapper">
+                        <v-for data="bannerList">
+                            <div class="swiper-slide">
+                                <img width="100%" :src="item.image" />
+                            </div>
+                        </v-for>
+                    </div>
+                    <div class="swiper-pagination" id="pagination1"></div>
+                    <!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
+                </div>
 
-        <v-for data="list" item="item" index="i">
-            <MediaItem :item="item" :key="i"></MediaItem>
-        </v-for>
+            </div>
 
-        <Nav :active="0"></Nav>
+            <div class="fast-track">
+                <v-for data="fastTrack">
+                    <a class="item">
+                        <img :src="item.icon" />
+                        <div class="title">{item.title}</div>
+                    </a>
+                </v-for>
+            </div>
+
+            <v-if test="hotCommodity.length > 0">
+                <div class="hot-commodity">
+                    <div class="head flex">
+                        <div class="item">
+                            <div>
+                                <b class="title f15">今日必推</b>
+                                <div class="qs"></div>
+                            </div>
+                            <div class="flex" style="margin-top: 2px;">
+                                <span class="g7 f12">每日0点开抢，距离结束</span>
+                                <span class="timedown">
+                                    <span>{h}</span>:
+                                    <span>{m}</span>:
+                                    <span>{s}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="g9 f12 more">更多</div>
+                    </div>
+                    <div class="body">
+                        <v-for data="hotCommodity">
+                            <div class="media">
+                                <div class="cover" :style="'background-image:url(' + item.image + ')'"></div>
+                                <div class="info">
+                                    <div class="ell title">{item.title}</div>
+                                    <div class="sub-title f12">{item.subTitle}</div>
+                                    <div class="flex" style="margin-top: 1.6rem;">
+                                        <div class="percent">
+                                            <div class="inner"></div>
+                                        </div>
+                                        <div class="item">
+                                            <span class="g9 f12">剩余{item.content}件</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex" style="margin-top: 0.5rem;">
+                                        <div class="item">
+                                            <span class="g7 f12">抢购价</span>
+                                            ￥<b>{item.price}</b>
+                                        </div>
+                                        <div class="btn">赚￥{item.earn}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-for>
+                    </div>
+                </div>
+            </v-if>
+            <div class="ad">
+                <!-- <div class="ad-banner">
+                    <img width="100%" height="100%" :src="adBanner.image" />
+                </div> -->
+                <div class="ad-list">
+                    <v-for data="recommendList">
+                        <div class="item" :style="'background-image:url(' + item.image + ')'">
+                            <!-- <div class="title">{item.title}</div>
+                            <div class="sub-title">{item.subTitle}</div>
+                            <div class="cover"></div> -->
+                        </div>
+                    </v-for>
+                </div>
+            </div>
+
+            <v-for data="columnList">
+                <div class="recommend-item">
+                    <div class="head" :style="'background-image:url(' + item.image + ')'">
+                        <!-- <div class="title flex">
+                            <img class="column-icon" :src="item.icon" alt="" /> {item.title}
+                        </div>
+                        <div class="sub-title">{item.subTitle}</div> -->
+                        <div class="more">更多</div>
+                    </div>
+                    <div class="body">
+                        <div class="swiper-container column-goods">
+                            <div class="swiper-wrapper">
+                                <v-for data="item.children">
+                                    <a class="goods-item swiper-slide">
+                                        <div class="cover" :style="'background-image:url(' + item.image + ')'"></div>
+                                        <div class="info">
+                                            <span class="coupons"><span class="text">券</span>{item.coupon}元</span>
+                                            <div class="price">
+                                                <span class="g9">券后</span>
+                                                <span><span class="f10">￥</span>{item.couponPrice}</span>
+                                            </div>
+                                        </div>
+                                        <div class="share">
+                                            <span class="f12">赚￥</span>{item.earn}
+                                        </div>
+                                    </a>
+                                </v-for>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </v-for>
+        </div>
+        <!-- <Nav :active="0"></Nav> -->
     </div>
+
 </template>
 <script>
     import MediaItem from '@/components/MediaItem.html';
     import Nav from '@/components/Nav.html';
+    import './home.less';
 
     export default {
         name: 'home',
@@ -21,12 +152,79 @@
         },
         data() {
             return {
-                list: Array.apply(this, { length: 5 }).map((item, index) => { return { id: index, name: '篱笆墙的影子', author: '邓紫棋' } }),
-                title: 1,
+                bannerList: [], // banner
+                fastTrack: [], // 快速入口
+                adBanner: {}, // 广告banner
+                recommendList: [], // 三个广推荐
+                columnList: [], // 专栏列表
+                hotCommodity: [], // J今日必推
+                h: '00',
+                m: '00',
+                s: '00'
+            }
+        },
+        methods: {
+            initData() {
+                Promise.all([
+                    this.request.get('/api/get_banner_list'),
+                    this.request.get('/api/get_entrance_list'),
+                    this.request.get('/api/get_ad_banner'),
+                    this.request.get('/api/get_recommend_list'),
+                    this.request.get('/api/get_column_list'),
+                    this.request.get('/api/get_commodity_list?type=7'), // 今日推荐
+                ]).then(resArr => {
+                    this.setData({
+                        bannerList: resArr[0].data.list,
+                        fastTrack: resArr[1].data.list,
+                        adBanner: resArr[2].data.entity,
+                        recommendList: resArr[3].data.list,
+                        columnList: resArr[4].data.list,
+                        hotCommodity: resArr[5].data.list,
+                    }, () => {
+                        new Swiper('#banner', {
+                            autoplay: false,//可选选项，自动滑动
+                            pagination: '#pagination1',
+                        });
+                        new Swiper('.column-goods', {
+                            autoplay: false,//可选选项，自动滑动
+                            slidesPerView: 'auto',
+                            freeMode: true,
+                            watchOverflow: true
+                        });
+
+                        if (resArr[5].data.list.length > 0) {
+                            this.onTimedown();
+                        }
+                    });
+                });
+            },
+
+            onTimedown() {
+                // 倒计时计算
+                const now = new Date();
+                const Y = now.getFullYear();
+                const M = now.getMonth() + 1;
+                const D = now.getDate();
+                const end = new Date(`${Y}/${M}/${D} 23:59:59`);
+                const times = Math.floor((end.getTime() - now.getTime()) / 1000);
+
+                const h = Math.floor(times / 3600); // 剩余多少小时
+                const m = Math.floor((times % 3600) / 60) // 剩余多少分钟
+                const s = (times % 3600) % 60 // 剩余多少秒
+
+                this.setData({
+                    h: h < 10 ? '0' + h : h,
+                    m: m < 10 ? '0' + m : m,
+                    s: s < 10 ? '0' + s : s
+                });
+
+                setTimeout(() => {
+                    this.onTimedown();
+                }, 1000)
             }
         },
         mounted() {
-            
+            this.initData();
         }
     }
 

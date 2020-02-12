@@ -20,7 +20,7 @@ module.exports = function(isProduction){
             }
         }),
         new HtmlWebpackPlugin({
-            title: 'Custom template',
+            title: '自己的联盟',
             template: path.join(__dirname, './src/template.html')
         }),
         new BasicPlugin({

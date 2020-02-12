@@ -94,7 +94,7 @@ function walk(oldNode, newNode, patches, point) {
 
                 diffChildren(oldNode.child.$slots || [], newNode.child.$slots || [], patches);
             } else {
-                if (isDef(oldNode.attrs) && isDef(oldNode.attrs)) {
+                if (isDef(oldNode.attrs) && isDef(newNode.attrs)) {
                     // 属性对比
                     const oldAttrs = oldNode.attrs;
                     const newAttrs = newNode.attrs;

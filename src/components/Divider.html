@@ -1,0 +1,17 @@
+<template>
+    <div :style="'width: 1px;height: ' + (props.height || 0) + 'px; background: #eee;'"></div>
+</template>
+<script>
+    import Footer from '@/components/footer.html';
+
+    export default {
+        name: 'divider',
+        data() {
+        },
+        component: {
+            Footer
+        },
+        mounted() {
+        }
+    }
+</script>

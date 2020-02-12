@@ -1,80 +1,175 @@
 <template>
-    <div>
-        <div class="tab">
-            <div :class="'tab-item ' + (tabCurrentIndex === 0 ? 'active' : '')" onclick="handleChangeTab(0)">全部</div>
-            <div :class="'tab-item ' + (tabCurrentIndex === 2 ? 'active' : '')" onclick="handleChangeTab(2)">未付款</div>
-            <div :class="'tab-item ' + (tabCurrentIndex === 1 ? 'active' : '')" onclick="handleChangeTab(1)">已完成</div>
+    <div class="order">
+        <div class="top">
+            <b class="f16">收益报表</b>
+            <div class="qs"></div>
         </div>
-        <v-for data="list">
-            <v-if test="tabCurrentIndex === 0 || item.status === tabCurrentIndex">
-                <div class="order">
-                    <div class="order-head">
-                        <div class="order-head-text">{item.store}</div>
-                        <v-if test="item.status === 1">
-                            <div class="order-head-ext">已完成</div>
-                        </v-if>
-                        <v-if test="item.status === 2">
-                            <div class="order-head-ext">未付款</div>
-                        </v-if>
+        <div style="height: 3.25rem;"></div>
+        <div class="header">
+            <div>可提现金额</div>
+            <div class="flex balance">
+                <div class="item"><b class="f20">{statistical.balance}</b> 元</div>
+                <div class="tx">提现</div>
+            </div>
+        </div>
+        <div class="flex income">
+            <div class="item">
+                <div class="icon icon1">收入明细</div>
+            </div>
+            <Divider height="25" />
+            <div class="item">
+                <div class="icon icon2">退税报备</div>
+            </div>
+        </div>
+
+        <div class="flex statistical">
+            <div class="item">
+                <div class="g9 f12">上月预估收入（元）</div>
+                <div class="f16" style="margin-top: 0.4rem">{statistical.preMonthIncome}</div>
+            </div>
+            <Divider height="44" />
+            <div class="item">
+                <div class="g9 f12">本月预估收入（元）</div>
+                <div class="f16" style="margin-top: 0.4rem">{statistical.currMonthIncome}</div>
+            </div>
+        </div>
+        <div class="explain">每月20号结算上月预估收入，建议21号再进行提现<div class="qs"></div>
+        </div>
+
+        <div class="item-list">
+            <div class="head-title">CPS报表</div>
+            <div class="body">
+                <div class="title flex">
+                    <div class="icon"></div>
+                    <div class="item">全部订单明细</div>
+                    <div style="margin-right: 0.5rem;"><img width="16" :src="iconRight" /></div>
+                </div>
+                <div class="inner">
+                    <div class="btn-group">
+                        <div :class="'btn-item ' + (range === 1 ? 'active' : '')" onclick="handleChangeRange(1)">今日</div>
+                        <div :class="'btn-item ' + (range === 2 ? 'active' : '')" onclick="handleChangeRange(2)">昨日</div>
+                        <div :class="'btn-item ' + (range === 3 ? 'active' : '')" onclick="handleChangeRange(3)">近7日</div>
+                        <div :class="'btn-item ' + (range === 4 ? 'active' : '')" onclick="handleChangeRange(4)">近30日</div>
                     </div>
-                    <div class="order-body">
-                        <div>{item.goods}</div>
-                        <!-- <Count :value="item.count" v-on:change="handleChangeCount(item)">
-                        </Count> -->
-                    </div>
-                    <div class="order-footer">
-                        <time>{item.time}</time>
-                        <a class="order-footer-btn" onclick="handleDelete(index)">删除</a>
+                    <div class="total">
+                        <div class="item">
+                            <div class="g9 f12">点击数</div>
+                            <div class="count">{sData.clickNum}</div>
+                        </div>
+                        <div class="item">
+                            <div class="g9 f12">付款订单(笔)<div class="qs"></div>
+                            </div>
+                            <div class="count">{sData.orderNum}</div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">付款预估收入(元)<div class="qs"></div>
+                            </div>
+                            <div class="count">{sData.income}</div>
+                        </div>
+                        <div class="item" style="margin-top: 1.3rem;">
+                            <div class="g9 f12">结算预估收入(元)
+                            </div>
+                            <div class="count">{sData.settlement}</div>
+                        </div>
                     </div>
                 </div>
-            </v-if>
-        </v-for>
-        <div class="none-more">———— 已经见底啦 ————</div>
-        <Nav :active="1"></Nav>
+                <div class="feeter">
+                    <span>查看更多数据</span>
+                    <img width="16" :src="iconRightTheme" />
+                </div>
+            </div>
+        </div>
+
+        <div class="item-list">
+            <div class="head-title">CPA报表</div>
+            <div class="body">
+                <div class="title flex">
+                    <div class="icon icon2"></div>
+                    <div class="item">分月结算明细</div>
+                    <div style="margin-right: 0.5rem;"><img width="16" :src="iconRight" /></div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 3rem;"></div>
+        <!-- <Nav :active="2"></Nav> -->
     </div>
 </template>
 <script>
     import Nav from '@/components/Nav.html';
-    import Count from '@/components/Count.html';
+    import Divider from '@/components/Divider.html';
+    import './order.less';
 
     export default {
         name: 'list',
         component: {
             Nav,
-            Count
+            Divider
         },
         data() {
             return {
+                range: 1,
+                iconRight: require('../assets/icons/icon-right-black.png'),
+                iconRightTheme: require('../assets/icons/icon-right-theme.png'),
                 tabCurrentIndex: 0,
-                list: Array.apply(this, { length: 10 }).map((item, index) => {
-                    return { store: '特房波特财富中心店', count: 2, goods: `香草拿铁等 共 ${index + 1} 件商品`, time: '2019-12-11 09:51', status: index % 2 + 1 };
-                })
+                sData: {},
+                statistical: {}
+            }
+        },
+        methods: {
+            handleChangeRange(range) {
+                if (range === 1) {
+                    this.setData({
+                        range,
+                        sData: {
+                            clickNum: this.data.statistical.todayClickNum,
+                            orderNum: this.data.statistical.todayOrderNum,
+                            income: this.data.statistical.todayIncome,
+                            settlement: this.data.statistical.todaySettlement,
+                        }
+                    });
+                } else if (range === 2) {
+                    this.setData({
+                        range,
+                        sData: {
+                            clickNum: this.data.statistical.yesterdayClickNum,
+                            orderNum: this.data.statistical.yesterdayOrderNum,
+                            income: this.data.statistical.yesterdayIncome,
+                            settlement: this.data.statistical.yesterdaySettlement,
+                        }
+                    });
+                } else if (range === 3) {
+                    this.setData({
+                        range,
+                        sData: {
+                            clickNum: this.data.statistical.recent7daysClickNum,
+                            orderNum: this.data.statistical.recent7daysOrderNum,
+                            income: this.data.statistical.recent7daysIncome,
+                            settlement: this.data.statistical.recent7daysSettlement,
+                        }
+                    });
+                } else if (range === 4) {
+                    this.setData({
+                        range,
+                        sData: {
+                            clickNum: this.data.statistical.recent30daysClickNum,
+                            orderNum: this.data.statistical.recent30daysOrderNum,
+                            income: this.data.statistical.recent30daysIncome,
+                            settlement: this.data.statistical.recent30daysSettlement,
+                        }
+                    });
+                }
+
             }
         },
         mounted() {
-            console.log('list created');
+            this.request.get('/api/get_statistical')
+                .then((res) => {
+                    this.setData({
+                        statistical: res.data.entity
+                    }, () => {
+                        this.handleChangeRange(1);
+                    });
+                });
         },
-        methods: {
-            handleChangeTab(index) {
-                const status = [0, 2, 1]
-                this.setData({
-                    tabCurrentIndex: index,
-                });
-            },
-            handleDelete(index) {
-                this.data.list.splice(index, 1);
-
-                this.setData({
-                    list: this.data.list
-                });
-            },
-            handleChangeCount(item, num) {
-                item.count = item.count + num;
-
-                this.setData({
-                    list: this.data.list
-                });
-            }
-        }
     }
 </script>

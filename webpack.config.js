@@ -28,6 +28,7 @@ module.exports = function (env = {}, argv) {
             // 把所有依赖的模块合并输出到一个 bundle.js 文件
             filename: '[name].js?id=[hash:8]',
             // 输出文件都放到 dist 目录下
+            //path: path.resolve(__dirname, './dist'),
             path: path.resolve(__dirname, './dist'),
             // publicPath: 'http://cnd.com/',
             chunkFilename: "[id].chunk.js" // 非入口文件命名规则
@@ -42,10 +43,12 @@ module.exports = function (env = {}, argv) {
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
-                                publicPath: 'http://css.cdn.com/', // 无效
+                                publicPath: '../', //设置打包后css中图片的路径,可以用来设置cdn路径
                                 hmr: true
                             }
-                        }, {
+                        }, /* {
+                            loader: 'style-loader',
+                        },  */{
                             loader: 'css-loader',
                         }, {
                             loader: 'less-loader',
@@ -60,14 +63,32 @@ module.exports = function (env = {}, argv) {
                         path.resolve(__dirname, "src/page"),
                         path.resolve(__dirname, "src/components"),
                     ],
+                    // loader配置
                     options: {
-                        name: '啊啊啊'
+                        name: ''
                     }
                 }, {
                     test: /\.(png|jpg)$/,
                     use: [
-                        { loader: 'url-loader?limit=8192' }
+                        {
+                            loader: 'url-loader', // 处理小图片编译成base64
+                            // loader: 'file-loader',
+                            options: {
+                                esModule: false, // 这里设置为false
+                                name: '/images/[name].[ext]',
+                                limit: 10240
+                            }
+                        }, /* {
+                            loader: 'file-loader',
+                            options: {
+                                outputPath: path.resolve(__dirname, './dist/images')
+                            }
+                        } */
                     ]
+                }, {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: "babel-loader"
                 }
             ]
         },
@@ -76,11 +97,19 @@ module.exports = function (env = {}, argv) {
         },
         plugins: plugins(isProduction),
         devServer: {
-            contentBase: path.join(__dirname, "public"),//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
+            contentBase: path.join(__dirname, "dist"),//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
             historyApiFallback: true, //不跳转
             inline: true, //实时刷新,
             port: 8090,
-            host: "0.0.0.0" // 默认是 localhost。如果你希望服务器外部可访问，指定如下：host: "0.0.0.0"
+            host: "0.0.0.0", // 默认是 localhost。如果你希望服务器外部可访问，指定如下：host: "0.0.0.0"
+            proxy: {
+                '/api': {
+                    target: 'http://localhost:3000',
+                    pathRewrite: { '^/api': '/api' },
+                    changeOrigin: true,     // target是域名的话，需要这个参数，
+                    secure: false,          // 设置支持https协议的代理
+                }
+            }
         },
         resolve: {
             alias: {
