@@ -64,7 +64,7 @@ function createCode(option) {
         }
     } else if (type === 2) {
         // 文本节点
-        return 'createElement(undefined, null, ' + textParse(content.replace(/\r\n/g, '')) + ')';
+        return 'createElement(undefined, null, ' + textParse(content.replace(/\r\n|\r|\n/g, '')) + ')';
     } else if (type === 3) {
         // 组件
         return 'createComponent("' + tagName + '", ' + _attrStr + ',[' + childCode.join(',') + '], __option__)';
