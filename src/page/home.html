@@ -14,7 +14,7 @@
                 <div class="item">母婴</div>
             </div>
         </div>
-        <div style="height: 4.5rem;"></div>
+        <div style="height: 4.6rem;"></div>
         <div class="main">
             <div class="banner">
                 <div class="swiper-container" id="banner">
@@ -135,7 +135,8 @@
                 </div>
             </v-for>
         </div>
-        <!-- <Nav :active="0"></Nav> -->
+
+        <Nav :active="0"></Nav>
     </div>
 
 </template>
@@ -218,13 +219,16 @@
                     s: s < 10 ? '0' + s : s
                 });
 
-                setTimeout(() => {
+                this.timeout = setTimeout(() => {
                     this.onTimedown();
                 }, 1000)
             }
         },
         mounted() {
             this.initData();
+        },
+        unmounted() {
+            clearTimeout(this.timeout);
         }
     }
 

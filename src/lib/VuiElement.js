@@ -86,7 +86,7 @@ export default class Element {
             this.context.$el = el;
         }
 
-        this.elm = el;
+        this.elm = el; // 虚拟节点对应的DOM节点
 
         this.setAttrs();
 

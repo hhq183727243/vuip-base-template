@@ -3,9 +3,9 @@
         <div style="height: 50px;"></div>
         <div class="nav">
             <v-for data="list" item="item" index="i">
-                <a class="nav-item" :href="item.href">
+                <a :class="'nav-item ' + (props.active === i ? 'active' : '')" :href="item.href">
                     <img :src="props.active === i ? item.activeIcon : item.icon" />
-                    <div>{item.name}</div>
+                    <div class="text">{item.name}</div>
                 </a>
             </v-for>
         </div>
@@ -17,15 +17,19 @@
         data() {
             return {
                 list: [
-                    { name: '首页', href: '/', icon: require('../assets/icons/index.png'), activeIcon: require('../assets/icons/index-active.png') },
-                    { name: '菜单', href: '/shop', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
-                    { name: '订单', href: '/order', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
-                    { name: '我的', href: '/mine', icon: require('../assets/icons/my.png'), activeIcon: require('../assets/icons/my-active.png') }
+                    { name: '发现', href: '/', icon: require('../assets/icons/index.png'), activeIcon: require('../assets/icons/index-active.png') },
+                    { name: '工具', href: 'javascript:void(0);', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
+                    { name: '场景', href: 'javascript:void(0);', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
+                    { name: '收益', href: '/order', icon: require('../assets/icons/store.png'), activeIcon: require('../assets/icons/store-active.png') },
+                    { name: '我的', href: 'javascript:void(0);', icon: require('../assets/icons/my.png'), activeIcon: require('../assets/icons/my-active.png') }
                 ]
             }
         },
         mounted() {
             console.log(this.props)
+        },
+        unmounted() {
+            console.log('nav unmounted')
         }
     }
 </script>

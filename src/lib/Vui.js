@@ -26,6 +26,7 @@ class Vui extends VuiComponent {
         super({ config });
         this.$app = document.querySelector(id);
         this.$el = this.$vNode.render();
+        this.$app.innerHTML = '';
         this.$app.appendChild(this.$el);
     }
 }

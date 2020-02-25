@@ -26,6 +26,7 @@
     "webpack-dev-server": "^3.7.1"
   },
   "dependencies": {
+    "copy-webpack-plugin": "^5.1.1",
     "file-loader": "2.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
@@ -34,7 +35,9 @@
   "babel": {
     "presets": [
       "env"
-    ], 
-    "plugins": ["transform-object-rest-spread"]
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
   }
 }

@@ -97,14 +97,14 @@ module.exports = function (env = {}, argv) {
         },
         plugins: plugins(isProduction),
         devServer: {
-            contentBase: path.join(__dirname, "dist"),//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
+            contentBase: [path.join(__dirname, "dist"), path.join(__dirname, "public")],//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
             historyApiFallback: true, //不跳转
             inline: true, //实时刷新,
             port: 8090,
             host: "0.0.0.0", // 默认是 localhost。如果你希望服务器外部可访问，指定如下：host: "0.0.0.0"
             proxy: {
                 '/api': {
-                    target: 'http://localhost:3000',
+                    target: 'http://www.doupinku.com',
                     pathRewrite: { '^/api': '/api' },
                     changeOrigin: true,     // target是域名的话，需要这个参数，
                     secure: false,          // 设置支持https协议的代理

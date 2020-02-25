@@ -213,7 +213,6 @@ export function updateDom(patches) {
             // 更新文本
             item.oldNode.elm.textContent = item.newNode.text;
             item.oldNode.text = item.newNode.text;
-            // item.point.replace(item.oldNode, item.newNode);
         } else if (item.type === 'DELETE') {
             // 从dom中删除
             item.oldNode.elm.parentNode.removeChild(item.oldNode.elm);
@@ -231,6 +230,9 @@ export function updateDom(patches) {
         } else if (item.type === 'REPLACE') {
             item.oldNode.elm.parentNode.replaceChild(item.newNode.render(), item.oldNode.elm);
             item.point.replace(item.oldNode, item.newNode);
+
+            // 删除旧节点下的所有组件
+            unmountComponent(item.oldNode);
         } else if (item.type === 'ADD') {
             // oldVDomMap[key].elm.parentNode.replaceChild(newVDomMap[key].render(), oldVDomMap[key].elm);
             const fragment = document.createDocumentFragment();

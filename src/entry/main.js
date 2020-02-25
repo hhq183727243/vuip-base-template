@@ -34,9 +34,36 @@ Vui.prototype.request = {
     }
 };
 
-const vui = new Vui({
+let vui = new Vui({
     id: '#app',
     config: getRouter(location.pathname)
+});
+
+function findAtag(node) {
+    if (node.nodeName === 'A') {
+        return node;
+    }
+    if (!node.parentNode) {
+        return false;
+    }
+    return findAtag(node.parentNode)
+}
+
+// 点击a标签阻止默认事件
+window.addEventListener('click', function (e) {
+    const a = findAtag(e.target);
+    if (a && a.pathname !== 'void(0);') {
+        e.preventDefault();
+
+        vui.uninstall();
+
+        vui = new Vui({
+            id: '#app',
+            config: getRouter(a.pathname)
+        });
+
+        history.pushState(null, null, a.pathname)
+    }
 });
 
 function onUpdateSize() {
@@ -56,22 +83,3 @@ onUpdateSize();
 console.log(vui);
 console.log(new Date().getTime() - startTime);
 console.log(process.env.NODE_ENV);
-
-// function Enums(option) {
-//     this.list = option;
-// }
-
-// Enums.prototype.get = function (val) {
-//     let temp = null;
-
-//     this.list.forEach(item => {
-//         // 如果值都不相同的话就这样搞啊
-//         const values = Object.values(item);
-
-//         if (values.includes(val)) {
-//             temp = item;
-//         }
-//     });
-
-//     return temp;
-// }

@@ -126,11 +126,11 @@ body {
 .nav {
     position        : fixed;
     bottom          : 0;
-    height          : 50px;
+    height          : 2.5rem;
     display         : flex;
     background-color: #fefefe;
     width           : 100%;
-    box-shadow      : 0px 0px 5px #d2d2d2;
+    border-top      : 1px solid #aaa;
 
     &-item {
         flex           : 1;
@@ -138,17 +138,25 @@ body {
         text-align     : center;
         font-size      : 12px;
         text-decoration: none;
-        color          : #666;
+        color          : #999;
 
         &:active {
             background-color: #eee;
         }
 
+        &.active {
+            color: #f34f18;
+        }
+
         img {
-            width         : 24px;
-            height        : 24px;
-            margin-top    : 6px;
+            width         : 1.1rem;
+            height        : 1.1rem;
+            margin-top    : 0.3rem;
             vertical-align: bottom;
+        }
+
+        .text {
+            margin-top: 0.25rem;
         }
     }
 }

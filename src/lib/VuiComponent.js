@@ -160,7 +160,7 @@ export default class VuiComponent {
             data() { return {} }
         }, Lifecycle, config);
         this.props = props;
-        this.$children = [];
+        this.$children = []; // 子组件集合
         this.componentState = UNCREATED; // 组件状态
         this.init(this.config);
 
@@ -220,6 +220,20 @@ export default class VuiComponent {
                 this.componentState = CREATED;
                 this.config.mounted.call(this);
             }
+        });
+    }
+
+    // 组件卸载
+    uninstall() {
+        this.$el.parentNode.removeChild(this.$el);
+        this.config.willUnmount.call(this);
+        this.config.unmounted.call(this);
+
+        // 子组件卸载
+        this.$children.forEach(comp => {
+            comp.$el.parentNode.removeChild(comp.$el);
+            comp.config.willUnmount.call(comp);
+            comp.config.unmounted.call(comp);
         });
     }
 

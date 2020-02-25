@@ -4,9 +4,10 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BasicPlugin = require('./plugins/hhq-plugin');
 
-module.exports = function(isProduction){
+module.exports = function (isProduction) {
     const plugins = [
         new MiniCssExtractPlugin({
             filename: "css/[name]_[chunkhash:8].css", //都提到build目录下的css目录中
@@ -20,16 +21,23 @@ module.exports = function(isProduction){
             }
         }),
         new HtmlWebpackPlugin({
-            title: '自己的联盟',
+            title: '淘金联盟',
             template: path.join(__dirname, './src/template.html')
         }),
+        new CopyWebpackPlugin([
+            {
+                from: __dirname + '/public',
+                to: __dirname + '/dist',
+                ignore: ['*.jpg']
+            }
+        ]),
         new BasicPlugin({
             name: '1',
             age: '222'
         })
     ]
 
-    if(isProduction){
+    if (isProduction) {
         // 删除的目录为 output.path
         plugins.push(new CleanWebpackPlugin({
             root: path.resolve(__dirname, './'), //根目录

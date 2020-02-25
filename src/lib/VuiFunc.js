@@ -25,7 +25,7 @@ function createComponent(componentName, attr = {}, slotNodes, __option__) {
 
     let $component = null;
 
-    // 如果是更新则不创建组件，等待diff后再确认是否创建
+    // 如果是更新（即执行_reRender时候）则不创建组件，等待diff后再确认是否创建
     if (__option__.update) {
         $component = {
             $parent: this.$vui,
@@ -51,7 +51,7 @@ function createComponent(componentName, attr = {}, slotNodes, __option__) {
 function getFor(data, callback, __option__) {
     const vNodes = [];
     vNodes.push(createElement.call(this, 'comment', null, 'v-for'));
-    
+
     (data || []).forEach((item, i) => {
         vNodes.push(callback(item, i));
     });
