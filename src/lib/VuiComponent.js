@@ -102,14 +102,14 @@ function createCode(option) {
 }
 
 // 文本解析
-function textParse(text, data) {
-    // {{}}匹配
-    const reg = /\{\s*([\w\.:\?\+\-\*\/\s'"=]+)\s*\}/g;
+function textParse(text) {
+    // 匹配{ }里面内容
+    const reg = /\{\s*([\(\)\w\.:\?\+\-\*\/\s'"=!]+)\s*\}/g;
     const originText = text;
     let result;
 
     while ((result = reg.exec(originText)) !== null) {
-        text = text.replace(result[0], `" + ${result[1]} + "`);
+        text = text.replace(result[0], `" + (${result[1]}) + "`);
     }
 
     // 拼接成："字符串" + name + "字符串";
@@ -162,11 +162,12 @@ export default class VuiComponent {
         this.props = props;
         this.$children = []; // 子组件集合
         this.componentState = UNCREATED; // 组件状态
-        this.init(this.config);
 
         for (let funName in this.config.methods) {
             this[funName] = this.config.methods[funName];
         }
+
+        this._init(this.config);
     }
     _reRender() {
         const $newVNode = this.renderVnode({
@@ -204,7 +205,7 @@ export default class VuiComponent {
         });
     }
 
-    init() {
+    _init() {
         const code = createCode(this.config.ast);
         this.$render = createFunction(code);
         this.$vNode = this.renderVnode();
@@ -238,11 +239,26 @@ export default class VuiComponent {
     }
 
     renderVnode(option = {}) {
+        const methods = {};
+
+        Object.keys(this.config.methods).forEach(functionName => {
+            // 绑定methods作用域
+            methods[functionName] = this.config.methods[functionName].bind(this);
+        });
+
+
+        // 如果data中属性值是function则说明该属性为计算属性
+        const _data = {};
+        Object.keys(this.data).forEach(key => {
+            _data[key] = typeof (this.data[key]) === 'function' ? this.data[key].bind(this)() : this.data[key];
+        });
+
         return this.$render.call({
             ...VuiFunc,
             props: this.props,
             $vui: this,
-            ...this.data,
+            ..._data,
+            ...methods
         }, {
             update: false,
             ...option

@@ -1,4 +1,5 @@
 import home from '@/page/home.html';
+import helloWorld from '@/page/helloWorld.html';
 import list from '@/page/list.html';
 import order from '@/page/order.html';
 // import shop from '@/page/shop.html';
@@ -14,6 +15,7 @@ export const router = {
     '/home': home,
     '/homeDB': homeDB,
     '/orderDB': orderDB,
+    '/helloWorld': helloWorld,
 }
 
 

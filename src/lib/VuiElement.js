@@ -33,7 +33,13 @@ function invokeWithErrorHandling(
     return res
 }
 
-// 节点构造函数
+/**
+ * 节点构造函数
+ * @param tagName 标签名，组件名
+ * @param option 标签属性，包括属性和事件绑定
+ * @param children 标签子节点，如果是组件则是组件实例
+ * @param context 标签所属组件上下文
+ * */
 export default class Element {
     constructor(tagName, option, children, context) {
         const { attrs, on } = option || {};
@@ -168,11 +174,17 @@ function normalizeChildren(children) {
     return arr;
 }
 
+
+/**
+ * 节点构造函数
+ * @param tagName 标签名，组件名
+ * @param option 标签属性，包括属性和事件绑定
+ * @param children 标签子节点，如果是组件则是组件实例
+ * */
 export function createElement(tagName, attr, children) {
     // 序列号节点，单遇到v-for、slot时需要序列号
     /* if (Array.isArray(children)) {
         children = normalizeChildren(children);
     } */
-
     return new Element(tagName, attr, children, this.$vui);
 };

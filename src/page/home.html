@@ -141,12 +141,12 @@
 
 </template>
 <script>
-    import MediaItem from '@/components/MediaItem.html';
-    import Nav from '@/components/Nav.html';
-    import './home.less';
+    import MediaItem from "@/components/MediaItem.html";
+    import Nav from "@/components/Nav.html";
+    import "./home.less";
 
     export default {
-        name: 'home',
+        name: "home",
         component: {
             MediaItem,
             Nav
@@ -159,44 +159,47 @@
                 recommendList: [], // 三个广推荐
                 columnList: [], // 专栏列表
                 hotCommodity: [], // J今日必推
-                h: '00',
-                m: '00',
-                s: '00'
-            }
+                h: "00",
+                m: "00",
+                s: "00"
+            };
         },
         methods: {
             initData() {
                 Promise.all([
-                    this.request.get('/api/get_banner_list'),
-                    this.request.get('/api/get_entrance_list'),
-                    this.request.get('/api/get_ad_banner'),
-                    this.request.get('/api/get_recommend_list'),
-                    this.request.get('/api/get_column_list'),
-                    this.request.get('/api/get_commodity_list?type=7'), // 今日推荐
+                    this.request.get("/api/get_banner_list"),
+                    this.request.get("/api/get_entrance_list"),
+                    this.request.get("/api/get_ad_banner"),
+                    this.request.get("/api/get_recommend_list"),
+                    this.request.get("/api/get_column_list"),
+                    this.request.get("/api/get_commodity_list?type=7") // 今日推荐
                 ]).then(resArr => {
-                    this.setData({
-                        bannerList: resArr[0].data.list,
-                        fastTrack: resArr[1].data.list,
-                        adBanner: resArr[2].data.entity,
-                        recommendList: resArr[3].data.list,
-                        columnList: resArr[4].data.list,
-                        hotCommodity: resArr[5].data.list,
-                    }, () => {
-                        new Swiper('#banner', {
-                            autoplay: false,//可选选项，自动滑动
-                            pagination: '#pagination1',
-                        });
-                        new Swiper('.column-goods', {
-                            autoplay: false,//可选选项，自动滑动
-                            slidesPerView: 'auto',
-                            freeMode: true,
-                            watchOverflow: true
-                        });
+                    this.setData(
+                        {
+                            bannerList: resArr[0].data.list,
+                            fastTrack: resArr[1].data.list,
+                            adBanner: resArr[2].data.entity,
+                            recommendList: resArr[3].data.list,
+                            columnList: resArr[4].data.list,
+                            hotCommodity: resArr[5].data.list
+                        },
+                        () => {
+                            new Swiper("#banner", {
+                                autoplay: false, //可选选项，自动滑动
+                                pagination: "#pagination1"
+                            });
+                            new Swiper(".column-goods", {
+                                autoplay: false, //可选选项，自动滑动
+                                slidesPerView: "auto",
+                                freeMode: true,
+                                watchOverflow: true
+                            });
 
-                        if (resArr[5].data.list.length > 0) {
-                            this.onTimedown();
+                            if (resArr[5].data.list.length > 0) {
+                                this.onTimedown();
+                            }
                         }
-                    });
+                    );
                 });
             },
 
@@ -210,18 +213,18 @@
                 const times = Math.floor((end.getTime() - now.getTime()) / 1000);
 
                 const h = Math.floor(times / 3600); // 剩余多少小时
-                const m = Math.floor((times % 3600) / 60) // 剩余多少分钟
-                const s = (times % 3600) % 60 // 剩余多少秒
+                const m = Math.floor((times % 3600) / 60); // 剩余多少分钟
+                const s = (times % 3600) % 60; // 剩余多少秒
 
                 this.setData({
-                    h: h < 10 ? '0' + h : h,
-                    m: m < 10 ? '0' + m : m,
-                    s: s < 10 ? '0' + s : s
+                    h: h < 10 ? "0" + h : h,
+                    m: m < 10 ? "0" + m : m,
+                    s: s < 10 ? "0" + s : s
                 });
 
                 this.timeout = setTimeout(() => {
                     this.onTimedown();
-                }, 1000)
+                }, 1000);
             }
         },
         mounted() {
@@ -230,6 +233,5 @@
         unmounted() {
             clearTimeout(this.timeout);
         }
-    }
-
+    };
 </script>

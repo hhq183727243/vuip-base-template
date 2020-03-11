@@ -44,7 +44,7 @@ function createComponent(componentName, attr = {}, slotNodes, __option__) {
         this.$vui.$children.push($component);
     }
 
-    // $component.$attrs = attr;
+    // 当前this指with所绑定的顶级作用域
     return createElement.call(this, `component-${$component.config.name}`, null, $component);
 }
 

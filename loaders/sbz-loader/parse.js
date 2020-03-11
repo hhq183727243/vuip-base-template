@@ -1,4 +1,8 @@
 let arr = [];
+/**
+* @param content 剩余内容
+* @param next 下一次可能出现情况
+**/
 function parseHtml(content, nexts) {
     let res = null;
     for (let i = 0; i < nexts.length; i++) {

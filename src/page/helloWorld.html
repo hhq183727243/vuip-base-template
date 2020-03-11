@@ -1,0 +1,28 @@
+<template>
+    <div>Hello World {name + 1}{longName}</div>
+</template>
+<script>
+    export default {
+        name: 'Hello',
+        data() {
+            return {
+                name: 1,
+                color: 'RED',
+                longName() {
+                    return this.data.name + '-zhang'
+                }
+            }
+        },
+        methods: {
+            myFilter() {
+                console.log(this)
+                return 1;
+            }
+        },
+        mounted() {
+           /*  this.setData({
+                name: 'VUI-HH'
+            }); */
+        }
+    }
+</script>
