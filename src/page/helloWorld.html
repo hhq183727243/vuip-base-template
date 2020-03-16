@@ -1,5 +1,9 @@
 <template>
-    <div>Hello World {name + 1}{longName}</div>
+    <div>
+        Hello World {name + 1}<br />{longName}
+        <input type="text" :value="name" onchange="handleChange" />
+    </div>
+
 </template>
 <script>
     export default {
@@ -17,12 +21,21 @@
             myFilter() {
                 console.log(this)
                 return 1;
+            },
+            handleChange(e) {
+                // this.data.longName = 1;
+
+                this.setData({
+                    name: e.target.value
+                },() => {
+                    console.log(this.data.longName);
+                });
             }
         },
         mounted() {
-           /*  this.setData({
-                name: 'VUI-HH'
-            }); */
+            /*  this.setData({
+                 name: 'VUI-HH'
+             }); */
         }
     }
 </script>

@@ -146,28 +146,39 @@ const Lifecycle = {
 export default class VuiComponent {
     constructor({ $parent, config, props = {}, $slots }) {
         this.cid = cid++;
-        this.$el = null;
-        this.componentName = config.name;
-        this.$parent = $parent;
-        this.$slots = $slots;
-        if (typeof config.data === 'function') {
-            this.data = config.data();
-        } else {
-            this.data = {};
-        }
         this.config = Object.assign({
             methods: {},
             data() { return {} }
         }, Lifecycle, config);
-        this.props = props;
+        this.componentName = this.config.name;
+        this.$el = null;
+        this.$parent = $parent;
+        this.$slots = $slots;
         this.$children = []; // 子组件集合
+        this.props = props;
         this.componentState = UNCREATED; // 组件状态
+        this._data = this.config.data() || {};
+        this._proxyData(this._data);
 
         for (let funName in this.config.methods) {
             this[funName] = this.config.methods[funName];
         }
 
-        this._init(this.config);
+        this._init();
+    }
+    _proxyData(data) {
+        this.data = new Proxy(data, {
+            get: (target, key, proxy) => {
+                if (typeof (target[key]) === 'function') {
+                    return target[key].bind(this)();
+                }
+
+                return target[key];
+            },
+            set: (target, key, value, proxy) => {
+                throw new Error(`VUI 不允许直接对data赋值，否则可能会引起一些未知异常`);
+            }
+        });
     }
     _reRender() {
         const $newVNode = this.renderVnode({
@@ -186,12 +197,12 @@ export default class VuiComponent {
         }
     }
     // 更新数据
-    setData(data, callback) {
+    setData(updateData, callback) {
         this.renderEnd = false;
-        this.data = {
-            ...this.data,
-            ...data
-        };
+
+        for (let key in updateData) {
+            this._data[key] = updateData[key];
+        }
 
         // renderEnd 防止在一个事件循环中多次调用setData导致重复渲染
         new Promise((resolve) => {
@@ -248,16 +259,11 @@ export default class VuiComponent {
 
 
         // 如果data中属性值是function则说明该属性为计算属性
-        const _data = {};
-        Object.keys(this.data).forEach(key => {
-            _data[key] = typeof (this.data[key]) === 'function' ? this.data[key].bind(this)() : this.data[key];
-        });
-
         return this.$render.call({
             ...VuiFunc,
             props: this.props,
             $vui: this,
-            ..._data,
+            ...this.data,
             ...methods
         }, {
             update: false,
