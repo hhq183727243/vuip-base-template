@@ -4,7 +4,7 @@
             <b class="f16">收益报表</b>
             <div class="qs"></div>
         </div>
-        <div style="height: 3.25rem;"></div>
+        <div style="height: 2.05rem;"></div>
         <div class="main">
             <div class="header">
                 <div>可提现金额</div>
@@ -182,6 +182,14 @@
                         this.handleChangeRange(1);
                     });
                 });
+        },
+        beforeCreate() {
+            // 给flutter webview通信
+            try {
+                FlutterSetAppbarColor.postMessage('255,255,255,1');
+            } catch (error) {
+
+            }
         },
     }
 </script>

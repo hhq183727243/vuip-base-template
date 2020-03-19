@@ -121,6 +121,14 @@ function createFunction(code) {
 }
 
 const Lifecycle = {
+    // new Vui 后第一个执行的钩子函数
+    beforeCreate() {
+
+    },
+    // 装载结束
+    mounted() {
+        console.log('mounted');
+    },
     // 装载结束
     mounted() {
         console.log('mounted');
@@ -150,6 +158,7 @@ export default class VuiComponent {
             methods: {},
             data() { return {} }
         }, Lifecycle, config);
+        this.config.beforeCreate.bind(this)();
         this.componentName = this.config.name;
         this.$el = null;
         this.$parent = $parent;

@@ -14,7 +14,7 @@
                 <div class="item">母婴</div>
             </div>
         </div>
-        <div style="height: 4.6rem;"></div>
+        <div style="height: 3.5rem;"></div>
         <div class="main">
             <div class="banner">
                 <div class="swiper-container" id="banner">
@@ -165,7 +165,7 @@
             };
         },
         methods: {
-            initData() {
+            onQueryData() {
                 Promise.all([
                     this.request.get("/api/get_banner_list"),
                     this.request.get("/api/get_entrance_list"),
@@ -174,36 +174,41 @@
                     this.request.get("/api/get_column_list"),
                     this.request.get("/api/get_commodity_list?type=7") // 今日推荐
                 ]).then(resArr => {
-                    this.setData(
-                        {
-                            bannerList: resArr[0].data.list,
-                            fastTrack: resArr[1].data.list,
-                            adBanner: resArr[2].data.entity,
-                            recommendList: resArr[3].data.list,
-                            columnList: resArr[4].data.list,
-                            hotCommodity: resArr[5].data.list
-                        },
-                        () => {
-                            new Swiper("#banner", {
-                                autoplay: false, //可选选项，自动滑动
-                                pagination: "#pagination1"
-                            });
-                            new Swiper(".column-goods", {
-                                autoplay: false, //可选选项，自动滑动
-                                slidesPerView: "auto",
-                                freeMode: true,
-                                watchOverflow: true
-                            });
+                    localStorage.setItem('homeData', JSON.stringify(resArr));
 
-                            if (resArr[5].data.list.length > 0) {
-                                this.onTimedown();
-                            }
-                        }
-                    );
+                    this.initData(resArr);
                 });
             },
+            initData(resArr) {
+                this.setData(
+                    {
+                        bannerList: resArr[0].data.list,
+                        fastTrack: resArr[1].data.list,
+                        adBanner: resArr[2].data.entity,
+                        recommendList: resArr[3].data.list,
+                        columnList: resArr[4].data.list,
+                        hotCommodity: resArr[5].data.list
+                    },
+                    () => {
+                        new Swiper("#banner", {
+                            autoplay: false, //可选选项，自动滑动
+                            pagination: "#pagination1"
+                        });
+                        new Swiper(".column-goods", {
+                            autoplay: false, //可选选项，自动滑动
+                            slidesPerView: "auto",
+                            freeMode: true,
+                            watchOverflow: true
+                        });
 
+                        if (resArr[5].data.list.length > 0) {
+                            this.onTimedown();
+                        }
+                    }
+                );
+            },
             onTimedown() {
+                clearTimeout(this.timeout);
                 // 倒计时计算
                 const now = new Date();
                 const Y = now.getFullYear();
@@ -228,7 +233,23 @@
             }
         },
         mounted() {
-            this.initData();
+            if (localStorage.getItem('homeData')) {
+                try {
+                    this.initData(JSON.parse(localStorage.getItem('homeData')));
+                } catch (error) {
+
+                }
+            }
+
+            this.onQueryData();
+        },
+        beforeCreate() {
+            // 给flutter webview通信
+            try {
+                FlutterSetAppbarColor.postMessage('251,126,70,1');
+            } catch (error) {
+
+            }
         },
         unmounted() {
             clearTimeout(this.timeout);
