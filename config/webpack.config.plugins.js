@@ -5,7 +5,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BasicPlugin = require('../plugins/hhq-plugin');
 
 module.exports = function (isProduction) {
     const plugins = [
@@ -22,7 +21,7 @@ module.exports = function (isProduction) {
         }),
         new HtmlWebpackPlugin({
             title: 'VUIP',
-            template: path.join(__dirname, './src/template.html')
+            template: path.join(__dirname, '../src/template.html')
         }),
         new CopyWebpackPlugin([
             {

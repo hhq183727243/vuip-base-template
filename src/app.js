@@ -5,17 +5,7 @@ import Vuip from 'vuip';
 import { getRouter, layout } from '@/router';
 
 import '@/main.less'
-// 通过new DefinePlugin设置process.env.NODE_ENV 值，见webpack.config.plugins.js配置
 
-/* //异步加载
-import('../show.js').then(({show}) => {
-    // 执行 show 函数
-    if(process.env.NODE_ENV === 'production'){
-        show('Webpack production');
-    }else{
-        show('Webpack develop');
-    }
-}); */
 const startTime = new Date().getTime();
 const axios = window['axios'];
 
@@ -31,8 +21,6 @@ Vuip.prototype.request = {
         });
     }
 };
-
-console.log(layout);
 
 let vui = new Vuip({
     id: '#app',
@@ -80,6 +68,5 @@ window.onresize = () => {
 
 onUpdateSize();
 
-console.log(vui);
 console.log(new Date().getTime() - startTime);
 console.log(process.env.NODE_ENV);

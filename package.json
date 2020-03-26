@@ -4,8 +4,8 @@
   "description": "test",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env.production --env.bao=foo",
-    "start": "webpack-dev-server --hot"
+    "build": "webpack --env.production --config  ./config/webpack.config.js",
+    "start": "webpack-dev-server --hot --config  ./config/webpack.config.js"
   },
   "author": "hhq",
   "license": "ISC",
@@ -23,11 +23,11 @@
     "style-loader": "^0.23.1",
     "webpack": "^4.33.0",
     "webpack-cli": "^3.3.3",
-    "webpack-dev-server": "^3.7.1"
+    "webpack-dev-server": "^3.7.1",
+    "copy-webpack-plugin": "^5.1.1",
+    "file-loader": "2.0.0"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^5.1.1",
-    "file-loader": "2.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "url-loader": "^3.0.0",
