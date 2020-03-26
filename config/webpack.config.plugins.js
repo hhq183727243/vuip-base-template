@@ -25,8 +25,8 @@ module.exports = function (isProduction) {
         }),
         new CopyWebpackPlugin([
             {
-                from: __dirname + '../public',
-                to: __dirname + '../dist',
+                from: path.resolve(__dirname + '/../public'),
+                to: path.resolve(__dirname + '/../dist'),
                 ignore: ['*.jpg']
             }
         ])
