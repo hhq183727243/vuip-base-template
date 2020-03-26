@@ -10,7 +10,8 @@ module.exports = function (isProduction) {
     const plugins = [
         new MiniCssExtractPlugin({
             filename: "css/[name]_[chunkhash:8].css", //都提到build目录下的css目录中
-            chunkFilename: "[id].css"
+            chunkFilename: "[id].css",
+            publicPath: '/', // 设置资源访问目录，默认为项目跟目录，可设置cdn路径
         }),
         new OptimizeCssAssetsPlugin(),
         new DefinePlugin({

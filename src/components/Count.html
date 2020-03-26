@@ -15,16 +15,16 @@
         },
         methods: {
             disCount() {
-                const { change } = this.props;
-                change(1);
+                const { onChange, value } = this.props;
+                onChange(value - 1);
             },
             addCount() {
-                const { change } = this.props;
-                change(1);
+                const { onChange, value } = this.props;
+                onChange(value + 1);
             },
             handleChange(e) {
-                const { change, value } = this.props;
-                change(e.target.value - value);
+                const { onChange } = this.props;
+                onChange(Number(e.target.value));
             }
         }
     }

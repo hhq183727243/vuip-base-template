@@ -27,9 +27,8 @@ module.exports = function (env = {}, argv) {
             // 把所有依赖的模块合并输出到一个 bundle.js 文件
             filename: '[name].js?id=[hash:8]',
             // 输出文件都放到 dist 目录下
-            //path: path.resolve(__dirname, './dist'),
             path: path.resolve(__dirname, '../dist'),
-            // publicPath: 'http://cnd.com/',
+            publicPath: '/', // 设置资源访问目录，默认为项目跟目录，可设置cdn路径
             chunkFilename: "[id].chunk.js" // 非入口文件命名规则
         },
         module: {
@@ -75,15 +74,11 @@ module.exports = function (env = {}, argv) {
                             // loader: 'file-loader',
                             options: {
                                 esModule: false, // 这里设置为false
-                                name: '/images/[name].[ext]',
-                                limit: 10240
+                                name: 'images/[name]_[hash:8].[ext]',
+                                limit: 10240,
+                                publicPath:'./'// 配置访问资源路径,可设置cdn路径
                             }
-                        }, /* {
-                            loader: 'file-loader',
-                            options: {
-                                outputPath: path.resolve(__dirname, './dist/images')
-                            }
-                        } */
+                        }
                     ]
                 }, {
                     test: /\.js$/,
@@ -98,6 +93,7 @@ module.exports = function (env = {}, argv) {
         plugins: plugins(isProduction),
         devServer: {
             contentBase: [path.join(__dirname, "../dist"), path.join(__dirname, "../public")],//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
+            publicPath: '/', // 设置项目目录，localhost:8080/目录/路由
             historyApiFallback: true, //不跳转
             inline: true, //实时刷新,
             port: 8080,

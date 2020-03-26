@@ -3,10 +3,8 @@
 //import show from '../show.js'
 import Vuip from 'vuip';
 import { getRouter, layout } from '@/router';
+import '@/main.less';
 
-import '@/main.less'
-
-const startTime = new Date().getTime();
 const axios = window['axios'];
 
 Vuip.prototype.request = {
@@ -67,6 +65,3 @@ window.onresize = () => {
 };
 
 onUpdateSize();
-
-console.log(new Date().getTime() - startTime);
-console.log(process.env.NODE_ENV);

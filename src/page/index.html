@@ -1,0 +1,34 @@
+<template>
+    <div style="text-align: center;">
+        <img width="100" :src="logo" alt="" />
+        <h1>Hello World VUIP {total}</h1>
+        <Count :onChange="onChange" :value="total" />
+    </div>
+</template>
+<script>
+    import Count from '@/components/Count.html';
+    
+    export default {
+        name: 'Hello',
+        data() {
+            return {
+                logo: require('../assets/images/pic.jpg'),
+                name: 1,
+                total: 0
+            }
+        },
+        component: {
+            Count
+        },
+        methods: {
+            onChange(val) {
+                this.setData({
+                    total: val
+                });
+            },
+        },
+        mounted() {
+            console.log(this.data.logo)
+        }
+    }
+</script>

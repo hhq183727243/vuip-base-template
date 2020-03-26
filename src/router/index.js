@@ -1,7 +1,8 @@
-import helloWorld from '@/page/helloWorld.html';
+import index from '@/page/index.html';
+import noFind from '@/page/404.html';
 
 export const router = {
-    '/helloWorld': helloWorld,
+    '/': index
 }
 
 export function getRouter(pathname) {
