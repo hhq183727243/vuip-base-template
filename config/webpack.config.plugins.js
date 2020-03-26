@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BasicPlugin = require('./plugins/hhq-plugin');
+const BasicPlugin = require('../plugins/hhq-plugin');
 
 module.exports = function (isProduction) {
     const plugins = [
@@ -21,26 +21,22 @@ module.exports = function (isProduction) {
             }
         }),
         new HtmlWebpackPlugin({
-            title: '淘金联盟',
+            title: 'VUIP',
             template: path.join(__dirname, './src/template.html')
         }),
         new CopyWebpackPlugin([
             {
-                from: __dirname + '/public',
-                to: __dirname + '/dist',
+                from: __dirname + '../public',
+                to: __dirname + '../dist',
                 ignore: ['*.jpg']
             }
-        ]),
-        new BasicPlugin({
-            name: '1',
-            age: '222'
-        })
+        ])
     ]
 
     if (isProduction) {
         // 删除的目录为 output.path
         plugins.push(new CleanWebpackPlugin({
-            root: path.resolve(__dirname, './'), //根目录
+            root: path.resolve(__dirname, '../'), //根目录
             verbose: true, //是否启用控制台输出信息
             dry: false //设置为false,启用删除文件
         }));

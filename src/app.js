@@ -1,10 +1,8 @@
 // 通过 CommonJS 规范导入 show 函数
 // const show = require('./show.js');
 //import show from '../show.js'
-import Vui from '@/lib/Vui.js';
-import { getRouter } from '@/router';
-
-// import { VuiRouter } from '@/lib/VuiRouter';
+import Vuip from 'vuip';
+import { getRouter, layout } from '@/router';
 
 import '@/main.less'
 // 通过new DefinePlugin设置process.env.NODE_ENV 值，见webpack.config.plugins.js配置
@@ -21,7 +19,7 @@ import('../show.js').then(({show}) => {
 const startTime = new Date().getTime();
 const axios = window['axios'];
 
-Vui.prototype.request = {
+Vuip.prototype.request = {
     'post': function (url, data, option) {
         return axios.post(url, data).then(res => {
             return res.data;
@@ -34,7 +32,9 @@ Vui.prototype.request = {
     }
 };
 
-let vui = new Vui({
+console.log(layout);
+
+let vui = new Vuip({
     id: '#app',
     config: getRouter(location.pathname)
 });
@@ -57,7 +57,7 @@ window.addEventListener('click', function (e) {
 
         vui.uninstall();
 
-        vui = new Vui({
+        vui = new Vuip({
             id: '#app',
             config: getRouter(a.pathname)
         });

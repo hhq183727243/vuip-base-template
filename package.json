@@ -30,7 +30,9 @@
     "file-loader": "2.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "url-loader": "^3.0.0"
+    "url-loader": "^3.0.0",
+    "vui-html-loader": "^1.0.1",
+    "vuip": "^1.0.0"
   },
   "babel": {
     "presets": [

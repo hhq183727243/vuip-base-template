@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到�
 
 module.exports = function (env = {}, argv) {
     const isProduction = !!env.production;
-    console.log('====================' + isProduction + '====================');
+    console.log('====================env：' + isProduction + '====================');
     const devtool = isProduction ? '' : 'cheap-module-eval-source-map';
 
     return {
@@ -20,7 +20,7 @@ module.exports = function (env = {}, argv) {
         }, */
 
         entry: {
-            main: path.resolve(__dirname, './src/entry/main.js'),
+            main: path.resolve(__dirname, '../src/app.js'),
             // app: path.resolve(__dirname, './src/entry/app.js'),
         },
         mode: 'development',
@@ -29,7 +29,7 @@ module.exports = function (env = {}, argv) {
             filename: '[name].js?id=[hash:8]',
             // 输出文件都放到 dist 目录下
             //path: path.resolve(__dirname, './dist'),
-            path: path.resolve(__dirname, './dist'),
+            path: path.resolve(__dirname, '../dist'),
             // publicPath: 'http://cnd.com/',
             chunkFilename: "[id].chunk.js" // 非入口文件命名规则
         },
@@ -57,11 +57,12 @@ module.exports = function (env = {}, argv) {
                 }, {
                     // 自定义loader
                     test: /\.html$/,
-                    loader: 'sbz-loader',
+                    loader: 'vui-html-loader',
                     exclude: /node_modules/,
                     include: [
                         path.resolve(__dirname, "src/page"),
                         path.resolve(__dirname, "src/components"),
+                        path.resolve(__dirname, "src/layouts"),
                     ],
                     // loader配置
                     options: {
@@ -93,7 +94,7 @@ module.exports = function (env = {}, argv) {
             ]
         },
         resolveLoader: {
-            modules: ['node_modules', './loaders/']
+            // modules: ['node_modules', './loaders/']
         },
         plugins: plugins(isProduction),
         devServer: {

@@ -6188,6 +6188,16 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vui-html-loader@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vui-html-loader/-/vui-html-loader-1.0.1.tgz#7563c5f2661ddaf6ecc833ab3068ef03b0635fb1"
+  integrity sha512-iUe4WOQD5RS4wTJne5sjJoOapUUNDjfkkY4mtKxpBzxmpBEuD8e9bpaHsjyYJbtIezXb/CLPzaxxpkIFBEmXZA==
+
+vuip@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.0.tgz#9fdbed21862ee6b5e0913225016010514112a87f"
+  integrity sha512-CwDqKlFjoS+kcN2Nz8riDzh/Yppf01wv+BympWJw3PKMq4TBXvBWZ/qi44fwV55YQh2FaNjYqLg4iTkD9gqwag==
+
 watchpack@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"

@@ -43,4 +43,20 @@ class VuiComponent {
     }
 }
 
-//createEl([createEl(),createEl()]);
+// ast 对象
+const ast = {
+    "type": 1,
+    "tagName": "div",
+    "attr": {},
+    "children": [{
+        "type": 2,
+        "content": "Hello World {name}"
+    }]
+}
+
+// 转成如下格式， createEl生成标签方法
+"createEl(1, 'div', {}, [" +
+    "createEl(2, null, null, 'Hello World {name}')," +
+"])";
+
+const renderFun = new Function('__option__', 'with(this){return ' + code + '}');
