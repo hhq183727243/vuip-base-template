@@ -6194,9 +6194,9 @@ vui-html-loader@^1.0.1:
   integrity sha512-iUe4WOQD5RS4wTJne5sjJoOapUUNDjfkkY4mtKxpBzxmpBEuD8e9bpaHsjyYJbtIezXb/CLPzaxxpkIFBEmXZA==
 
 vuip@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.1.tgz#42484e6c67007cf3e49ce09e4f413d47a67290e3"
-  integrity sha512-nLYgZs3oFSTzu675xrIXXlZj9Y/Xlxw1d6ywFhNE/VNpeBCe31e4hlcb58BSmSoIAsWcu/b9oq/D5XbcEnOp1g==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.2.tgz#b1d68ba2e90f5dcda9793445ef8131696be5b8da"
+  integrity sha512-bcijb3A7uz2axb1Bsze0qrb7/MDyDv9mDOFQXpYO636qhZKfIoipv3peKLjdfeslQ2Clp2Jxjl5uq3dvW+3JHQ==
 
 watchpack@^1.6.0:
   version "1.6.0"
