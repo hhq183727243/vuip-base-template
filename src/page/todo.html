@@ -1,0 +1,23 @@
+<template>
+    <div style="text-align: center;">
+        <v-for data="store.todoList">
+            <div>{item.id + '_' +item.title}</div>
+        </v-for>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Todo',
+        data() {
+            return {
+                list: []
+            }
+        },
+        methods: {
+
+        },
+        mounted() {
+
+        }
+    }
+</script>

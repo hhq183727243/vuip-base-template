@@ -1,18 +1,30 @@
 <template>
-    <div style="text-align: center;">
-        <img width="100" :src="logo" alt="" />
-        <h1>Hello World VUIP {total}</h1>
-        <Count :onChange="onChange" :value="total" />
+    <div>
+        <div style="text-align: center;">
+            <img width="100" :src="logo" alt="" />
+            <h1>Hello World VUIP</h1>
+            <div class="m10-t">total:{total}</div>
+            <Count class="m10-t" :onChange="onChange" :value="total" />
+            <div class="m10-t">store.times：<b>{state.times}</b> | store.userName:<b>{state.userName}</b></div>
+            <div class="m10-t">
+                <button type="button" onclick="handleChangeState">同步修改state</button>
+                <button type="button" onclick="handleAsyncChangeState">异步修改state</button>
+            </div>
+            <nav class="m10-t">
+                <RouterLink class="nav-item" href="/todo">todo列表</RouterLink>
+                <RouterLink class="nav-item" href="/test" target="_blank">站外链接</RouterLink>
+            </nav>
+        </div>
     </div>
 </template>
 <script>
     import Count from '@/components/Count.html';
-    
+
     export default {
         name: 'Hello',
         data() {
             return {
-                logo: require('../assets/images/pic.jpg'),
+                logo: require('../assets/images/logo.png'),
                 name: 1,
                 total: 0
             }
@@ -26,9 +38,28 @@
                     total: val
                 });
             },
+            handleChangeState() {
+                this.$store.dispatch({
+                    type: 'increment',
+                    payload: {
+                        step: 2
+                    }
+                });
+            },
+            handleAsyncChangeState() {
+                this.$store.dispatch({
+                    type: 'asyncIncrement',
+                    payload: {
+                        loginStatus: true
+                    }
+                });
+            },
+            handleTo() {
+                this.$router.to('/404?a=1', { name: 1 });
+            }
         },
         mounted() {
-            console.log(this.data.logo)
+            console.log(this);
         }
     }
 </script>

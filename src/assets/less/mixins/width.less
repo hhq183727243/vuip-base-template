@@ -1,0 +1,14 @@
+.wN(@start, @end, @interval) when (@start <= @end){
+  .w@{start} { width: @start * 1px; }
+  .wN(@start+@interval, @end, @interval);
+}
+
+.wN-max(@start, @end, @interval) when (@start <= @end){
+  .w@{start}-max { max-width: @start * 1px; }
+  .wN-max(@start+@interval, @end, @interval);
+}
+
+.w-N(@start, @end, @interval) when (@start <= @end){
+  .w-@{start} { width: @start * 1%; }
+  .w-N(@start+@interval, @end, @interval);
+}

@@ -1,0 +1,27 @@
+.font-family() {
+  font-family: "Helvetica Neue", "Open Sans", "microsoft yahei", "sans-serif";
+}
+
+.toe() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bw() {
+  word-wrap: break-word;
+}
+
+.fN(@start, @end, @interval) when (@start <= @end) {
+  .f@{start} {
+    font-size: @start * 1px;
+  }
+  .fN(@start+@interval, @end, @interval);
+}
+
+.lhN(@start, @end, @interval) when (@start <= @end) {
+  .lh@{start} {
+    line-height: @start * 1px;
+  }
+  .lhN(@start+@interval, @end, @interval);
+}

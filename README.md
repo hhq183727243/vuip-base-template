@@ -15,7 +15,8 @@ vuip-cli脚手架生成基础项目
 │   ├── layouts              # 通用布局
 │   ├── models               # 全局 dva model
 │   ├── pages                # 业务页面入口和常用模板
-│   ├── services             # 后台接口服务
+│   ├── router               # 路由配置
+│   ├── store                # 全局状态管理
 │   ├── utils                # 工具库
 │   ├── locales              # 国际化资源
 │   ├── main.less            # 全局样式

@@ -1,11 +1,15 @@
-// 通过 CommonJS 规范导入 show 函数
-// const show = require('./show.js');
-//import show from '../show.js'
 import Vuip from 'vuip';
-import { getRouter, layout } from '@/router';
+import App from '@/layouts/index.html';
+import VuipRouter from '@/router/vuip-router';
+import routes from '@/router';
+import store from '@/store';
+import GlobalCompt from '@/components';
 import '@/main.less';
 
 const axios = window['axios'];
+
+Vuip.use(GlobalCompt);
+Vuip.use(VuipRouter);
 
 Vuip.prototype.request = {
     'post': function (url, data, option) {
@@ -20,37 +24,15 @@ Vuip.prototype.request = {
     }
 };
 
-let vui = new Vuip({
+const router = new VuipRouter(routes);
+
+new Vuip({
     id: '#app',
-    config: getRouter(location.pathname)
+    render: h => h(App),
+    router,
+    store
 });
 
-function findAtag(node) {
-    if (node.nodeName === 'A') {
-        return node;
-    }
-    if (!node.parentNode) {
-        return false;
-    }
-    return findAtag(node.parentNode)
-}
-
-// 点击a标签阻止默认事件
-window.addEventListener('click', function (e) {
-    const a = findAtag(e.target);
-    if (a && a.pathname !== 'void(0);') {
-        e.preventDefault();
-
-        vui.uninstall();
-
-        vui = new Vuip({
-            id: '#app',
-            config: getRouter(a.pathname)
-        });
-
-        history.pushState(null, null, a.pathname)
-    }
-});
 
 function onUpdateSize() {
     const _screenX = document.documentElement.offsetWidth;

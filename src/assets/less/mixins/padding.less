@@ -1,0 +1,22 @@
+.pN(@start, @end, @interval) when (@start <= @end){
+    .p@{start} { padding:  @start * 1px; }
+    .p@{start}-t { padding-top:  @start * 1px; }
+    .p@{start}-r { padding-right:  @start * 1px; }
+    .p@{start}-b { padding-bottom:  @start * 1px; }
+    .p@{start}-l { padding-left:  @start * 1px; }
+    .p@{start}-tb { padding-top:  @start * 1px; padding-bottom:  @start * 1px; }
+    .p@{start}-tl { padding-top:  @start * 1px; padding-left:  @start * 1px; }
+    .p@{start}-tr { padding-top:  @start * 1px; padding-right:  @start * 1px; }
+    .p@{start}-rb { padding-right:  @start * 1px; padding-bottom:  @start * 1px; }
+    .p@{start}-rl { padding-right:  @start * 1px; padding-left:  @start * 1px; }
+    .p@{start}-bl { padding-bottom:  @start * 1px; padding-left:  @start * 1px; }
+    .p@{start}-trb { padding-top:  @start * 1px; padding-bottom:  @start * 1px; padding-right:  @start * 1px; }
+    .p@{start}-tbl { padding-top:  @start * 1px; padding-bottom:  @start * 1px; padding-left:  @start * 1px; }
+    .p@{start}-trl { padding-right:  @start * 1px; padding-left:  @start * 1px; padding-top:  @start * 1px; }
+    .p@{start}-rbl { padding-right:  @start * 1px; padding-left:  @start * 1px; padding-bottom:  @start * 1px; }
+    .pN(@start+@interval, @end, @interval);
+}
+
+.pN-N(@top,@left){
+    .p@{top}-@{left} { padding: unit(@top,px) unit(@left,px); }
+}

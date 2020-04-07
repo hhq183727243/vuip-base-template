@@ -1,0 +1,9 @@
+.hN(@start, @end, @interval) when (@start <= @end){
+  .h@{start} { height:  @start * 1px; }
+  .hN(@start+@interval, @end, @interval);
+}
+
+.h-N(@start, @end, @interval) when (@start <= @end){
+  .h-@{start} { height:  @start * 1%; }
+  .h-N(@start+@interval, @end, @interval);
+}

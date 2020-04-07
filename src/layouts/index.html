@@ -1,16 +1,24 @@
 <template>
-    <div>
-        HHHH 
-        <view />
+    <div class="layouts">
+        <header class="header">
+            <h1>Layouts</h1>
+        </header>
+        <article class="wrapper">
+            <RouterView class="container" />
+        </article>
+        <footer class="footer">Footer</footer>
     </div>
 </template>
 <script>
+    import './index.less';
     export default {
-        name: 'Hello',
+        name: 'layouts',
         data() {
             return {
 
             }
+        },
+        component: {
         },
         methods: {
 

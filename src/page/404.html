@@ -1,6 +1,7 @@
 <template>
     <div style="text-align: center;">
-        <h1>404</h1>
+        <h1>404 {name}</h1>
+        <Button></Button>
     </div>
 </template>
 <script>
@@ -8,7 +9,19 @@
         name: '404',
         data() {
             return {
+                name: 'vui'
             }
+        },
+        mounted() {
+            setTimeout(() => {
+                this.setData({
+                    name: 'vuip'
+                })
+            }, 1000)
+            console.log(this);
+        },
+        unmounted() {
+            console.log(404 + 'unmounted')
         }
     }
 </script>
