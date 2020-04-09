@@ -53,7 +53,7 @@ module.exports = function (env = {}, argv) {
                         }
                     ],
                 }, {
-                    // 自定义loader
+                    // vui-html-loader
                     test: /\.html$/,
                     loader: 'vui-html-loader',
                     exclude: /node_modules/,

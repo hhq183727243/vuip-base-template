@@ -4,12 +4,12 @@ let $store = null;
 
 class Store {
     constructor(options) {
-        const { state, reducers, actions } = options;
+        const { state, mutations, actions } = options;
         if ($store) {
             return $store;
         }
 
-        this.reducers = reducers;
+        this.mutations = mutations;
         this.actions = actions;
         this._state = state;
         this._proxyState(state);
@@ -21,6 +21,7 @@ class Store {
         // 代理state，保证state 不能直接被赋值
         this.state = new Proxy(state, {
             get: (target, key, proxy) => {
+                // console.log(this);
                 if (typeof (target[key]) === 'function') {
                     return target[key].bind(this)(proxy);
                 }
@@ -48,9 +49,9 @@ class Store {
             throw new Error(`dispatch 参数错误，参考文献...`);
         }
 
-        if (type && typeof ($store.reducers[type]) === 'function') {
+        if (type && typeof ($store.mutations[type]) === 'function') {
             // 通过修改_state映射代理state的修改
-            $store.reducers[type]($store._state, payload);
+            $store.mutations[type]($store._state, payload);
 
             // 这边需要做下依赖收集，判断数据是否有被引用，不然当更新没有被引用的数据是也会触发虚拟dom的对比
             $store.$app.setData();

@@ -21,7 +21,7 @@ const store = new vuipx.Store({
             return state.user.name + state.times
         }
     },
-    reducers: {
+    mutations: {
         // @state 原state，@action 携带参数
         updateState(state, payload) {
             state.loginStatus = payload.loginStatus
