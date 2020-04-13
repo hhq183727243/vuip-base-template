@@ -47,7 +47,7 @@ yarn build
 ### 目录结构
 ```
 ├── dist                     # 构建后生成文件目录
-├── mock                     # 本地模拟数据
+├── config                   # webpack 配置
 ├── public
 │   └── favicon.png          # Favicon
 ├── src

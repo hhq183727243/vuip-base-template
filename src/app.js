@@ -1,30 +1,14 @@
 import Vuip from 'vuip';
 import App from '@/layouts/index.html';
-import VuipRouter from '@/router/vuip-router';
-import routes from '@/router';
+import router from '@/router';
 import store from '@/store';
+import request from '@/utils/request';
 import GlobalCompt from '@/components';
 import '@/main.less';
 
-const axios = window['axios'];
-
 Vuip.use(GlobalCompt);
-Vuip.use(VuipRouter);
+Vuip.use(request);
 
-Vuip.prototype.request = {
-    'post': function (url, data, option) {
-        return axios.post(url, data).then(res => {
-            return res.data;
-        })
-    },
-    'get': function (url, option) {
-        return axios.get(url).then(res => {
-            return res.data;
-        });
-    }
-};
-
-const router = new VuipRouter(routes);
 
 new Vuip({
     id: '#app',

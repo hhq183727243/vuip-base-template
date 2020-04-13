@@ -11,6 +11,7 @@
                 <button type="button" onclick="handleAsyncChangeState">异步修改state</button>
             </div>
             <nav class="m10-t">
+                <RouterLink class="nav-item" href="/hello">hello页</RouterLink>
                 <RouterLink class="nav-item" href="/todo">todo列表</RouterLink>
                 <RouterLink class="nav-item" href="/test" target="_blank">站外链接</RouterLink>
             </nav>
@@ -21,7 +22,7 @@
     import Count from '@/components/Count.html';
 
     export default {
-        name: 'Hello',
+        name: 'Home',
         data() {
             return {
                 logo: require('../assets/images/logo.png'),

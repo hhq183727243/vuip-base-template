@@ -1,0 +1,47 @@
+<template>
+    <div style="text-align: center;">
+        <h1>hello world {name}</h1>
+        <v-for data="list" item="myItem" index="myIndex">
+            <div class="m10-t">{myItem.id + '_' +myItem.title + myIndex}</div>
+        </v-for>
+        <v-if test="list.length < 5">
+            <div>list.length < 5</div>
+        </v-if>
+        <v-elseif test="list.length < 6">
+            <div>list.length < 6</div>
+        </v-elseif>
+        <v-else>
+            <div>list.length = {list.length}</div>
+        </v-else>
+        <button onclick="handleAddList">新增列表</button>
+        <input type="text" value="11">
+        <div>ss</div>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Hello',
+        data() {
+            return {
+                name: 'vuip',
+                list: [
+                    { id: 1, title: '武汉加油' },
+                    { id: 2, title: '湖北加油' },
+                    { id: 3, title: '中国加油' },
+                ]
+            }
+        },
+        methods: {
+            handleAddList() {
+                this.data.list.push({ id: 3, title: '中国加油' });
+
+                this.setData({
+                    list: this.data.list
+                });
+            }
+        },
+        mounted() {
+            console.log(this);
+        }
+    }
+</script>

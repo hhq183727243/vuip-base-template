@@ -1,7 +1,8 @@
-import vuip from 'vuip';
+import { request } from '@/utils/request';
+import Vuip from 'vuip';
 import vuipx from './vuipx';
 
-vuip.use(vuipx);
+Vuip.use(vuipx);
 
 const store = new vuipx.Store({
     state: {
@@ -10,13 +11,7 @@ const store = new vuipx.Store({
         user: {
             name: 'vuip'
         },
-        todoList: [{
-            id: 1,
-            title: 'todo_1'
-        }, {
-            id: 2,
-            title: 'todo_2'
-        }],
+        todoList: [],
         userName(state) {
             return state.user.name + state.times
         }
@@ -28,7 +23,10 @@ const store = new vuipx.Store({
         },
         increment(state, payload) {
             state.times = state.times + payload.step
-        }
+        },
+        updateTodoList(state, payload) {
+            state.todoList = payload.todoList
+        },
     },
     actions: {
         asyncIncrement({ dispatch, state }, payload) {
@@ -37,6 +35,14 @@ const store = new vuipx.Store({
                     step: 1
                 });
             }, 1000);
+        },
+
+        getTodoList({ dispatch, state }, payload) {
+            request.get('/api/get_banner_list').then(res => {
+                dispatch('updateTodoList', {
+                    todoList: res.data.list
+                });
+            });
         }
     }
 });

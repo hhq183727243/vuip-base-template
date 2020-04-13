@@ -32,6 +32,11 @@ function formatUrl(url, params) {
     return url;
 }
 
+// 是否是无效数据
+function isDef(v) {
+    return (v === '' || v === null || v === undefined)
+}
+
 // 单实例$router
 let $router = null;
 let Vuip = null;
@@ -58,7 +63,7 @@ class VuipRouter {
                 if ($router.routes[$router.pathname] === undefined) {
                     return h('<div :class="props.class || \'\'"><v-if test="false"><div></div></v-if></div>');
                 }
-                return h('<div :class="props.class || \'\'"><' + $router.routes[$router.pathname].name + ' /></div>');
+                return h('<div :class="props.class || \'\'"><Compt_' + $router.routes[$router.pathname].name + ' /></div>');
             }
         });
 
@@ -96,7 +101,7 @@ class VuipRouter {
     // 将router 注册为全局组件
     _registerGlobalComponent() {
         for (let pathname in this.routes) {
-            Vuip.component(this.routes[pathname].name, this.routes[pathname]);
+            Vuip.component('Compt_' + this.routes[pathname].name, this.routes[pathname]);
         }
     }
 
@@ -106,18 +111,19 @@ class VuipRouter {
         this._initRouter();
         this.$vm._reRender();
     }
-    back() {
-        this._changeRouter();
+    back(n) {
+        window.history(isDef(n) ? -1 : n);
     }
     to(path, params) {
         this._changeRouter(formatUrl(path, params));
     }
 }
 
-// 浏览器后台事件监听
-window.onpopstate = function () {
+// 浏览器后退事件监听
+window.onpopstate = function (e) {
+    console.log(e)
     if ($router) {
-        $router.back();
+        $router.to();
     }
 }
 

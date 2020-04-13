@@ -1,8 +1,21 @@
 <template>
     <div style="text-align: center;">
+        <h1>{title}</h1>
+        <v-if test="title === 'ucar2'">
+            <div>{state.times}</div>
+        </v-if>
         <v-for data="state.todoList">
             <div>{item.id + '_' +item.title}</div>
         </v-for>
+        <div class="m10-t">v-for</div>
+        <v-for data="list">
+            <div>{item.id + '_' +item.title}</div>
+        </v-for>
+        <div class="m10-t">v-while</div>
+        <v-while data="list" test="item.id > 5">
+            <div>{item.id + '_' +item.title}</div>
+        </v-while>
+        <button onclick="handleAddTodo">添加todo</button>
     </div>
 </template>
 <script>
@@ -10,14 +23,26 @@
         name: 'Todo',
         data() {
             return {
+                title: 'ucar',
                 list: []
             }
         },
         methods: {
+            handleAddTodo() {
+                this.data.list.push({
+                    id: Math.floor(Math.random() * 10),
+                    title: '新增todo'
+                });
 
+                this.setData({
+                    list: this.data.list,
+                    title: 'ucar2'
+                });
+            }
         },
         mounted() {
-
+            console.log(this);
+            this.$store.dispatch('getTodoList');
         }
     }
 </script>
