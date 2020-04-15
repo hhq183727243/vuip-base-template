@@ -48,17 +48,24 @@ module.exports = {
             }, {
                 // vui-html-loader
                 test: /\.html$/,
-                loader: 'vui-html-loader',
+                use: [
+                    {
+                        loader: "babel-loader" // 经过vui-html-loader处理后返回对象需要再babel处理下，这样script代码块就可以使用es6语法了
+                    }, {
+                        loader: 'vui-html-loader', // .html 组件处理
+
+                        // loader配置
+                        options: {
+                            name: ''
+                        }
+                    }
+                ],
                 exclude: /node_modules/,
                 include: [
                     path.resolve(__dirname, "../src/page"),
                     path.resolve(__dirname, "../src/components"),
                     path.resolve(__dirname, "../src/layouts"),
                 ],
-                // loader配置
-                options: {
-                    name: ''
-                }
             }, {
                 test: /\.(png|jpg)$/,
                 use: [
