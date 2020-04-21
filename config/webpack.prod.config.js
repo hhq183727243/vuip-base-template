@@ -17,4 +17,10 @@ module.exports = {
             dry: false //设置为false,启用删除文件
         })
     ],
+    optimization: {
+        // 将node_mudules包独立打包一个vendors.js文件
+        splitChunks: {
+            chunks: 'all'
+        }
+    }
 };

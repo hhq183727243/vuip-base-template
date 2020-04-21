@@ -18,11 +18,11 @@ module.exports = {
     },
     output: {
         // 把所有依赖的模块合并输出到一个 bundle.js 文件
-        filename: '[name].js?id=[hash:8]',
+        filename: '[name].[chunkhash:8].js',
         // 输出文件都放到 dist 目录下
         path: path.resolve(__dirname, '../dist'),
         publicPath: '/', // 设置资源访问目录，默认为项目跟目录，可设置cdn路径
-        chunkFilename: "[id].chunk.js" // 非入口文件命名规则
+        chunkFilename: "vendors.[chunkhash:8].js" // 非入口文件命名规则
     },
     module: {
         rules: [
@@ -130,6 +130,7 @@ module.exports = {
         }
     },
     resolve: {
+        extensions: ['.js', '.html', '.json'],
         alias: {
             '@': path.resolve(__dirname, '../src/'),
         }

@@ -3677,7 +3677,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
+lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -6188,15 +6188,15 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vui-html-loader@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vui-html-loader/-/vui-html-loader-1.0.1.tgz#7563c5f2661ddaf6ecc833ab3068ef03b0635fb1"
-  integrity sha512-iUe4WOQD5RS4wTJne5sjJoOapUUNDjfkkY4mtKxpBzxmpBEuD8e9bpaHsjyYJbtIezXb/CLPzaxxpkIFBEmXZA==
-
-vuip@^1.0.0:
+vui-html-loader@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.2.tgz#b1d68ba2e90f5dcda9793445ef8131696be5b8da"
-  integrity sha512-bcijb3A7uz2axb1Bsze0qrb7/MDyDv9mDOFQXpYO636qhZKfIoipv3peKLjdfeslQ2Clp2Jxjl5uq3dvW+3JHQ==
+  resolved "https://registry.yarnpkg.com/vui-html-loader/-/vui-html-loader-1.0.2.tgz#dee36f63414047f62ac187d82ac0c8fd20b5afd3"
+  integrity sha512-KHY1sVoz8l9bB9SweCK1SRibmFbMIcE/sTRekaxQa3qQnlLVA+2ecM1SFRgDcEdPiJdy4eBINSED532D86nQtw==
+
+vuip@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.7.tgz#91906aa1f3690d6a5fc45dd400ec41a56bca3440"
+  integrity sha512-5fz4iCM6gQ4l97BCz9SG0sLlQd1AN8QY8ncrY46oNe+fXyVJY5++FgLcbMVYluF9qc9IEGCIeMYMcqj75w2WSQ==
 
 watchpack@^1.6.0:
   version "1.6.0"
@@ -6288,6 +6288,13 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-merge@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.2.2.tgz#a27c52ea783d1398afd2087f547d7b9d2f43634d"
+  integrity sha512-TUE1UGoTX2Cd42j3krGYqObZbOD+xF7u28WB7tfUordytSjbWTIjK/8V0amkBfTYN4/pB/GIDlJZZ657BGG19g==
+  dependencies:
+    lodash "^4.17.15"
 
 webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"
