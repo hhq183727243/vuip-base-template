@@ -1,8 +1,6 @@
-import { request } from '@/utils/request';
-import Vuip from 'vuip';
 import vuipx from './vuipx';
+import { request } from '@/utils/request';
 
-Vuip.use(vuipx);
 
 const store = new vuipx.Store({
     state: {
@@ -17,7 +15,7 @@ const store = new vuipx.Store({
         }
     },
     mutations: {
-        // @state 原state，@action 携带参数
+        // @state 原state，@payload 携带参数
         updateState(state, payload) {
             state.loginStatus = payload.loginStatus
         },
@@ -47,4 +45,4 @@ const store = new vuipx.Store({
     }
 });
 
-export default store;
+export default store

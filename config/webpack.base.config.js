@@ -18,7 +18,7 @@ module.exports = {
     },
     output: {
         // 把所有依赖的模块合并输出到一个 bundle.js 文件
-        filename: '[name].[chunkhash:8].js',
+        filename: '[name].[hash:8].js',
         // 输出文件都放到 dist 目录下
         path: path.resolve(__dirname, '../dist'),
         publicPath: '/', // 设置资源访问目录，默认为项目跟目录，可设置cdn路径
@@ -85,7 +85,7 @@ module.exports = {
                 // exclude: /node_modules/,
                 include: [
                     path.resolve(__dirname, "../src"),
-                    path.resolve(__dirname, "../node_modules/vuip"),
+                    // path.resolve(__dirname, "../node_modules/vuip"),
                 ],
                 loader: "babel-loader"
             }

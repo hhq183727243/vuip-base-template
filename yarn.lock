@@ -6188,15 +6188,20 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vui-html-loader@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vui-html-loader/-/vui-html-loader-1.0.2.tgz#dee36f63414047f62ac187d82ac0c8fd20b5afd3"
-  integrity sha512-KHY1sVoz8l9bB9SweCK1SRibmFbMIcE/sTRekaxQa3qQnlLVA+2ecM1SFRgDcEdPiJdy4eBINSED532D86nQtw==
+vui-html-loader@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/vui-html-loader/-/vui-html-loader-1.0.4.tgz#46b50b5076284066d8511db24beabd73c9d9aa63"
+  integrity sha512-BGVMI+n5frhVSVD+C72uYR8YY76xU7fI0yiVqWW1CGrdKbG/OH1hfP+S/eT1Vwiiqc/sZgZcqCjukCwxnldRWw==
+
+vuip-router@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vuip-router/-/vuip-router-1.0.0.tgz#af434862603aac5f57167afb166dd4419fb7a0bd"
+  integrity sha512-UpvKbsVla0asSobtjBExRFkFDiflfr+zDYuA5LpYaE/AT07dW1Al5CnMEInksguZbbzbdPjeUyWOAMagQe8ufg==
 
 vuip@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.7.tgz#91906aa1f3690d6a5fc45dd400ec41a56bca3440"
-  integrity sha512-5fz4iCM6gQ4l97BCz9SG0sLlQd1AN8QY8ncrY46oNe+fXyVJY5++FgLcbMVYluF9qc9IEGCIeMYMcqj75w2WSQ==
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/vuip/-/vuip-1.0.10.tgz#9602a1a8e62ce8f604ee78eaae4732495194d8cd"
+  integrity sha512-bPBPcd0hISMNJT1Tx5zThZb/rPf7AdFx628qGwGFLu2xdgLN0FmYBdkJ+J7lT/hVdCFarLz1bD6B/pJzfZSciw==
 
 watchpack@^1.6.0:
   version "1.6.0"

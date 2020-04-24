@@ -54,7 +54,9 @@ class Store {
             $store.mutations[type]($store._state, payload);
 
             // 这边需要做下依赖收集，判断数据是否有被引用，不然当更新没有被引用的数据是也会触发虚拟dom的对比
-            $store.$app.setData();
+            if ($store.$app) {
+                $store.$app.setData();
+            }
         }
 
         if (type && typeof ($store.actions[type]) === 'function') {
@@ -65,7 +67,7 @@ class Store {
 }
 
 export default {
-    install() {
+    install(_Vuip) {
 
     },
     Store
