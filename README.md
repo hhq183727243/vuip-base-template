@@ -56,7 +56,7 @@ yarn build
 │   ├── layouts              # 通用布局
 │   ├── models               # 全局 dva model
 │   ├── pages                # 业务页面入口和常用模板
-│   ├── router               # 路由配置
+│   ├── _router              # 自动生成路由配置，不可编辑
 │   ├── store                # 全局状态管理
 │   ├── utils                # 工具库
 │   ├── locales              # 国际化资源
@@ -64,4 +64,9 @@ yarn build
 │   └── app.js               # 主入口 JS
 ├── README.md
 └── package.json
+```
+### 版本更新说明
++ 1.0.0
+```
+1、根据page下文件目录自动生成路由
 ```
