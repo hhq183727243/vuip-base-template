@@ -3,6 +3,7 @@
         <button onclick="disCount">-</button>
         <input type="number" :value="props.value" onchange="handleChange" />
         <button onclick="addCount">+</button>
+        <div>dabuleTatal: {dabuleTatal} ，子组件times:{_g.times}</div>
     </div>
 </template>
 <script>
@@ -10,7 +11,10 @@
         name: 'Count',
         data() {
             return {
-                num: 0
+                num: 2,
+                dabuleTatal() {
+                    return this.num + this.props.value;
+                }
             }
         },
         methods: {
@@ -26,6 +30,9 @@
                 const { onChange } = this.props;
                 onChange(Number(e.target.value));
             }
+        },
+        mounted() {
+            console.log('vuip-component');
         },
         unmounted() {
             console.log('count:' + 'unmounted')

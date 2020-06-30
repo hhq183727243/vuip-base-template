@@ -76,7 +76,20 @@ module.exports = {
                             esModule: false, // 这里设置为false
                             name: 'images/[name]_[hash:8].[ext]',
                             limit: 10240,
-                            publicPath: './'// 配置访问资源路径,可设置cdn路径
+                            publicPath: '../'// 配置访问资源路径,可设置cdn路径
+                        }
+                    }
+                ]
+            }, {
+                test: /\.(ttf|TTF|eot|woff|woff2|svg)$/,
+                use: [
+                    {
+                        loader: 'url-loader', // 处理小图片编译成base64
+                        options: {
+                            esModule: false, // 这里设置为false
+                            name: 'font/[name]_[hash:8].[ext]',
+                            limit: 1,
+                            publicPath: '../'// 配置访问资源路径,可设置cdn路径 
                         }
                     }
                 ]

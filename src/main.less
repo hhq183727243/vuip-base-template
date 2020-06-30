@@ -1,5 +1,10 @@
 @import './assets/less/mixins.less';
 
+@font-face {
+    font-family: electronicFont;
+    src        : url(./assets/font/DS-DIGIT.TTF);
+}
+
 body {
     -webkit-text-size-adjust: none;
     text-size-adjust        : none;
@@ -56,4 +61,37 @@ h3 {
 
 .nav-item {
     margin: 10px;
+}
+
+div.blue.blue.blue {
+    color: red;
+}
+
+div.blue:not(.a) {
+    color: blue !important;
+}
+
+#aa {
+    color: rgb(102, 9, 223) !important;
+}
+
+
+
+span.text:not(.foo) {
+    color: blue;
+}
+
+div.wrap>.text {
+    color: red;
+}
+
+// id选择器 选择符 标签选择器 
+
+[class ^="aa"] {
+    color: green;
+}
+
+[href]:active,
+button:active {
+    box-shadow: 0 0 0 999px rgba(0, 0, 0, .05);
 }

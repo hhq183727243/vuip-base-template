@@ -2,16 +2,16 @@
     <div style="text-align: center;">
         <h1>{title}</h1>
         <v-if test="title === 'ucar2'">
-            <div>{state.times}</div>
+            <div>{_g.times}</div>
         </v-if>
-        <v-for data="state.todoList">
+        <v-for data="_g.todoList">
             <div>{item.id + '_' +item.title}</div>
         </v-for>
-        <div class="m10-t">v-for</div>
+        <h2 class="m10-t">v-for</h2>
         <v-for data="list">
             <div>{item.id + '_' +item.title}</div>
         </v-for>
-        <div class="m10-t">v-while</div>
+        <h2 class="m10-t">v-while</h2>
         <v-while data="list" test="item.id > 5">
             <div>{item.id + '_' +item.title}</div>
         </v-while>
@@ -29,13 +29,13 @@
         },
         methods: {
             handleAddTodo() {
-                this.data.list.push({
+                this.list.push({
                     id: Math.floor(Math.random() * 10),
                     title: '新增todo'
                 });
 
                 this.setData({
-                    list: this.data.list,
+                    list: this.list,
                     title: 'ucar2'
                 });
             }

@@ -3,16 +3,17 @@ import { request } from '@/utils/request';
 
 
 const store = new vuipx.Store({
+    aliasName: '_g', // 全局状态别名
     state: {
         loginStatus: false,
         times: 1,
         user: {
-            name: 'vuip'
+            naame: 'vuip'
         },
         todoList: [],
-        userName(state) {
+        /* userName(state) {
             return state.user.name + state.times
-        }
+        } */
     },
     mutations: {
         // @state 原state，@payload 携带参数

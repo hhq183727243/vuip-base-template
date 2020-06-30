@@ -3,11 +3,12 @@
         <div style="text-align: center;">
             <img width="100" :src="logo" alt="" />
             <h1>Hello World VUIP</h1>
-            <div class="m10-t">total:{total}</div>
+            <div class="m10-t" style="font-family: electronicFont;">total:{total}, fullName:{fullName}, {user.name}</div>
             <Count class="m10-t" :onChange="onChange" :value="total" />
-            <div class="m10-t">store.times：<b>{state.times}</b> | store.userName:<b>{state.userName}</b></div>
+            <div class="m10-t">state.times：<b>{_g.times}</b> state.todoList：<b>{_g.todoList.length}</b></div>
+
             <div class="m10-t">
-                <button type="button" onclick="handleChangeState">同步修改state</button>
+                <button type="button" onclick="handleChangeState()">同步修改</button>
                 <button type="button" onclick="handleAsyncChangeState">异步修改state</button>
             </div>
             <nav class="m10-t">
@@ -27,10 +28,16 @@
             return {
                 logo: require('../assets/images/logo.png'),
                 name: 1,
-                total: 0
+                total: 0,
+                user: {
+                    name: 13
+                },
+                fullName: function () {
+                    return this.name + '-' + this.user.name
+                }
             }
         },
-        component: {
+        components: {
             Count
         },
         methods: {
@@ -48,12 +55,17 @@
                 });
             },
             handleAsyncChangeState() {
-                this.$store.dispatch({
+                this.setData({
+                    total: this.total + 10,
+                    name: this.name + 1,
+                });
+
+                /*  this.$store.dispatch({
                     type: 'asyncIncrement',
                     payload: {
                         loginStatus: true
                     }
-                });
+                });*/
             },
             handleTo() {
                 this.$router.to('/404?a=1', { name: 1 });
@@ -64,3 +76,8 @@
         }
     }
 </script>
+<style lang="less">
+    .button {
+        background-color: #0ae;
+    }
+</style>
