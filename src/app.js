@@ -9,7 +9,7 @@ import '@/main.less';
 Vuip.use(GlobalCompt);
 Vuip.use(request);
 console.time()
-new Vuip({
+window.app = new Vuip({
     id: '#app',
     render: h => h(App),
     router,

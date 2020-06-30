@@ -37,7 +37,7 @@ function init() {
         fs.mkdirSync(_router);
     }
     const strArr = [];
-    strArr.push('import vuip from "E:/learn/vuip/dist";');
+    strArr.push('import vuip from "vuip";');
     strArr.push('import VuipRouter from "vuip-router";');
     for (let key in pageMap) {
         strArr.push(`import ${key.replace(/(\/|\.)/g, '_')} from "${pageMap[key]}";`)
