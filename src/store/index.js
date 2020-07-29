@@ -8,7 +8,7 @@ const store = new vuipx.Store({
         loginStatus: false,
         times: 1,
         user: {
-            naame: 'vuip'
+            name: 'vuip'
         },
         todoList: [],
         /* userName(state) {
@@ -17,11 +17,11 @@ const store = new vuipx.Store({
     },
     mutations: {
         // @state 原state，@payload 携带参数
-        updateState(state, payload) {
-            state.loginStatus = payload.loginStatus
+        updateLoginState(state, status) {
+            state.loginStatus = status
         },
-        increment(state, payload) {
-            state.times = state.times + payload.step
+        updateUser(state, user) {
+            state.user = user
         },
         updateTodoList(state, payload) {
             state.todoList = payload.todoList

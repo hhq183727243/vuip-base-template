@@ -1,0 +1,187 @@
+<template>
+    <div :class="'aui-select ' + (props.class || '')">
+        <div class="aui-select-selector" onclick="handleShow">
+            <input class="aui-select-selector-input" type="text" readonly :value="label" placeholder="请选择" />
+            <div class="aui-select-clear" onclick="handleClear">x</div>
+        </div>
+        <div :class="'aui-select-popup '  + status + ' ' + position">
+            <div class="aui-select-search">
+                <input ref="input" type="text" oninput="handleChangeKeyword" :value="keyword" placeholder="请输入关键字搜索" />
+            </div>
+            <div class="aui-select-list">
+                <v-for data="options">
+                    <div :class="'aui-select-list-item ' +  (initActive(item) ? 'active' : '')" onclick="handleChange(item, index)">
+                        <!-- <div class="aui-select-list-item-bg"></div> -->
+                        <span>{item[props.label || 'name']}</span>
+                    </div>
+                </v-for>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Select',
+        data() {
+            return {
+                status: 'hide',
+                position: 'down',
+                keyword: '',
+                value: undefined,
+                label(vm) {
+                    const value = ('value' in this.props) ? this.props.value : this.value;
+                    let label = '';
+
+                    this.props.options.forEach(item => {
+                        if (typeof item === 'object') {
+                            if (value === item[this.props.key || 'id']) {
+                                label = item[this.props.label || 'name']
+                            }
+                        } else if (item === value) {
+                            label = item;
+                        }
+                    });
+
+                    return label;
+                },
+                options() {
+                    if (this.keyword === '') {
+                        return this.props.options;
+                    } else {
+                        return this.props.options.filter(item => {
+                            if (item === null || item === undefined) {
+                                return false;
+                            }
+
+                            if (typeof item !== 'object') {
+                                return (item.toString()).indexOf(this.keyword) > -1;
+                            } else {
+                                return item[this.props.label || 'name'].indexOf(this.keyword) > -1;
+                            }
+                        });
+                    }
+                },
+            }
+        },
+        methods: {
+            initActive(item) {
+                const value = ('value' in this.props) ? this.props.value : this.value;
+
+                if (typeof item !== 'object') {
+                    return value === item
+                } else {
+                    if ('key' in this.props) {
+                        return value === item[this.props.key]
+                    } else {
+                        // 如果没有key 则默认取id
+                        return value === item['id']
+                    }
+                }
+            },
+            handleToggle(flag) {
+                this.setData({
+                    status: flag ? 'show' : 'hide'
+                }, () => {
+                    this.$refs['input'].focus();
+                });
+            },
+            handleChangeKeyword(e) {
+                const keyword = e.target.value;
+                if (this.tiemer) {
+                    clearTimeout(this.tiemer);
+                }
+
+                if (keyword === '') {
+                    this.setData({
+                        keyword
+                    });
+                    return;
+                }
+
+                this.tiemer = setTimeout(item => {
+                    this.setData({
+                        keyword
+                    });
+                }, 300);
+            },
+            handleShow(e) {
+                // 计算列表显示位置，下拉空间是否足够
+                const distanceT = e.clientY - e.offsetY;
+                const bodyHight = document.body.clientHeight;
+                const distanceB = bodyHight - distanceT - e.target.clientHeight;
+
+                if (distanceT > distanceB * 1.5) {
+                    this.setData({
+                        position: 'up',
+                    });
+                } else {
+                    this.setData({
+                        position: 'down',
+                    });
+                }
+
+                this.handleToggle(true);
+            },
+            handleChange(item, index) {
+                console.log(1)
+                let value = '';
+                if (typeof item !== 'object') {
+                    value = item;
+
+                    this.setData({
+                        value,
+                        keyword: ''
+                    });
+                } else {
+                    value = item[this.props.key || 'id'];
+
+                    this.setData({
+                        value,
+                        keyword: ''
+                    });
+                }
+
+                // 如果组件绑定了v-model,则默认会为父组件注册input事件，用来响应v-model绑定的值
+                if (typeof this.props.input === 'function') {
+                    this.props.input(value);
+                }
+
+                if (typeof this.props.onChange === 'function') {
+                    this.props.onChange(value, item, index);
+                }
+
+                this.handleToggle(false);
+            },
+            handleClear() {
+                this.handleChange(undefined);
+            },
+            handleClickBody(e) {
+                const target = e.target;
+
+                // 点击区域是否是select区域
+                let parentEl = target;
+                let flag = false;
+
+                while (parentEl) {
+                    if (parentEl === this.$el) {
+                        // 点击区域在select中
+                        flag = true;
+                        break;
+                    }
+                    parentEl = parentEl.parentNode;
+                }
+
+                if (!flag && this.status === 'show') {
+                    this.handleToggle(false);
+                }
+            }
+        },
+        mounted() {
+            console.log(this);
+            document.addEventListener('click', this.handleClickBody, false);
+        },
+        unmounted() {
+            document.removeEventListener('click', this.handleClickBody);
+        }
+    }
+</script>

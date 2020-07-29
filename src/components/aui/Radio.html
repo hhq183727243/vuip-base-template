@@ -1,0 +1,26 @@
+<template>
+    <label :class="'aui-radio ' + ' '  + (props.class || '')">
+        <input type="radio" onchange="handleChange" :name="props.name" :value="props.key" :checked="this.props.value === props.key" />
+        <slot></slot>
+    </label>
+</template>
+<script>
+    export default {
+        name: 'Radio',
+        data() {
+            return {}
+        },
+        methods: {
+            handleChange(e) {
+                const key = this.props.key;
+                const value = this.props.value;
+                const checked = e.target.checked;
+
+                // 如果组件绑定了v-model,则默认会为父组件注册input事件，用来响应v-model绑定的值
+                this.props.input && this.props.input(key);
+
+                this.props.onChange && this.props.onChange(key, checked);
+            }
+        }
+    }
+</script>

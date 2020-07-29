@@ -1,0 +1,41 @@
+<template>
+    <div :class="'aui-popup aui-alert aui-tip aui-tip-' + props.type + ' ' + status">
+        <v-if test="props.type === 'loading'">
+            <span class="loading iconfont icon-refresh info"></span>
+        </v-if>
+        {props.content}
+    </div>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                status: 'show'
+            }
+        },
+        methods: {
+            hide() {
+                this.setData({
+                    status: 'hide'
+                });
+
+                setTimeout(() => {
+                    this.uninstall();
+                }, 300);
+            }
+        },
+        mounted() {
+            if (this.props.type !== 'loading' || this.props.delay) {
+                setTimeout(() => {
+                    this.setData({
+                        status: 'hide'
+                    });
+
+                    setTimeout(() => {
+                        this.uninstall();
+                    }, 300);
+                }, this.props.delay);
+            }
+        }
+    }
+</script>

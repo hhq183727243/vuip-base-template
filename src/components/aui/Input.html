@@ -1,0 +1,23 @@
+<template>
+    <div :class="'aui-input ' + ' '  + (props.class || '')">
+        <input class="aui-input-inner" :type="props.htmlType || 'text'" onchange="handleChange" oninput="handleInput" :placeholder="props.placeholder || ''" :value="props.value || ''" />
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Input',
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            handleChange(e) {
+                this.props.onChange && this.props.onChange(e.target.value);
+            },
+            handleInput(e) {
+                this.props.input && this.props.input(e.target.value);
+            }
+        }
+    }
+</script>

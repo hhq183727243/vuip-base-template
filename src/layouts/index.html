@@ -1,12 +1,20 @@
 <template>
     <div class="layouts">
         <header class="header">
-            <h1>Layouts</h1>
+            <h1>
+                <span>项目管理系统</span>
+                <v-if test="_g.loginStatus">
+                    <span>
+                        <span class="m15-l" style="font-size: 14px">{_g.user.userName}</span>
+                        <a class="m15-l" style="font-size: 14px" onclick="handleLout">退出登录</a>
+                    </span>
+                </v-if>
+            </h1>
         </header>
-        <article class="wrapper">
+        <article class="wrapper" style="padding: 15px;">
             <RouterView class="container" />
         </article>
-        <footer class="footer">Footer</footer>
+        <!-- <footer class="footer">Footer</footer> -->
     </div>
 </template>
 <script>
@@ -19,12 +27,39 @@
             }
         },
         components: {
+
         },
         methods: {
-
+            handleLout() {
+                localStorage.clear();
+                this.$store.dispatch('updateLoginState', false);
+                this.$store.dispatch('updateUser', null);
+                this.$router.to('/system/login');
+            }
         },
         mounted() {
+            let user = null;
 
+            // 更新全局状态
+            try {
+                user = JSON.parse(localStorage.getItem('user'));
+            } catch (error) {
+                user = null;
+            }
+
+            if (user) {
+                this.$store.dispatch('updateLoginState', true);
+                this.$store.dispatch('updateUser', user);
+            }
+
+            if (this.$router.pathname === '/system/login' && this._g.loginStatus) {
+                this.$router.to('/');
+            }
+
+            // 未登录
+            if (this.$router.pathname !== '/system/login' && !this._g.loginStatus) {
+                this.$router.to('/system/login');
+            }
         }
     }
 </script>

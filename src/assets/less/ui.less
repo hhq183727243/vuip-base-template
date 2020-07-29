@@ -1,0 +1,607 @@
+@import "theme.less";
+
+body {
+    font-size: 14px;
+}
+
+.info {
+    color: @theme
+}
+
+.warn {
+    color: @warn
+}
+
+.error {
+    color: @error
+}
+
+.white {
+    color: @white
+}
+
+.aui-mark {
+    position        : fixed;
+    top             : 0;
+    right           : 0;
+    bottom          : 0;
+    left            : 0;
+    z-index         : 1000;
+    height          : 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+
+    &.hide {
+        display: none;
+    }
+}
+
+.colN(@start, @end, @interval) when (@start <=@end) {
+    .aui-col-@{start} {
+        width: 100 * @start/24%;
+    }
+
+    .colN(@start+@interval, @end, @interval);
+}
+
+.aui-card {
+    border: 1px solid solid @border-color;
+
+    &-cover {
+        margin             : 6px;
+        background-position: center;
+        background-repeat  : no-repeat;
+        background-size    : cover;
+        height             : 150px;
+    }
+
+    &-title {
+        padding  : 6px;
+        font-size: 16px;
+    }
+}
+
+.aui-row {
+    display: block;
+
+    .aui-col {
+        float     : left;
+        box-sizing: border-box;
+    }
+
+    &::after {
+        content: '';
+        display: table;
+        clear  : both;
+    }
+}
+
+.aui-tip {
+    border          : 1px solid @border-color;
+    background-color: #eee;
+    padding         : 10px;
+    border-radius   : 3px;
+
+    &-info {
+        background-color: #e6f7ff;
+        border          : 1px solid @theme-light;
+    }
+
+    &-warn {
+        background-color: #fffbe6;
+        border          : 1px solid @warn-light;
+        color           : @warn;
+    }
+
+    &-error {
+        background-color: #fff2f0;
+        border          : 1px solid @error-light;
+        color           : @error;
+    }
+
+    &-loading {
+        background-color: #fff;
+        border          : 1px solid @border-color;
+
+        .loading {
+            display  : inline-block;
+            animation: rotating 0.9s ease infinite;
+        }
+    }
+}
+
+.aui-btn {
+    outline         : 0;
+    line-height     : 1.5715;
+    position        : relative;
+    display         : inline-block;
+    font-weight     : 400;
+    white-space     : nowrap;
+    text-align      : center;
+    background-image: none;
+    border          : 1px solid #d9d9d9;
+    user-select     : none;
+    touch-action    : manipulation;
+    padding         : 4px 15px;
+    font-size       : 14px;
+    border-radius   : 2px;
+    color           : rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    border-color    : #d9d9d9;
+    cursor          : pointer;
+    box-shadow      : 0 2px 0 rgba(0, 0, 0, 0.015);
+
+    &-size-small {
+        padding  : 2px 8px;
+        font-size: 12px;
+    }
+
+    &-info {
+        color       : #fff;
+        background  : @info;
+        border-color: @info;
+    }
+
+    &-warn {
+        color       : @warn;
+        background  : #fffbe6;
+        border-color: @warn;
+    }
+
+    &-error {
+        color       : @error;
+        background  : #fffbe6;
+        border-color: @error;
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:active {
+        left: 1px;
+        top : 1px
+    }
+
+    input[type="file"] {
+        z-index : 9;
+        position: absolute;
+        left    : 0;
+        top     : -1px;
+        bottom  : -1px;
+        opacity : 0;
+    }
+
+    overflow: hidden;
+}
+
+.aui-input {
+    border       : 1px solid @border-color;
+    border-radius: 3px;
+    overflow     : hidden;
+
+    &-inner {
+        outline    : none;
+        width      : 100%;
+        padding    : 4px 10px;
+        line-height: 1.7;
+        box-sizing : border-box;
+        border     : none;
+
+        &:focus {
+            background-color: #fafafa;
+        }
+    }
+
+    // 匹配包含input聚焦的.aui-input样式，提案中，暂无浏览器支持
+    &:has(&>input:focus) {
+        border-color: @theme;
+    }
+}
+
+.aui-select {
+    position: relative;
+
+    &-selector {
+        border          : 1px solid @border-color;
+        border-radius   : 3px;
+        overflow        : hidden;
+        padding         : 0 10px;
+        height          : 30px;
+        line-height     : 30px;
+        background-color: #fff;
+        cursor          : pointer;
+
+        &-input {
+            border : none;
+            padding: 0;
+            outline: none;
+        }
+
+        &:hover {
+            .aui-select-clear {
+                display: block;
+            }
+        }
+    }
+
+    &-clear {
+        display    : none;
+        position   : absolute;
+        right      : 10px;
+        top        : 50%;
+        transform  : translateY(-50%);
+        width      : 20px;
+        height     : 20px;
+        border     : 1px solid #f0f0f0;
+        line-height: 20px;
+        text-align : center;
+        color      : @theme;
+        cursor     : pointer;
+    }
+
+    &-popup {
+        z-index         : 1;
+        position        : absolute;
+        background-color: #fff;
+        box-shadow      : 0 0 5px #999;
+        width           : 100%;
+        overflow        : hidden;
+
+        &.down {
+            top      : 37px;
+            animation: upIn 0.2s ease-out;
+        }
+
+        &.up {
+            bottom   : 37px;
+            animation: downIn 0.2s ease-out;
+        }
+
+        &.hide {
+            display: none;
+        }
+
+        &.show {
+            display: block;
+        }
+    }
+
+    &-search {
+        padding         : 8px;
+        background-color: @border-color-light;
+        box-shadow      : 0 0 4px @border-color-dark;
+
+        input {
+            width        : 100%;
+            border       : 1px solid @border-color;
+            outline      : none;
+            padding      : 5px;
+            line-height  : 16px;
+            border-radius: 4px;
+            box-sizing   : border-box;
+        }
+    }
+
+    &-list {
+        max-height: 198px;
+        overflow-y: auto;
+
+        &-item {
+            position     : relative;
+            border-bottom: 1px solid @border-color-light;
+            padding      : 9px 8px;
+            overflow     : hidden;
+            cursor       : pointer;
+
+            &.active {
+                background-color: @theme-light;
+                color           : #fff;
+            }
+
+            &.disabled {
+                cursor          : not-allowed;
+                background-color: @border-color-light;
+                color           : @border-color;
+            }
+
+            &-bg {
+                z-index         : -1;
+                position        : absolute;
+                right           : 0;
+                bottom          : 0;
+                top             : auto;
+                height          : 0;
+                width           : 100%;
+                background-color: @theme;
+                transition      : all 0.3s ease-out;
+            }
+
+            &:hover {
+                color           : #fff;
+                background-color: @theme;
+                /* .aui-select-list-item-bg {
+                    bottom      : auto;
+                    top         : 0;
+                    height      : 100%;
+                } */
+            }
+        }
+    }
+
+    &-mask {
+        z-index         : -1;
+        background-color: rgba(0, 0, 0, 0.45);
+
+        &.show {
+            display: block;
+        }
+    }
+}
+
+.aui-checkbox,
+.aui-radio {
+    user-select: none;
+}
+
+
+.aui-confirm {
+    top             : 30%;
+    min-width       : 300px;
+    box-shadow      : 0 0 5px @border-color;
+    background-color: #fff;
+
+    .aui-confirm-head {
+        border-bottom: 1px solid #f0f0f0;
+        height       : 36px;
+        line-height  : 36px;
+        padding      : 0 15px;
+
+        &-close {
+            float      : right;
+            width      : 20px;
+            cursor     : pointer;
+            color      : @theme;
+            height     : 20px;
+            border     : 1px solid #f0f0f0;
+            line-height: 20px;
+            text-align : center;
+            margin-top : 8px;
+        }
+    }
+
+    .aui-confirm-body {
+        padding: 30px 15px;
+    }
+
+    .aui-confirm-footer {
+        padding   : 0 15px 15px;
+        text-align: right;
+    }
+}
+
+.aui-alert {
+    top       : 100px;
+    box-shadow: 0 0 8px #ddd;
+}
+
+.aui-popup {
+    z-index  : 1001;
+    position : absolute;
+    left     : 50%;
+    transform: translate(-50%, 0);
+    animation: show 0.4s ease-out;
+
+    &.hide {
+        animation: hide 0.3s ease-out forwards;
+    }
+}
+
+.aui-spin {
+    position: relative;
+
+    &-loading {
+        position        : absolute;
+        top             : 0;
+        left            : 0;
+        z-index         : 0;
+        display         : block;
+        width           : 100%;
+        height          : 100%;
+        background-color: rgba(255, 255, 255, 0.6);
+
+        &.hide {
+            display: none;
+        }
+
+        .icon-refresh {
+            position  : absolute;
+            top       : 50%;
+            left      : 50%;
+            margin    : -12px;
+            display   : inline-block;
+            font-size : 24px;
+            margin-top: -20px;
+            animation : rotating 0.9s ease infinite;
+        }
+    }
+
+    &-tip {
+        position   : absolute;
+        top        : 50%;
+        width      : 100%;
+        padding-top: 10px;
+        text-align : center;
+        color      : @theme;
+    }
+}
+
+@keyframes show {
+    0% {
+        transform: translate(-50%, 100px);
+        opacity  : 0;
+    }
+
+    20% {
+        transform: translate(-50%, 20px);
+    }
+
+    100% {
+        transform: translate(-50%, 0);
+        opacity  : 1;
+    }
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes upIn {
+    0% {
+        transform: translate(0, 50px);
+        opacity  : 0;
+    }
+
+    20% {
+        transform: translate(0, 10px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+        opacity  : 1;
+    }
+}
+
+@keyframes downIn {
+    0% {
+        transform: translate(0, -50px);
+        opacity  : 0;
+    }
+
+    20% {
+        transform: translate(0, -10px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+        opacity  : 1;
+    }
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+
+    50%,
+    75% {
+        transform: scale(2.5);
+    }
+
+    78%,
+    100% {
+        opacity: 0;
+    }
+}
+
+
+.aui-page {
+    &-item {
+        display         : inline-block;
+        cursor          : pointer;
+        width           : 30px;
+        height          : 30px;
+        text-align      : center;
+        line-height     : 32px;
+        color           : #999;
+        border          : 1px solid @border-color;
+        margin-left     : 5px;
+        background-color: @white;
+        user-select     : none;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &.active {
+            border-color: @theme;
+            color       : @theme;
+        }
+
+        &.first-last {
+            width       : 60px;
+            margin-right: 5px;
+        }
+
+        &.disabled {
+            color           : #ccc;
+            background-color: @border-color-light;
+            cursor          : not-allowed;
+        }
+    }
+}
+
+.aui-table {
+    width         : 100%;
+    border-spacing: 0;
+    border-top    : 1px solid @border-color;
+    border-left   : 1px solid @border-color;
+
+    thead {
+        background-color: @border-color-light;
+    }
+
+    tbody {
+        background-color: @white;
+
+        tr {
+            &:hover {
+                background-color: @theme-light-trans;
+            }
+        }
+    }
+
+    td,
+    th {
+        padding      : 10px 8px;
+        border-right : 1px solid @border-color;
+        border-bottom: 1px solid @border-color;
+    }
+
+    .icon-wrap {
+        overflow     : hidden;
+        height       : 16px;
+        width        : 16px;
+        border       : 1px solid @border-color-dark;
+        border-radius: 2px;
+        cursor       : pointer;
+
+        &.checked {
+            border-color: @theme;
+        }
+
+        .iconfont {
+            font-size  : 20px;
+            font-weight: bold;
+            position   : relative;
+            left       : -2px;
+        }
+    }
+}
+
+.colN(1, 24, 1);

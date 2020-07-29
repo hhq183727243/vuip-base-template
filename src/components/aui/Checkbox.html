@@ -1,0 +1,42 @@
+<template>
+    <label :class="'aui-checkbox ' + ' '  + (props.class || '')">
+        <input type="checkbox" onchange="handleChange" :value="props.key" :checked="checked" />
+        <slot></slot>
+    </label>
+</template>
+<script>
+    export default {
+        name: 'Checkbox',
+        data() {
+            return {
+                checked() {
+                    return Array.isArray(this.props.value) ? this.props.value.indexOf(this.props.key) > -1 : this.props.value
+                }
+            }
+        },
+        methods: {
+            handleChange(e) {
+                const key = this.props.key;
+                const value = this.props.value;
+                const checked = e.target.checked;
+                let res;
+
+                if (Array.isArray(value)) {
+                    const i = value.indexOf(key);
+                    if (checked) {
+                        i < 0 && (res = value.concat([key]));
+                    } else {
+                        i > -1 && (res = value.slice(0, i).concat(value.slice(i + 1)));
+                    }
+                } else {
+                    res = checked
+                }
+
+                // 如果组件绑定了v-model,则默认会为父组件注册input事件，用来响应v-model绑定的值
+                this.props.input && this.props.input(res);
+
+                this.props.onChange && this.props.onChange(res, key, checked);
+            }
+        }
+    }
+</script>

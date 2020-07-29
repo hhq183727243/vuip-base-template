@@ -1,83 +1,44 @@
 <template>
-    <div>
-        <div style="text-align: center;">
-            <img width="100" :src="logo" alt="" />
-            <h1>Hello World VUIP</h1>
-            <div class="m10-t" style="font-family: electronicFont;">total:{total}, fullName:{fullName}, {user.name}</div>
-            <Count class="m10-t" :onChange="onChange" :value="total" />
-            <div class="m10-t">state.times：<b>{_g.times}</b> state.todoList：<b>{_g.todoList.length}</b></div>
-
-            <div class="m10-t">
-                <button type="button" onclick="handleChangeState()">同步修改</button>
-                <button type="button" onclick="handleAsyncChangeState">异步修改state</button>
-            </div>
-            <nav class="m10-t">
-                <RouterLink class="nav-item" href="/hello">hello页</RouterLink>
-                <RouterLink class="nav-item" href="/todo">todo列表</RouterLink>
-                <RouterLink class="nav-item" href="/test" target="_blank">站外链接</RouterLink>
-            </nav>
-        </div>
-    </div>
+	<div>
+		<ARow>
+			<v-for data="projectList">
+				<ACol span="6">
+					<Card :cover="logo" :title="item.name" v-on:click="handleTo(item)" />
+				</ACol>
+			</v-for>
+		</ARow>
+	</div>
 </template>
 <script>
-    import Count from '@/components/Count.html';
-
-    export default {
-        name: 'Home',
-        data() {
-            return {
-                logo: require('../assets/images/logo.png'),
-                name: 1,
-                total: 0,
-                user: {
-                    name: 13
-                },
-                fullName: function () {
-                    return this.name + '-' + this.user.name
-                }
-            }
-        },
-        components: {
-            Count
-        },
-        methods: {
-            onChange(val) {
-                this.setData({
-                    total: val
-                });
-            },
-            handleChangeState() {
-                this.$store.dispatch({
-                    type: 'increment',
-                    payload: {
-                        step: 2
-                    }
-                });
-            },
-            handleAsyncChangeState() {
-                this.setData({
-                    total: this.total + 10,
-                    name: this.name + 1,
-                });
-
-                /*  this.$store.dispatch({
-                    type: 'asyncIncrement',
-                    payload: {
-                        loginStatus: true
-                    }
-                });*/
-            },
-            handleTo() {
-                this.$router.to('/404?a=1', { name: 1 });
-            }
-        },
-        mounted() {
-            console.log(this);
-        }
-    }
+	export default {
+		name: 'Home',
+		data() {
+			return {
+				logo: require('../assets/images/1000710.jpg'),
+				projectList: []
+			}
+		},
+		methods: {
+			queryProjectList() {
+				this.request.get('/api/product/list').then(res => {
+					this.setData({
+						projectList: res.data.list
+					})
+				});
+			},
+			handleTo(item) {
+				console.log(item);
+				this.$router.to('/projectDetail', { id: item.id });
+			}
+		},
+		mounted() {
+			console.log(this);
+			this.queryProjectList();
+		}
+	}
 </script>
 <style lang="less">
-    .button {
-        background-color: #0ae;
-    }
+	.button {
+		background-color: #0ae;
+	}
 </style>

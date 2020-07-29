@@ -78,7 +78,7 @@ function _request(option) {
         newOptions.method === 'PUT' ||
         newOptions.method === 'DELETE'
     ) {
-        if (!(newOptions.body instanceof FormData)) {
+        if (!(newOptions.data instanceof FormData)) {
             // 如果跨域的请求是Simple Request（简单请求 ），则不会触发“PreFlight”。Mozilla对于简单请求的要求是
             // 取消发送options探路 https://www.cnblogs.com/cc299/p/7339583.html
             newOptions.headers = {
@@ -87,13 +87,13 @@ function _request(option) {
                 ...newOptions.headers,
             };
 
-            newOptions.body = JSON.stringify(newOptions.body);
+            newOptions.data = JSON.stringify(newOptions.data);
         } else {
-            // newOptions.body is FormData，通常是带附件提交
+            // newOptions.data is FormData，通常是带附件提交
             newOptions.headers = {
                 Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
                 ...newOptions.headers,
-
             };
         }
     }
@@ -109,27 +109,25 @@ function _request(option) {
         //.then(response => cachedSave(response, hashcode))
         .then(res => {
             // 全局加载结束
-            // endLoading
-            if (res.code === 200) {
+            if (res.code === 200 || res.code === 1) {
                 return res;
-            } else if (res.code === 5) {
-                // 重定向指定路径
-                window.top.location.href = res.redirectUri;
-                return Promise.reject(new Error(res.msg || 'Error'));
             } else {
-                console.log(res.msg);
+                alert(res.msg);
                 return Promise.reject(new Error(res.msg || 'Error'));
             }
         })
-        .catch(e => {
+        .catch(({ response }) => {
             // 全局加载结束
             // endLoading
-            const status = e.name;
+            const status = response.status;
 
             if (status === 401) {
                 // 返回登录页
+                clearAuthority();
+                location.reload();
             }
-            return Promise.reject(new Error(e.message || 'Error'));
+
+            return Promise.reject(new Error(response.data.data));
         });
 }
 
@@ -154,7 +152,7 @@ export const request = {
         return _request({
             url: urlRes,
             method: 'POST',
-            body: data
+            data: data
         })
     },
     delete(url, data, params) {
@@ -166,7 +164,7 @@ export const request = {
         return _request({
             url: urlRes,
             method: 'DELETE',
-            body: data
+            data: data
         })
     },
     put(url, data, params) {
@@ -178,13 +176,13 @@ export const request = {
         return _request({
             url: urlRes,
             method: 'PUT',
-            body: data
+            data: data
         })
     }
 };
 
 export default {
-    install(Vuip) {
-        Vuip.prototype.request = request
+    install(_Vuip) {
+        _Vuip.prototype.request = request
     }
 }

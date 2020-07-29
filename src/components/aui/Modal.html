@@ -1,0 +1,59 @@
+<template>
+    <div>
+        <div :class="'aui-mark ' + status"></div>
+        <div :class="'aui-popup aui-confirm ' + props.class + ' ' + status">
+            <div class="aui-confirm-head">
+                <span>{props.title}</span>
+                <a class="aui-confirm-head-close" onclick="handleClose">x</a>
+            </div>
+            <div class="aui-confirm-body">{props.content}</div>
+            <div class="aui-confirm-footer">
+                <AButton type="warn" onclick="handleCancel">{props.cancelText || '取消'}</AButton>
+                <AButton class="m15-l" type="info" onclick="handleOk">{props.okText || '确认'}</AButton>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Modal',
+        data() {
+            return {
+                status: 'show'
+            }
+        },
+        methods: {
+            handleOk() {
+                if (this.status === 'hide') {
+                    return;
+                }
+                if (typeof this.props.ok === 'function') {
+                    this.props.ok();
+                }
+
+                this.handleCancel();
+            },
+            handleCancel() {
+                this.setData({
+                    status: 'hide'
+                });
+
+                setTimeout(() => {
+                    this.uninstall();
+                }, 300);
+            },
+            handleClose() {
+                this.setData({
+                    status: 'hide'
+                });
+
+                setTimeout(() => {
+                    this.uninstall();
+                }, 300);
+            }
+        },
+        mounted() {
+
+        }
+    }
+</script>

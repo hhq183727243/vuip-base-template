@@ -1,0 +1,82 @@
+<template>
+    <div :class="'aui-page ' + (props.class || '')">
+        <span :class="'aui-page-item first-last ' + (current === 1 ? 'disabled' : '')" onclick="handleChangePage(1)">首页</span>
+        <v-if test="10 > pageTotal">
+            <v-for data="pageTotal">
+                <span :class="'aui-page-item ' + ((item + 1) === current ? 'active' : '')" onclick="handleChangePage(item + 1)">{item + 1}</span>
+            </v-for>
+        </v-if>
+        <v-else>
+            <span>
+                <v-if test="5 >= current">
+                    <v-for data="10">
+                        <span :class="'aui-page-item ' + ((item + 1) === current ? 'active' : '')" onclick="handleChangePage(item + 1)">{item + 1}</span>
+                    </v-for>
+                </v-if>
+                <v-elseif test="current > pageTotal-5">
+                    <v-for data="10">
+                        <span :class="'aui-page-item ' + ((pageTotal + item - 9) === current ? 'active' : '')" onclick="handleChangePage(pageTotal + item - 9)">{pageTotal + item - 9}</span>
+                    </v-for>
+                </v-elseif>
+                <v-else>
+                    <v-for data="10">
+                        <span :class="'aui-page-item ' + ((current + item - 4) === current ? 'active' : '')" onclick="handleChangePage(current + item - 4)">{current + item -
+                            4}</span>
+                    </v-for>
+                </v-else>
+            </span>
+        </v-else>
+        <span :class="'aui-page-item first-last '  + (current === pageTotal ? 'disabled' : '')" onclick="handleChangePage(pageTotal)">未页</span>
+        <!-- <v-while data="props.total/props.pageSize" test="(item + 1 - 5) < current || (item + 1 - 5) > current">
+            <span :class="'aui-page-item ' + ((item + 1) === current ? 'active' : '')">{item + 1}</span>
+        </v-while> -->
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Page',
+        data() {
+            return {
+                current: 1,
+                pageSize: 10,
+                pageTotal() {
+                    let pageSize = this.props.pageSize || this.pageSize;
+                    let total = this.props.total
+
+                    if (typeof pageSize === 'number' && typeof total === 'number') {
+                        return total / pageSize;
+                    } else {
+                        console.warn('pageSize total必须为Number类型');
+                        return 0;
+                    }
+                }
+            }
+        },
+        methods: {
+            handleChangePage(page) {
+                this.setData({
+                    current: page
+                });
+
+                this.props.onChange(page, this.pageSize);
+            }
+        },
+        mounted() {
+            let current = this.current;
+            let pageSize = this.pageSize;
+
+            if (this.props.current && typeof this.props.current === 'number') {
+                current = this.props.current;
+            }
+
+            if (this.props.pageSize && typeof this.props.pageSize === 'number') {
+                pageSize = this.props.pageSize;
+            }
+
+            this.setData({
+                current,
+                pageSize
+            });
+        }
+    }
+</script>

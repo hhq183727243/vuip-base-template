@@ -37,16 +37,13 @@ export function setAuthority(authority, user) {
 
 	localStorage.setItem('Authorization', authority);
 	// localStorage.setItem('AuthorizationTime', (new Date().getTime() + (remember ? (24 * 30) : 6) * 3600 * 1000));//设置过期时间
-	if(user){
+	if (user) {
 		localStorage.setItem('AuthorizationUser', JSON.stringify(user));
 	}
 }
 
 
 export function clearAuthority() {
-	localStorage.removeItem('Authorization');
-	localStorage.removeItem('AuthorizationUser');
-	localStorage.removeItem('AuthorizationTime');
-	sessionStorage.clear();
+	localStorage.clear();
 }
 
