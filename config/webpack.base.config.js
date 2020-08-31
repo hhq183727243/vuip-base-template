@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到�
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 
 module.exports = {
     // 配合devServer使用，当文件修改时通知 webpack-dev-server模块更新页面
@@ -108,6 +109,10 @@ module.exports = {
         // modules: ['node_modules', './loaders/']
     },
     plugins: [
+        new DllReferencePlugin({
+            // 描述 vuip 动态链接库的文件内容
+            manifest: path.resolve(__dirname, '../public/dll/vuip.manifest.json'),
+        }),
         new MiniCssExtractPlugin({
             filename: "css/[name]_[chunkhash:8].css", //都提到build目录下的css目录中
             chunkFilename: "[id].css",

@@ -1,0 +1,85 @@
+<template>
+    <div :class="'aui-carousel ' + (props.class || '')">
+        <div class="aui-carousel-list" ref="listWrap">
+            <div class="aui-carousel-track"
+                :style="'width:' + (itemWidth * props.length) + 'px; transform: translate3d(-' + (currPage * itemWidth) + 'px, 0px, 0px); transition: transform 500ms ease 0s;'">
+                <slot></slot>
+            </div>
+        </div>
+        <div class="aui-carousel-page">
+            <v-for data="props.length">
+                <span :class="'aui-carousel-page-item' + (index === currPage ? ' active' : '')" onclick="handleChangePage(index)"></span>
+            </v-for>
+        </div>
+    </div>
+</template>
+<script>
+    import { debounce } from '@/utils/utils';
+
+    export default {
+        name: 'Carousel',
+        data() {
+            return {
+                itemWidth: 0,
+                currPage: 0, // 当前页
+            }
+        },
+        methods: {
+            change() {
+                this.timeout = setTimeout(() => {
+                    let count = this.props.length;
+                    let index = this.currPage;
+
+                    if (index >= (count - 1)) {
+                        index = 0
+                    } else {
+                        index++;
+                    }
+
+                    this.setData({
+                        currPage: index
+                    });
+
+                    this.change();
+                }, 3000);
+            },
+            handleChangePage(index) {
+                clearTimeout(this.timeout);
+
+                this.setData({
+                    currPage: index
+                });
+
+                this.change();
+            },
+            onWindowResize() {
+                console.log(2);
+                const itemWidth = this.$refs.listWrap.clientWidth;
+
+                this.setData({
+                    itemWidth,
+                });
+            }
+        },
+        updated() {
+
+        },
+        mounted() {
+            window.addEventListener('resize', this.tempfun = debounce(this.onWindowResize), false);
+
+            setTimeout(() => {
+                const itemWidth = this.$refs.listWrap.clientWidth;
+
+                this.setData({
+                    itemWidth,
+                });
+
+                this.change();
+            }, 100);
+        },
+        unmounted() {
+            window.removeEventListener('resize', this.tempfun);
+            clearTimeout(this.timeout);
+        }
+    }
+</script>

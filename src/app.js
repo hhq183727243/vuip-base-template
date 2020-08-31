@@ -1,4 +1,4 @@
-import Vuip from 'E:/learn/vuip/dist';
+import Vuip from 'vuip';
 import App from '@/layouts/index.html';
 import router from '@/_router';
 import store from '@/store';

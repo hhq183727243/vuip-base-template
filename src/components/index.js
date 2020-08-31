@@ -13,6 +13,9 @@ import APage from './aui/Page.html';
 import ASelect from './aui/Select.html';
 import ARadio from './aui/Radio.html';
 import ACheckbox from './aui/Checkbox.html';
+import AUpload from './aui/Upload.html';
+import ACarousel from './aui/Carousel.html';
+import ACarouselItem from './aui/Carousel-item.html';
 
 const compts = {
     AButton,
@@ -25,8 +28,11 @@ const compts = {
     ASelect,
     ARadio,
     ACheckbox,
+    AUpload,
     APage,
-    ASpin
+    ASpin,
+    ACarousel,
+    ACarouselItem
 }
 
 export default {

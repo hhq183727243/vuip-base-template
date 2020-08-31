@@ -1,6 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
+const ParallelUglifyPlugin =require('webpack-parallel-uglify-plugin');
 
 module.exports = {
     mode: 'production',
@@ -15,6 +16,24 @@ module.exports = {
             root: path.resolve(__dirname, '../'), //根目录
             verbose: true, //是否启用控制台输出信息
             dry: false //设置为false,启用删除文件
+        }),
+        new ParallelUglifyPlugin({
+            // 传递给UglifyJS 的参数
+            uglifyJS: {
+                output: {
+                    // 最紧凑输出
+                    beautify: false,
+                    // 删除注释
+                    comments: false
+                },
+                compress: {
+                    // warnings: false,
+                    // 删除console语句
+                    drop_console: true,
+                    collapse_vars: true,
+                    reduce_vars: true
+                }
+            }
         })
     ],
     optimization: {

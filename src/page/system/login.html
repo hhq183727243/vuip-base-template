@@ -2,11 +2,10 @@
     <div style="text-align: center;">
         <h1>登录</h1>
         <form style="width: 400px; margin: auto;">
-            <AInput class="m15-t" type="text" onchange="handleInputChange('name')" />
-            <AInput class="m15-t" type="password" onchange="handleInputChange('password')" />
+            <AInput class="m15-t" type="text" v-model="name" />
+            <AInput class="m15-t" type="password" v-model="password" />
             <div class="m15-t">
                 <AButton type="info" onclick="handleLogin">登录</AButton>
-                <AButton type="info" onclick="handleResg">注册</AButton>
             </div>
         </form>
     </div>
@@ -21,18 +20,6 @@
             }
         },
         methods: {
-            handleInputChange(field, e) {
-                this.setData({
-                    [field]: e.target.value
-                });
-            },
-            handleResg() {
-                this.confirm('确认删除', {
-                    ok: () => {
-                        this.alert.info('操作成功');
-                    }
-                });
-            },
             handleLogin() {
                 if (!this.name || !this.password) {
                     this.alert.warn('账号、密码不能为空');

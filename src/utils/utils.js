@@ -56,6 +56,25 @@ export function eachTree(arr, callback, callback2) {
 }
 
 
+/**
+ * 防抖函数 
+ * @param  {function} func  回调函数
+ * @param  {number}   wait  等待时间，
+ * @return {function}       返回客户调用函数，连续触发时间间隔大于wait 时func才触发
+ */
+export function debounce(func, wait = 300) {
+	// 定时器id
+	let timer = 0
+
+	return function (...args) {
+		if (timer) clearTimeout(timer);
+
+		timer = setTimeout(() => {
+			func.apply(this, args)
+		}, wait)
+	}
+}
+
 export function compare(prop) {
 	return function (obj1, obj2) {
 		let val1 = obj1[prop];

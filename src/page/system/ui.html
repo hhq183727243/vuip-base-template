@@ -3,15 +3,15 @@
         <h1>Aui Components</h1>
         <ARow :gutter="16">
             <ACol span="12">
-                <div class="m15-t">
-                    <h2 class="m15-b">AButton组件</h2>
+                <div class="m15-t card">
+                    <h2 class="m15-b AA">AButton组件</h2>
                     <AButton>default</AButton>
                     <AButton class="m15-l" type="info">info</AButton>
                     <AButton class="m15-l" type="warn">warn</AButton>
                     <AButton class="m15-l" type="error">error</AButton>
                 </div>
 
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">ATip组件</h2>
                     <ATip>default</ATip>
                     <ATip class="m15-t" type="info">info</ATip>
@@ -19,7 +19,7 @@
                     <ATip class="m15-t" type="error">error</ATip>
                 </div>
 
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">AAlert组件</h2>
                     <AButton type="info" onclick="handleTip('info', '普通提示')">info</AButton>
                     <AButton class="m15-l" type="warn" onclick="handleTip('warn', '告警提示')">warn</AButton>
@@ -28,38 +28,47 @@
                     <AButton class="m15-l" type="info" onclick="handleCloseTip">关闭loading</AButton>
                 </div>
 
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">AConfirm组件</h2>
                     <AButton type="info" onclick="handleConfirm">确认弹窗</AButton>
                 </div>
 
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">AModal组件</h2>
                     <AButton type="info" onclick="handleModal">模态框</AButton>
                 </div>
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">APage组件</h2>
                     <APage :total="count" v-on:onChange="handleChangePage"></APage>
                 </div>
-                <div class="m15-t">
-                    <h2 class="m15-b">AInput组件</h2>
+                <div class="m15-t card">
+                    <h2 class="m15-b">AInput组件 name：{name}</h2>
                     <AInput v-model="name" placeholder="请输入"></AInput>
-                    <div>双向绑定name：{name}</div>
                 </div>
-            </ACol>
-            <ACol span="12">
-                <div class="m15-t">
+                <div class="m15-t card">
+                    <h2 class="m15-b">ARadio单选框：{picked}</h2>
+                    <ARadio name="name" key="选项一" v-model="picked">选项一</ARadio>
+                    <ARadio name="name" key="选项二" v-model="picked">选项二</ARadio>
+                    <ARadio name="name" key="选项三" v-model="picked">选项三</ARadio>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ACheckbox单选框：{checkbox}</h2>
+                    <ACheckbox key="China" v-model="checkbox" v-on:onChange="handleChangeCheckbox">中国</ACheckbox>
+                    <ACheckbox key="America" v-model="checkbox">美国</ACheckbox>
+                    <ACheckbox key="Japan" v-model="checkbox">日本</ACheckbox>
+                </div>
+                <div class="m15-t card">
                     <h2 class="m15-b">ASelect组件</h2>
                     <ASelect class="m15-t" :options="city" v-model="selected"></ASelect>
                     <AButton type="info" onclick="handleChangeSelect">修改</AButton>
                 </div>
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">ATable组件</h2>
                     <ASpin :spinning="spinning">
                         <ATable :columns="columns" :data="city" v-on:onChange="handleChangeRow"></ATable>
                     </ASpin>
                 </div>
-                <div class="m15-t">
+                <div class="m15-t card">
                     <h2 class="m15-b">ASpin组件</h2>
                     <ASpin :spinning="spinning" tip="加载中...">
                         <ATip type="info">
@@ -70,18 +79,24 @@
                     </ASpin>
                     <AButton class="m10-t" type="info" onclick="handleToggleSpinning">{spinning ? '关闭' : '开启'}</AButton>
                 </div>
-                <div class="m15-t">
-                    <h2 class="m15-b">单选框：{picked}</h2>
-                    <ARadio name="name" key="选项一" v-model="picked">选项一</ARadio>
-                    <ARadio name="name" key="选项二" v-model="picked">选项二</ARadio>
-                    <ARadio name="name" key="选项三" v-model="picked">选项三</ARadio>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">ACarousel 走马灯组件</h2>
+                    <ACarousel :length="banner.length">
+                        <v-for data="banner">
+                            <ACarouselItem>
+                                <div style="background-color:#364d79; height: 150px; color: #fff;">{item.name}</div>
+                            </ACarouselItem>
+                        </v-for>
+                    </ACarousel>
                 </div>
-                <div class="m15-t">
-                    <h2 class="m15-b">单选框：{checkbox}</h2>
-                    <ACheckbox key="China" v-model="checkbox" v-on:onChange="handleChangeCheckbox">中国</ACheckbox>
-                    <ACheckbox key="America" v-model="checkbox">美国</ACheckbox>
-                    <ACheckbox key="Japan" v-model="checkbox">日本</ACheckbox>
+                <div class="m15-t card">
+                    <h2 class="m15-b">AUpload 上传</h2>
+                    <AUpload accept="image/*" action="/api/uploadFile" :data="{name: count}">+上传</AUpload>
                 </div>
+            </ACol>
+            <ACol span="12">
+
             </ACol>
         </ARow>
 
@@ -121,7 +136,8 @@
                     { id: 5, name: '厦门', point: 16 },
                     { id: 6, name: '漳州', point: 17 },
                     { id: 7, name: '龙岩', point: 20 },
-                ]
+                ],
+                banner: []
             }
         },
         methods: {
@@ -182,7 +198,8 @@
         mounted() {
             setTimeout(() => {
                 this.setData({
-                    count: 1000
+                    count: 1000,
+                    banner: [{ name: 'BANNER_1' }, { name: 'BANNER_2' }, { name: 'BANNER_3' }]
                 });
             }, 1000);
         }
