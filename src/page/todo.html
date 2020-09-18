@@ -23,6 +23,7 @@
         name: 'Todo',
         data() {
             return {
+                logo: require('../assets/images/logo.png'),
                 title: 'ucar',
                 list: []
             }
@@ -42,7 +43,7 @@
         },
         mounted() {
             console.log(this);
-            this.$store.dispatch('getTodoList');
+            // this.$store.dispatch('getTodoList');
         }
     }
 </script>
