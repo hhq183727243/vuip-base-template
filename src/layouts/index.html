@@ -37,9 +37,20 @@
                 this.$router.to('/system/login');
             }
         },
+        created() {
+            console.log(1)
+            if (this.$router.pathname === '/system/login' && this._g.loginStatus) {
+                this.$router.to('/');
+            }
+
+            // 未登录
+            if (this.$router.pathname !== '/system/login' && !this._g.loginStatus) {
+                this.$router.to('/system/login');
+            }
+        },
         mounted() {
             let user = null;
-
+            
             // 更新全局状态
             try {
                 user = JSON.parse(localStorage.getItem('user'));
@@ -50,15 +61,6 @@
             if (user) {
                 this.$store.dispatch('updateLoginState', true);
                 this.$store.dispatch('updateUser', user);
-            }
-
-            if (this.$router.pathname === '/system/login' && this._g.loginStatus) {
-                this.$router.to('/');
-            }
-
-            // 未登录
-            if (this.$router.pathname !== '/system/login' && !this._g.loginStatus) {
-                this.$router.to('/system/login');
             }
         }
     }

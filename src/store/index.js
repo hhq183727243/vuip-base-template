@@ -5,7 +5,7 @@ import { request } from '@/utils/request';
 const store = new vuipx.Store({
     aliasName: '_g', // 全局状态别名
     state: {
-        loginStatus: false,
+        loginStatus: true, // 方便测试，默认设置登录
         times: 1,
         user: {
             name: 'vuip'

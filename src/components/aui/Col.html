@@ -15,6 +15,7 @@
             }
         },
         mounted() {
+            console.log(2)
             setTimeout(() => {
                 const parentRowComponent = this.$parentVNode.parentVNode.context;
                 const props = parentRowComponent.$proxyRender.props;
