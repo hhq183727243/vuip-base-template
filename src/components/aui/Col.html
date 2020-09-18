@@ -1,0 +1,28 @@
+<template>
+    <div :class="'aui-col aui-col-' + props.span" :style="style">
+        <slot></slot>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Col',
+        data() {
+            return {
+                gutter: 0,
+                style() {
+                    return `padding-left: ${this.gutter / 2}px; padding-right: ${this.gutter / 2}px;`
+                }
+            }
+        },
+        mounted() {
+            setTimeout(() => {
+                const parentRowComponent = this.$parentVNode.parentVNode.context;
+                const props = parentRowComponent.$proxyRender.props;
+
+                this.setData({
+                    gutter: props.gutter || 0
+                });
+            }, 0);
+        }
+    }
+</script>

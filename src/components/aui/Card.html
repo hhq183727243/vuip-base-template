@@ -1,0 +1,21 @@
+<template>
+    <div :class="'aui-card ' + (props.class || '')" onclick="handleClick">
+        <div class="aui-card-cover" :style="'background-image:url(' + props.cover + ')'"></div>
+        <div class="aui-card-title">{props.title}</div>
+        <v-if test="!!props.sub">
+            <div class="aui-card-sub">{props.sub}</div>
+        </v-if>
+    </div>
+</template>
+<script>
+    export default {
+        data() {
+            return {}
+        },
+        methods: {
+            handleClick() {
+                this.props.click(1);
+            }
+        }
+    }
+</script>

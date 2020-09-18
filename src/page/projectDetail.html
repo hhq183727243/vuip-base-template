@@ -1,0 +1,131 @@
+<template>
+    <div>
+        <ARow>
+            <ACol span="12">
+                <h1>{entity.name}</h1>
+                <div class="m15-t">
+                    路径：{entity.path}
+                    <Directory :data="entity.dir" />
+                    <!-- <v-for data="entity.dir.children">
+                        <div>
+                            {item.name}
+                            <v-if test="!!item.children">
+                                <div>
+                                    <v-for data="item.children">
+                                        <div>----{item.name}</div>
+                                    </v-for>
+                                </div>
+                            </v-if>
+                        </div>
+                    </v-for> -->
+                </div>
+            </ACol>
+            <ACol span="12">
+                <ATip type="info">
+                    <div>部署说明：</div>
+                    <div class="m5-t">1、在项目目录下打包成.zip后缀压缩包</div>
+                    <div class="m5-t">2、将打包好压缩包上传上去</div>
+                    <div class="m5-t">3、点击部署即可</div>
+                </ATip>
+                <div class="m15-t">
+                    <AButton type="info">上传zip包
+                        <input type="file" onchange="handleUpload" :value="file" accept=".zip" />
+                    </AButton>
+                    <!-- <textarea oninput="handleCommandChange"></textarea> -->
+                    <AButton class="m15-l" type="info" onclick="handleDeploy">部署</AButton>
+                </div>
+            </ACol>
+        </ARow>
+    </div>
+</template>
+<script>
+    import Vuip from 'vuip';
+
+    Vuip.component('Directory', {
+        methods: {
+            createList(data, level) {
+                const children = data.children;
+                let childrenHtml = '';
+                if (children && children.length > 0) {
+                    children.forEach(item => {
+                        childrenHtml += this.createList(item, level + '--');
+                    })
+                }
+
+                const html = `<div>
+                    ${level + data.name}
+                    ${childrenHtml}
+                </div>`;
+
+                return html;
+            }
+        },
+        render(c, vm) {
+            const data = vm.props.data;
+
+            return c(vm.createList(data, ''));
+        }
+    });
+
+    export default {
+        name: 'ProjectDetail',
+        data() {
+            return {
+                id: '',
+                title: 'ucar',
+                command: '',
+                file: null,
+                entity: {
+                    dir: {
+                        children: []
+                    }
+                }
+            }
+        },
+        methods: {
+            uploadFile(e, moduleName) {
+                const formData = new FormData();
+                formData.append('path', this.entity.path);
+                formData.append('fileName', 'project_name_123456');
+                formData.append('file', e.target.files[0]);
+
+                this.request.post('/api/uploadFile', formData).then(res => {
+                    alert('上传成功');
+                    this.setData({
+                        file: ''
+                    });
+                });
+            },
+            queryDetail() {
+                this.request.get('/api/product/detail', {
+                    id: this.$router.query.id
+                }).then(res => {
+                    this.setData({
+                        entity: res.data
+                    });
+                });
+            },
+            handleUpload(e) {
+                this.setData({
+                    file: null
+                });
+                this.uploadFile(e);
+            },
+            handleCommandChange(e) {
+                this.setData({
+                    command: e.target.value
+                });
+            },
+            handleDeploy() {
+                this.request.get('/api/unpack', {
+                    path: this.entity.path
+                }).then(res => {
+                    alert(res.data);
+                });
+            }
+        },
+        mounted() {
+            this.queryDetail();
+        }
+    }
+</script>

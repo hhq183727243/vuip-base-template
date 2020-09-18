@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到�
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 
 module.exports = {
     // 配合devServer使用，当文件修改时通知 webpack-dev-server模块更新页面
@@ -108,6 +109,10 @@ module.exports = {
         // modules: ['node_modules', './loaders/']
     },
     plugins: [
+        new DllReferencePlugin({
+            // 描述 vuip 动态链接库的文件内容
+            manifest: path.resolve(__dirname, '../public/dll/vuip.manifest.json'),
+        }),
         new MiniCssExtractPlugin({
             filename: "css/[name]_[chunkhash:8].css", //都提到build目录下的css目录中
             chunkFilename: "[id].css",
@@ -115,7 +120,7 @@ module.exports = {
         }),
         new OptimizeCssAssetsPlugin(),
         new HtmlWebpackPlugin({
-            title: 'VUIP',
+            title: '项目部署系统',
             template: path.join(__dirname, '../src/template.html')
         }),
         new CopyWebpackPlugin([
@@ -126,22 +131,6 @@ module.exports = {
             }
         ])
     ],
-    devServer: {
-        contentBase: [path.join(__dirname, "../dist"), path.join(__dirname, "../public")],//告诉服务器从哪里提供内容。只有在你想要提供静态文件时才需要
-        publicPath: '/', // 设置项目目录，localhost:8080/目录/路由
-        historyApiFallback: true, //不跳转
-        inline: true, //实时刷新,
-        port: 8080,
-        host: "0.0.0.0", // 默认是 localhost。如果你希望服务器外部可访问，指定如下：host: "0.0.0.0"
-        proxy: {
-            '/api': {
-                target: 'http://www.doupinku.com',
-                pathRewrite: { '^/api': '/api' },
-                changeOrigin: true,     // target是域名的话，需要这个参数，
-                secure: false,          // 设置支持https协议的代理
-            }
-        }
-    },
     resolve: {
         extensions: ['.js', '.html', '.json'],
         alias: {

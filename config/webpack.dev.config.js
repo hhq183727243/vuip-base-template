@@ -21,7 +21,7 @@ module.exports = {
         host: "0.0.0.0", // 默认是 localhost。如果你希望服务器外部可访问，指定如下：host: "0.0.0.0"
         proxy: {
             '/api': {
-                target: 'http://www.doupinku.com',
+                target: 'http://localhost:3080',
                 pathRewrite: { '^/api': '/api' },
                 changeOrigin: true,     // target是域名的话，需要这个参数，
                 secure: false,          // 设置支持https协议的代理

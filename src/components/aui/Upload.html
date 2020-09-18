@@ -1,0 +1,37 @@
+<template>
+    <div class="aui-upload">
+        <AButton type="info" onclick="handleChoose">
+            <slot></slot>
+        </AButton>
+        <input type="file" ref="file" onchange="handleFileChange" :accept="props.accept || '*'" />
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Upload',
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            handleChoose() {
+                this.$refs.file.click();
+            },
+            handleFileChange(e) {
+                this.onUpload(e.target.files[0]);
+            },
+            onUpload(file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                if (this.props.action) {
+                    this.request.post(this.props.action, formData).then(res => {
+                        this.alert.info('上传成功');
+                        this.props.onChange && this.props.onChange(res);
+                    });
+                }
+            }
+        }
+    }
+</script>

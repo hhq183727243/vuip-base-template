@@ -1,0 +1,207 @@
+<template>
+    <div>
+        <h1>Aui Components</h1>
+        <ARow :gutter="16">
+            <ACol span="12">
+                <div class="m15-t card">
+                    <h2 class="m15-b AA">AButton组件</h2>
+                    <AButton>default</AButton>
+                    <AButton class="m15-l" type="info">info</AButton>
+                    <AButton class="m15-l" type="warn">warn</AButton>
+                    <AButton class="m15-l" type="error">error</AButton>
+                </div>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">ATip组件</h2>
+                    <ATip>default</ATip>
+                    <ATip class="m15-t" type="info">info</ATip>
+                    <ATip class="m15-t" type="warn">warn</ATip>
+                    <ATip class="m15-t" type="error">error</ATip>
+                </div>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">AAlert组件</h2>
+                    <AButton type="info" onclick="handleTip('info', '普通提示')">info</AButton>
+                    <AButton class="m15-l" type="warn" onclick="handleTip('warn', '告警提示')">warn</AButton>
+                    <AButton class="m15-l" type="error" onclick="handleTip('error', '错误提示')">error</AButton>
+                    <AButton class="m15-l" type="info" onclick="handleTip('loading', '加载中...')">loading</AButton>
+                    <AButton class="m15-l" type="info" onclick="handleCloseTip">关闭loading</AButton>
+                </div>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">AConfirm组件</h2>
+                    <AButton type="info" onclick="handleConfirm">确认弹窗</AButton>
+                </div>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">AModal组件</h2>
+                    <AButton type="info" onclick="handleModal">模态框</AButton>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">APage组件</h2>
+                    <APage :total="count" v-on:onChange="handleChangePage"></APage>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">AInput组件 name：{name}</h2>
+                    <AInput v-model="name" placeholder="请输入"></AInput>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ARadio单选框：{picked}</h2>
+                    <ARadio name="name" key="选项一" v-model="picked">选项一</ARadio>
+                    <ARadio name="name" key="选项二" v-model="picked">选项二</ARadio>
+                    <ARadio name="name" key="选项三" v-model="picked">选项三</ARadio>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ACheckbox单选框：{checkbox}</h2>
+                    <ACheckbox key="China" v-model="checkbox" v-on:onChange="handleChangeCheckbox">中国</ACheckbox>
+                    <ACheckbox key="America" v-model="checkbox">美国</ACheckbox>
+                    <ACheckbox key="Japan" v-model="checkbox">日本</ACheckbox>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ASelect组件</h2>
+                    <ASelect class="m15-t" :options="city" v-model="selected"></ASelect>
+                    <AButton type="info" onclick="handleChangeSelect">修改</AButton>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ATable组件</h2>
+                    <ASpin :spinning="spinning">
+                        <ATable :columns="columns" :data="city" v-on:onChange="handleChangeRow"></ATable>
+                    </ASpin>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">ASpin组件</h2>
+                    <ASpin :spinning="spinning" tip="加载中...">
+                        <ATip type="info">
+                            <h3>API：props属性</h3>
+                            <div>spinning：是否为加载中状态</div>
+                            <div class="m10-t">tip：当作为包裹元素时，可以自定义描述文案 </div>
+                        </ATip>
+                    </ASpin>
+                    <AButton class="m10-t" type="info" onclick="handleToggleSpinning">{spinning ? '关闭' : '开启'}</AButton>
+                </div>
+
+                <div class="m15-t card">
+                    <h2 class="m15-b">ACarousel 走马灯组件</h2>
+                    <ACarousel :length="banner.length">
+                        <v-for data="banner">
+                            <ACarouselItem>
+                                <div style="background-color:#364d79; height: 150px; color: #fff;">{item.name}</div>
+                            </ACarouselItem>
+                        </v-for>
+                    </ACarousel>
+                </div>
+                <div class="m15-t card">
+                    <h2 class="m15-b">AUpload 上传</h2>
+                    <AUpload accept="image/*" action="/api/uploadFile" :data="{name: count}">+上传</AUpload>
+                </div>
+            </ACol>
+            <ACol span="12">
+
+            </ACol>
+        </ARow>
+
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Aui',
+        data() {
+            return {
+                count: 0,
+                selected: 3,
+                name: '',
+                spinning: true, // spin 加载状态
+                picked: '',// 单选框
+                checkbox: ['China', 'Japan'],
+                columns: [
+                    { type: 'checkbox', key: 'id', width: 40 },
+                    { title: '城市', key: 'name' },
+                    { title: '网点', key: 'point' },
+                    { title: '备注', key: 'remark' },
+                    {
+                        title: '操作',
+                        render(val, row, index) {
+                            // 只能传递字面量
+                            // return `<AButton onclick="handleDelete('${row.name}')">删除</AButton>`
+                            // return `<AButton onclick="handleDelete(${index})">删除</AButton>`
+                            return `<AButton size="small" onclick="handleDelete(city[${index}], ${index})">删除</AButton>`
+                        }
+                    },
+                ],
+                city: [
+                    { id: 1, name: '宁德', point: 10 },
+                    { id: 2, name: '福州', point: 12 },
+                    { id: 3, name: '莆田', point: 13 },
+                    { id: 4, name: '泉州', point: 14 },
+                    { id: 5, name: '厦门', point: 16 },
+                    { id: 6, name: '漳州', point: 17 },
+                    { id: 7, name: '龙岩', point: 20 },
+                ],
+                banner: []
+            }
+        },
+        methods: {
+            handleTip(type, content) {
+                // 第二个参数，表示多久后关闭默认1500ms。当type是loading时默认不关闭
+                this.tip = this.alert[type](content);
+
+                // 如果type是loading，且没设置关闭时间，则需要通过tip.hide()手动关闭
+            },
+            handleCloseTip() {
+                this.tip && this.tip.hide();
+            },
+            handleConfirm() {
+                this.confirm('确认删除？', {
+                    ok: () => {
+                        this.alert.info('删除成功')
+                    }
+                });
+            },
+            handleModal() {
+                this.modal('确认删除？', {
+                    title: '登录',
+                    ok: () => {
+                        this.alert.info('删除成功')
+                    }
+                });
+            },
+            handleChangeCity(val, row, index) {
+                console.log(val, row, index);
+            },
+            handleChangePage(page, pageSize) {
+                console.log(page, pageSize);
+            },
+            handleChangeInput(val) {
+                console.log(val);
+            },
+            handleChangeSelect() {
+                this.setData({
+                    selected: 2
+                });
+            },
+            // table 选择行修改时
+            handleChangeRow(selectedKeys, selectedRows, row, checked) {
+                console.log(selectedKeys, selectedRows, row, checked);
+            },
+            handleDelete(row) {
+                console.log(row);
+            },
+            handleToggleSpinning() {
+                this.setData({
+                    spinning: !this.spinning
+                });
+            },
+            handleChangeCheckbox(val, key, checked) {
+                console.log(val, key, checked);
+            }
+        },
+        mounted() {
+            setTimeout(() => {
+                this.setData({
+                    count: 1000,
+                    banner: [{ name: 'BANNER_1' }, { name: 'BANNER_2' }, { name: 'BANNER_3' }]
+                });
+            }, 1000);
+        }
+    }
+</script>

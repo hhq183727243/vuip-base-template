@@ -1,0 +1,160 @@
+<template>
+    <div style="text-align: center;">
+        <button onclick="handleSeal">印章</button>
+        <canvas ref="canvas" id="Canvas" width="500" height="300" onmousemove="handleMouseMove"
+            onclick="handleClick"></canvas>
+    </div>
+</template>
+<script>
+    let context = null;
+    const sealData = [];
+
+    export default {
+        name: 'Todo',
+        data() {
+            return {
+                logo: require('../assets/images/logo.png'),
+                radius: 50,
+                ctx: null,
+                currentStatus: null,
+                prevCenterX: 0,
+                prevCenterY: 0
+            }
+        },
+        methods: {
+            onSetContext() {
+                const canvas = this.$refs.canvas;
+                context = canvas.getContext('2d');
+            },
+            handleSeal() {
+                this.setData({
+                    currentStatus: 'SEAL' // 印章
+                });
+
+            },
+            handleMouseMove(e) {
+                if (this.currentStatus !== null) {
+                    let { layerX, layerY } = e;
+
+                    if (layerX < this.radius) {
+                        layerX = this.radius
+                    }
+
+                    if (layerY < this.radius) {
+                        layerY = this.radius
+                    }
+                    this.onDrawCircle(layerX, layerY);
+                }
+            },
+            // 点击canvas面板
+            handleClick() {
+                if (this.currentStatus !== null) {
+                    switch (this.currentStatus) {
+                        case 'SEAL': // 印章
+                            if (this.imgData) {
+                                // 提取图像像素
+                                this.onDrawImg();
+                                const _imgData = context.getImageData(this.prevCenterX - this.radius, this.prevCenterY - this.radius, this.radius * 2, this.radius * 2);
+                                this.imgData.data.forEach((item, index) => {
+                                    if ((index + 1) % 4 === 0) {
+                                        if (this.imgData.data[index] !== 0) {
+                                            _imgData.data[index - 3] = this.imgData.data[index - 3];
+                                            _imgData.data[index - 2] = this.imgData.data[index - 2];
+                                            _imgData.data[index - 1] = this.imgData.data[index - 1];
+                                            _imgData.data[index] = this.imgData.data[index];
+                                        }
+                                    }
+                                });
+
+                                // 印章数据集合
+                                sealData.push({
+                                    imgData: _imgData,
+                                    x: this.prevCenterX - this.radius,
+                                    y: this.prevCenterY - this.radius
+                                });
+                                this.onDrawImg();
+                                // this.imgData = null;
+                            } else {
+                                // 提取图像像素
+                                this.onDrawImg();
+
+                                this.imgData = context.getImageData(this.prevCenterX - this.radius, this.prevCenterY - this.radius, this.radius * 2, this.radius * 2);
+
+                                // 建立点坐标
+                                const coordinates = [];
+                                for (let i = 0; i < Math.pow(this.radius * 2, 2); i++) {
+                                    let x = i % 100;
+                                    let y = Math.floor(i / 100);
+                                    coordinates.push([x, y]);
+                                }
+                                // 数据处理，非圆形内点设置为透明
+                                this.imgData.data.forEach((item, index) => {
+                                    if ((index + 1) % 4 === 0) {
+                                        let coordinate = coordinates[(index + 1) / 4 - 1]; // 像素坐标点
+                                        let distance = Math.sqrt(Math.pow(coordinate[0] - this.radius, 2) + Math.pow(coordinate[1] - this.radius, 2));
+
+                                        if (distance > this.radius) {
+                                            this.imgData.data[index] = 0;
+                                        }
+                                    }
+                                });
+
+                                this.onDrawCircle(this.prevCenterX, this.prevCenterY);
+                            }
+                            break;
+                    }
+                }
+            },
+            // 绘制圆
+            onDrawCircle(centerX, centerY) {
+                this.onDrawImg();
+
+                context.beginPath();
+                context.arc(centerX, centerY, this.radius, 0, 2 * Math.PI, true);
+                context.stroke();
+                context.fillStyle = 'rgb(51 51 51 / 10%)';
+                context.fill();
+
+
+                this.setData({
+                    prevCenterX: centerX,
+                    prevCenterY: centerY
+                });
+            },
+            // 绘制图像
+            onDrawImg() {
+                const canvas = this.$refs.canvas;
+                const img = new Image();
+                img.src = this.logo;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = "#fff";
+                context.fillRect(0, 0, 500, 300);
+                context.drawImage(img, 0, 0);
+
+                sealData.forEach(item => {
+                    context.putImageData(item.imgData, item.x, item.y);
+                });
+            }
+        },
+        mounted() {
+            setTimeout(() => {
+                this.onSetContext();
+                this.onDrawImg();
+
+                /* const imgData = context.getImageData(0, 0, 100, 130);
+                imgData.data.forEach((item, index) => {
+                    if ((index + 1) % 4 === 0) {
+                        // console.log(imgData.data[index]);
+                        imgData.data[index] = 255
+                    } else {
+                        if (imgData.data[index] !== 255) {
+                            imgData.data[index] = 0;
+                        }
+                    }
+                }); */
+                // context.putImageData(imgData, 200, 100);
+            });
+
+        }
+    }
+</script>

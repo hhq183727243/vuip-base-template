@@ -1,0 +1,36 @@
+<template>
+    <div :class="'aui-spin '  + (props.class || '')">
+        <slot></slot>
+        <div :class="'aui-spin-loading ' + (props.spinning ? '' : 'hide')">
+            <span class="iconfont icon-refresh info"></span>
+            <div class="aui-spin-tip">{props.tip || ''}</div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Spin',
+        data() {
+            return {
+                loading: false,
+                tip: ''
+            }
+        },
+        mounted() {
+            /*  if (this.props.tip) {
+                let len = 0;
+
+                setInterval(() => {
+                    this.setData({
+                        tip: this.props.tip.substr(0, len)
+                    });
+                    len++;
+
+                    if (len > this.props.tip.length) {
+                        len = 0;
+                    }
+                }, 300);
+            } */
+        }
+    }
+</script>

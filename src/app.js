@@ -19,6 +19,10 @@ console.timeEnd()
 
 function onUpdateSize() {
     const _screenX = document.documentElement.offsetWidth;
+    if (_screenX > 1024) {
+        return;
+    }
+
     const fontSize = 20 / 375 * _screenX + 'px';
 
     document.documentElement.style.fontSize = fontSize;

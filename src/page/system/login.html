@@ -1,0 +1,47 @@
+<template>
+    <div style="text-align: center;">
+        <h1>登录</h1>
+        <form style="width: 400px; margin: auto;">
+            <AInput class="m15-t" type="text" v-model="name" />
+            <AInput class="m15-t" type="password" v-model="password" />
+            <div class="m15-t">
+                <AButton type="info" onclick="handleLogin">登录</AButton>
+            </div>
+        </form>
+    </div>
+</template>
+<script>
+    export default {
+        name: 'Login',
+        data() {
+            return {
+                name: '',
+                password: ''
+            }
+        },
+        methods: {
+            handleLogin() {
+                if (!this.name || !this.password) {
+                    this.alert.warn('账号、密码不能为空');
+                    return;
+                }
+
+                this.request.post('/api/user/login', {
+                    name: this.name,
+                    password: this.password
+                }).then(res => {
+                    // 保存登录态
+                    localStorage.setItem('user', JSON.stringify(res.data));
+                    // 更新全局状态
+                    this.$store.dispatch('updateLoginState', true);
+                    this.$store.dispatch('updateUser', res.data);
+                    // 跳转首页
+                    this.$router.to('/');
+                });
+            }
+        },
+        mounted() {
+            console.log(this);
+        }
+    }
+</script>

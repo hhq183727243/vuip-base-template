@@ -1,4 +1,5 @@
 @import './assets/less/mixins.less';
+@import './assets/less/ui.less';
 
 @font-face {
     font-family: electronicFont;
@@ -18,10 +19,6 @@ body {
 
 #app {
     font-size: 14px;
-}
-
-input[type="text"] {
-    width: 100%;
 }
 
 h1,
@@ -63,30 +60,8 @@ h3 {
     margin: 10px;
 }
 
-div.blue.blue.blue {
-    color: red;
-}
-
-div.blue:not(.a) {
-    color: blue !important;
-}
-
-#aa {
-    color: rgb(102, 9, 223) !important;
-}
-
-
-
-span.text:not(.foo) {
-    color: blue;
-}
-
-div.wrap>.text {
-    color: red;
-}
-
-// id选择器 选择符 标签选择器 
-
-[class ^="aa"] {
-    color: green;
+.card {
+    padding         : 10px;
+    background-color: #fff;
+    border          : 1px solid #ddd;
 }

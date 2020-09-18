@@ -1,0 +1,113 @@
+<template>
+    <table :class="'aui-table '  + (props.class || '')">
+        <thead>
+            <tr>
+                <v-for data="props.columns || []">
+                    <th :align="item.align || 'left'" :width="item.width || ''">
+                        <v-if test="item.type === 'checkbox'">
+                            <span>全选</span>
+                        </v-if>
+                        <v-elseif test="item.type === 'radio'">
+                            <span>选择</span>
+                        </v-elseif>
+                        <v-else>
+                            <span>{item.title}</span>
+                        </v-else>
+                    </th>
+                </v-for>
+            </tr>
+        </thead>
+        <tbody>
+            <v-for data="props.data || []" item="row" index="rowIndex">
+                <tr>
+                    <v-for data="props.columns || []">
+                        <td :align="item.align || 'left'">
+                            <v-if test="item.type === 'checkbox' || item.type === 'radio'">
+                                <div :class="'icon-wrap ' + (selectedKeys.includes(row[item.key || 'id']) ? 'checked' : '')" onclick="handleCheck(row)">
+                                    <v-if test="selectedKeys.includes(row[item.key || 'id'])">
+                                        <span class="iconfont icon-selected info"></span>
+                                    </v-if>
+                                </div>
+                            </v-if>
+                            <v-elseif test="item.render !== undefined">
+                                <TableExpand :column="item" :value="row[item.key]" :data="row" :index="rowIndex" :context="context" />
+                            </v-elseif>
+                            <v-else>
+                                <div>{row[item.key] === undefined ? '' : row[item.key]}</div>
+                            </v-else>
+                        </td>
+                    </v-for>
+                </tr>
+            </v-for>
+        </tbody>
+    </table>
+</template>
+<script>
+    import TableExpand from './Expand.js';
+
+    export default {
+        name: 'Table',
+        components: {
+            TableExpand
+        },
+        data() {
+            return {
+                context: this.$parent,
+                selectedKeys: [],
+                selectedRows: [],
+                type() {
+                    let type = '';
+
+                    this.props.columns.forEach(item => {
+                        if (['checkbox', 'radio'].includes(item.type)) {
+                            type = item.type;
+                        }
+                    });
+
+                    return type;
+                }
+            }
+        },
+        methods: {
+            handleCheck(row) {
+                if (!['checkbox', 'radio'].includes(this.type)) {
+                    return;
+                }
+
+                let checked = true;
+
+                if (this.selectedKeys.includes(row.id)) {
+                    // 取消选择
+                    if (this.type === 'checkbox') {
+                        const index = this.selectedKeys.indexOf(row.id);
+                        this.selectedKeys.splice(index, 1);
+                        this.selectedRows.splice(index, 1);
+                    } else {
+                        this.selectedKeys = [];
+                        this.selectedRows = [];
+                    }
+
+                    checked = false;
+                } else {
+                    if (this.type === 'checkbox') {
+                        this.selectedKeys.push(row.id);
+                        this.selectedRows.push(row);
+                    } else {
+                        this.selectedKeys = [row.id];
+                        this.selectedRows = [row];
+                    }
+                }
+
+                this.setData({
+                    selectedKeys: this.selectedKeys,
+                    selectedRows: this.selectedRows
+                }, () => {
+                    this.props.onChange && this.props.onChange(this.selectedKeys, this.selectedRows, row, checked);
+                });
+            }
+        },
+        mounted() {
+            console.log('table');
+        }
+    }
+</script>
